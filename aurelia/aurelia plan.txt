@@ -1,0 +1,52 @@
+- Aurelia
+
+- Features
+    - Convention over configuration
+	- ES6/7 (an example of class ? )
+	  - Modules
+	  - Annotations
+	  - classes
+	  - imports, require (asynchrone)
+	- Web components ? 
+	  - shadowdom ?
+	- Dependency Injection  
+	- Data Binding
+	
+- Application components
+	- a view
+	- a view model
+
+- Environnement : jspm, gulp, 
+- View/ View-model , template, noview
+- Scope , transient...
+
+
+- Plugins
+- Events
+- Router
+  - Routes
+  - Activation lifecycle (with promises)
+  - Child Router
+- HTML extensions
+  - Compose ? 
+- Dom manipulation
+  - Repeat.for
+  - Show / If
+- Http requests
+- Conclusion
+	- learning progression very fast
+	- Learn ES6/ES7 while developing
+- Future 
+  - Migration guides
+  - Complete Documentation interactive 
+- Aurelia and Angular
+  - Errors much more clear
+- Demo
+
+Features :
+convention c
+Support most form of abstraction syntax Typescript, Atscript, Coffeescript, ES5...
+Web components : design to work well with web components and use some planned features (shadowdom, template tag)
+
+View:
+template tag from the future WebComponents standard

@@ -1,0 +1,20 @@
+.reveal h3 {
+	text-transform: capitalize;
+}
+
+.reveal section img.logo {
+	background: none;
+	border: none;
+}
+
+.reveal li {
+	margin-bottom: 3%;
+}
+
+.jscode {
+	color: darkturquoise;
+}
+
+.htmlcode {
+	color: darkorange;
+}

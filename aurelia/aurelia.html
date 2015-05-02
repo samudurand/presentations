@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>reveal.js - The HTML Presentation Framework</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="../revealjs/css/reveal.css">
+		<link rel="stylesheet" href="../revealjs/css/theme/black.css" id="theme">
+		<link rel="stylesheet" href="css/aurelia.css"
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="../revealjs/lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '../revealjs/css/print/pdf.css' : '../revealjs/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>Aurelia</h1>
+					<h3>Next generation JS framework</h3>
+					<img class="logo" src="img/aurelia-logo.png"></img>
+					<p>
+						<small>Presentation made by <a href="https://twitter.com/samudurand">Samuel Durand</a></small>
+					</p>
+				</section>
+
+				<section>
+					<h2>Why Aurelia ?</h2>
+					<p>
+						An unexpected discovery on the road to <i><b>Angular 2</b></i>
+					</p>
+				</section>
+
+				<section>
+					<h2>Origins</h2>
+						<p>Created by <a href="https://twitter.com/EisenbergEffect">Rob Eisenberg</a> in 2014</p>
+  						<p>Designed as a successor of <a href="http://durandaljs.com/">Durandal</a> after his disappointment on <a>Angular 2</a></p>
+				</section>
+
+				<section>
+					<h2>Features</h2>
+					<ul>
+  						<li class="fragment">MV* Convention over configuration</li>
+  						<li class="fragment">Plain Javascript <span class="jscode">ES6</span> / <span class="jscode">ES7</span> + Polyfills</li> 
+  						<li class="fragment">Web components (future template tag)</li>
+  						<li class="fragment">Databinding</li>
+  						<li class="fragment">Dependency Injection</li>
+  						<li class="fragment">Easy integration of third party libraries</li>
+  						<li class="fragment">Support <span class="htmlcode">TypeScript</span>, <span class="htmlcode">CoffeeScript</span>...</li>
+  						<li class="fragment"><b>Entirely customizable</b> with <spanc class="jscode">Plugins</span></li>
+					</ul>
+				</section>
+
+				<!-- Example of nested vertical slides -->
+				<section>
+					<section>
+						<h2>Application Components</h2>
+						<p>Each UI component composed of
+							<ul>
+								<li>A View in <span class="htmlcode">HTML</span></li>
+								<li>A View-Model in <span class="jscode">Javascript</span></li>
+							</ul>
+						</p>
+						<p>Convention based on files names and ES6 modules</p>
+					</section>
+					<section>
+						<h2>View</h2>
+						<pre><code data-trim class="html">
+								<template>
+	<section>
+		<h2>${heading}</h2>
+		<form submit.delegate="welcome()">
+			<div>
+				<label>Name</label>
+				<input type="text" value.bind="name">
+			</div>
+			<div>
+				<p>Hi ${fullTitle}!</p>
+			</div>
+			<button type="submit">Submit</button>
+		</form>
+	</section>
+</template>
+							</code></pre>
+						<p>
+							<small>welcome.html</small>
+						</p>
+						<p>A <span class="jscode">template</span> tag from the future WebComponents standard</p>
+					</section>
+					<section>
+						<h2>View-Model</h2>
+						<pre><code data-trim>
+export class Welcome {
+    heading = 'Just a welcome';
+    name = 'Max';
+
+    get fullTitle(){
+        return `Mr. ${this.name}`;
+    }
+
+    welcome(){
+        alert(`Welcome, ${this.name}!`);
+    }
+}
+</code></pre>
+						<p>
+							<small>welcome.js</small>
+						</p>
+						<p>Simple <span class="jscode">ES6</span> / <span class="jscode">ES7</span> code</p>
+
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Dependency Injection</h2>
+						<pre><code data-trim>
+import {inject} from 'aurelia-framework';
+import {HttpClient} from 'aurelia-http-client';
+import {UserDetails} from 'user';
+
+@inject(HttpClient, UserDetails)
+export class Customer{
+    constructor(http, user){
+        this.http = http;
+        this.user = user;
+    }
+}
+						</code></pre>
+						<p><span class="jscode">ES7</span> decorators</p>
+					</section>
+
+					<section>
+						<h2>Lifetime</h2>
+						<p>Singleton by default</p>
+						<pre><code data-trim>
+export class Singleton{}
+						</code></pre>	
+						<p>One instance by call</p>
+						<pre><code data-trim>
+@transient
+export class OneByCall{}
+						</code></pre>
+						<p>Any custom lifetime</p>
+						<pre><code data-trim>
+@session
+export class UserDetails{}
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>Resolvers</h2>
+						<p>Lazy injection</p>
+						<pre><code data-trim>
+@inject(Lazy.of(HttpClient))
+export class UserService{}
+						</code></pre>		
+						<p>Inject all instances</p>				
+						<pre><code data-trim>
+@inject(All.of(UserDetails))
+export class Welcome{}
+						</code></pre>
+						<p>Inject only if already exists</p>
+						<pre><code data-trim>
+@inject(Optional.of(LoggedInUser))
+export class Welcome{}
+						</code></pre>
+
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Databinding</h2>
+						<br/>
+						<p>Link the state and behavior in a <span class="jscode">JS</span> object to an <span class="htmlcode">HTML</span> view</p>
+						<p>Identifiable in the Html code by the <span class="htmlcode"><big>.</big></span> syntax</p>
+						<br/>
+						<pre><code class="html"><input type="text" value.bind="username">
+
+<select value.bind="favoriteColor">
+    <option>Select an element</option>
+    <option repeat.for="elt of elts" value.bind="elt">${elt}</option>
+</select></code></pre>
+					</section>
+					<section>
+						<p>Bind any property using <span class="htmlcode">.bind</span></p>
+						<pre><code class="html"><!--Two-way binding for form elements-->
+<input type="text" value.bind="firstName">
+
+<!--One-way binding for others-->
+<a href.bind="url">Aurelia</a></pre></code>
+						<div class="fragment">
+							<p>Specify the databinding mode</p>
+							<pre><code class="html"><!--Two-way binding-->
+<input type="text" value.two-way="firstName">
+
+<!--One-way binding-->
+<a href.one-way="url">Aurelia</a>
+
+<!--One-time binding-->
+<label class.one-time="labelClass"></label></pre></code>
+						</div>
+					</section>
+
+					<section>
+						<h3>Behavior binding</h3>
+						<p>UI events</p>
+						<pre><code class="html"><!--One event handler by event-->
+<button click.trigger="sayHello()">Say Hello</button>
+
+<!--A single event handler for the whole document-->
+<button click.delegate="sayHello()">Say Hello</button></code></pre>
+						<p>Reference to a function</p>
+						<pre><code class="html"><boutton custom.call="sayHello()">Say Hello</button></code></pre>
+					</section>
+
+					<section>
+						<h3>String Interpolation</h3>
+						<p>Simple value</p>
+						<pre><code class="html"><span>${user.firstName} ${user.lastName}</span></code></pre>
+						<p>Expressions handling</p>
+						<pre><code class="html"><div class="${color} ${isHappy ? 'green' : 'red'}"></div></code></pre>
+					</section>
+
+					<section>
+						<h3>Select component</h3>
+						<br/>
+						<pre><code class="html"><select value.bind="favoriteColor">
+    <option>Select A Color</option>
+    <option repeat.for="clr of clrs" value.bind="clr">${clr}</option>
+</select></code></pre>
+<br/>
+<pre><code class="html"><select value.bind="selectedItem">
+  <option>Select An Item</option>
+  <option repeat.for="it of items" model.bind="it">${it.name}</option>
+</select></code></pre>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Routing</h2>
+						<pre><code>export class App {
+
+  configureRouter(config, router){
+    config.title = 'Aurelia';
+    config.map([
+      { route: ['','welcome'], moduleId: './welcome', nav: true, 
+        title:'Welcome' },
+      { route: 'todos',       moduleId: './todos/todolist', nav: true },
+      { route: 'details',     moduleId: './todos/details' }
+    ]);
+
+    this.router = router;
+  }
+   
+}</code></pre>
+					</section>
+
+					<section>
+						<h3>Screen Activation Lifecycle</h3>
+						<pre><code>export class Home {
+
+  //Can we navigate to this page
+  canActivate(params, queryString, routeConfig){}
+
+  //What happens when we arrive on the page
+  activate(params, queryString, routeConfig){}
+
+  //Can we leave this page
+  canDeactivate(){}
+
+  //What happens when we leave the page
+  deactivate(){}
+
+}</code></pre>
+						<p>Support for <span class="jscode">ES6 Promises</span></p>
+					</section>
+
+					<section>
+						<h3>And More</h3>
+						<ul>
+							<li>Child routers</li>
+							<li>Dynamic routing</li>
+							<li>Custom navigation pipeline (filter, authentication)</li>
+							<li>...</li>
+						</ul>
+					</section>
+				</section>
+
+				
+
+				<section>
+					<section>
+						<h2>HTML Extensions</h2>
+						<ul>
+							<li>Custom tags with their own views</li>
+							<li>Custom attributes</li>
+							<li>Possibility to leverage ShadowDOM </li>
+						</ul>
+					</section>
+
+					<section>
+						<h3>Aurelia Attributes</h3>
+						<div class="fragment">
+							<p style="margin-top: 5%;">Show / hide HTML elements</p>
+							<pre><code class="html"><div show.bind="isSaving" class="spinner"></div></code></pre>
+						</div>
+						<div class="fragment">
+							<p>Add / remove HTML elements</p>
+							<pre><code class="html"><div if.bind="isLoggedIn" class="logout_box"></div></code></pre>
+						</div>
+						<div class="fragment">
+							<p>Render multiple times</p>
+							<pre><code><ul>
+    <li repeat.for="[id, user] of users">${id} ${user.fullName}</li>
+</ul></code></pre>
+						</div>
+					</section>
+
+					<section>
+						<h3>Dynamic Rendering</h3>
+						<p style="margin-top:5%;">Use the <span class="htmlcode">compose</span> attribute to dynamically choose the template to render depending on a condition</p>
+						<pre><code class="html"><template repeat.for="item of items">
+    <compose
+      model.bind="item"
+      view-model="widgets/${item.type}">
+    </compose>
+</template></code></pre>
+					</section>
+
+					<section>
+						<h3>Custom Attributes</h3>
+						<p>A simple example : the Aurelia Show attribute</p>
+						<pre><code class="javascript">@customAttribute('my-show')
+@inject(Element)
+export class MyShow {
+  constructor(element) {
+    this.element = element;
+  }
+
+  valueChanged(newValue){
+    if (newValue) {
+      this.element.classList.remove('aurelia-hide');
+    } else {
+      this.element.classList.add('aurelia-hide');
+    }
+  }
+}</code></pre>
+<pre><code class="html"><require from="./myshow"></require>
+<div my-show.bind="isShowed">Text to hide</div></code></pre>
+					</section>
+
+					<section>
+						<h3>Custom Elements</h3>
+						<pre><code class="javascript">export class SayHelloCustomElement {
+  @bindable to;
+
+  speak(){
+    alert('Hello ${this.to}!');
+  }
+}</code></pre>
+<pre><code class="html"><template>
+    <button click.trigger="speak()">Say Hello To ${to}</button>
+</template></code></pre>
+<p>Usage</p>
+<pre><code class="html"><template>
+    <require from="./say-hello"></require>
+
+    <input type="text" ref="name">
+    <say-hello to.bind="name.value"></say-hello>
+</template></code></pre>
+
+					</section>
+
+					<section>
+						<h3>View Lifecycle</h3>
+						<ul>
+							<li><b>bind(bindingContext)</b> - Invoked when the databinding engine binds the view.</li>
+							<li><b>unbind()</b> - Invoked when the databinding engine unbinds the view.</li>
+							<li><b>attached()</b> - Invoked when the view is attached to the DOM.</li>
+							<li><b>detached()</b> - Invoked when the view is detached from the DOM.</li>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<h2>Current Status</h2>
+					<ul>
+						<li>Currently in pre-beta version</li>
+						<li class="fragment">Breaking changes every 2 weeks</li>
+						<li class="fragment">Already used for some production app</li>
+						<li class="fragment">Community growing and very active</li>
+						<li class="fragment">Most users and contributors previous Angular adepts</li> 
+						<li class="fragment">Supports all recent browsers, and now IE9 too</li>
+						<li class="fragment">Documentation very clear but poor for now</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Future</h2>
+					<ul>
+						<li>Interactive documentation</li>
+						<li>Migration documents</li>
+						<li>More plugins</li>
+						<li>Version 1 soon</li>
+						<li>Performance improvements</li> 
+						<li>More features</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Demo</h2>
+				</section>
+				
+			</div>
+
+		</div>
+
+		<script src="../revealjs/lib/js/head.min.js"></script>
+		<script src="../revealjs/js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'convex', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: '../revealjs/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: '../revealjs/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '../revealjs/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '../revealjs/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: '../revealjs/plugin/zoom-js/zoom.js', async: true },
+					{ src: '../revealjs/plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
