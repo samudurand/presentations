@@ -46,15 +46,16 @@
 					<h3>Next generation JS framework</h3>
 					<img class="logo" src="img/aurelia-logo.png"></img>
 					<p>
-						<small>Presentation made by <a href="https://twitter.com/samudurand">Samuel Durand</a></small>
+						<small>Presentation by <a href="https://twitter.com/samudurand">Samuel Durand</a></small>
 					</p>
 				</section>
 
 				<section>
 					<h2>Why Aurelia ?</h2>
 					<p>
-						An unexpected discovery on the road to <i><b>Angular 2</b></i>
+						An unexpected discovery on the road to <a href="https://www.npmjs.com/package/angular2"><i><b>Angular 2</b></i></a>
 					</p>
+					<p>Looked like a very clever and innovative framework</p>
 				</section>
 
 				<section>
@@ -115,7 +116,7 @@
 					</section>
 					<section>
 						<h2>View-Model</h2>
-						<pre><code data-trim>
+						<pre><code data-trim class="java">
 export class Welcome {
     heading = 'Just a welcome';
     name = 'Max';
@@ -140,7 +141,7 @@ export class Welcome {
 				<section>
 					<section>
 						<h2>Dependency Injection</h2>
-						<pre><code data-trim>
+						<pre><code data-trim  class="java">
 import {inject} from 'aurelia-framework';
 import {HttpClient} from 'aurelia-http-client';
 import {UserDetails} from 'user';
@@ -159,16 +160,16 @@ export class Customer{
 					<section>
 						<h2>Lifetime</h2>
 						<p>Singleton by default</p>
-						<pre><code data-trim>
+						<pre><code data-trim class="java">
 export class Singleton{}
 						</code></pre>	
 						<p>One instance by call</p>
-						<pre><code data-trim>
+						<pre><code data-trim class="java">
 @transient
 export class OneByCall{}
 						</code></pre>
 						<p>Any custom lifetime</p>
-						<pre><code data-trim>
+						<pre><code data-trim class="java">
 @session
 export class UserDetails{}
 						</code></pre>
@@ -177,17 +178,17 @@ export class UserDetails{}
 					<section>
 						<h2>Resolvers</h2>
 						<p>Lazy injection</p>
-						<pre><code data-trim>
+						<pre><code data-trim class="java">
 @inject(Lazy.of(HttpClient))
 export class UserService{}
 						</code></pre>		
 						<p>Inject all instances</p>				
-						<pre><code data-trim>
+						<pre><code data-trim class="java">
 @inject(All.of(UserDetails))
 export class Welcome{}
 						</code></pre>
 						<p>Inject only if already exists</p>
-						<pre><code data-trim>
+						<pre><code data-trim  class="java">
 @inject(Optional.of(LoggedInUser))
 export class Welcome{}
 						</code></pre>
@@ -200,7 +201,7 @@ export class Welcome{}
 						<h2>Databinding</h2>
 						<br/>
 						<p>Link the state and behavior in a <span class="jscode">JS</span> object to an <span class="htmlcode">HTML</span> view</p>
-						<p>Identifiable in the Html code by the <span class="htmlcode"><big>.</big></span> syntax</p>
+						<p>Identifiable in the Html code by the <span class="htmlcode"><big>dot</big></span> syntax</p>
 						<br/>
 						<pre><code class="html"><input type="text" value.bind="username">
 
@@ -238,7 +239,7 @@ export class Welcome{}
 <!--A single event handler for the whole document-->
 <button click.delegate="sayHello()">Say Hello</button></code></pre>
 						<p>Reference to a function</p>
-						<pre><code class="html"><boutton custom.call="sayHello()">Say Hello</button></code></pre>
+						<pre><code class="html"><my-button custom.call="sayHello()">Say Hello</my-button></code></pre>
 					</section>
 
 					<section>
@@ -267,7 +268,7 @@ export class Welcome{}
 				<section>
 					<section>
 						<h2>Routing</h2>
-						<pre><code>export class App {
+						<pre><code class="java">export class App {
 
   configureRouter(config, router){
     config.title = 'Aurelia';
@@ -286,7 +287,7 @@ export class Welcome{}
 
 					<section>
 						<h3>Screen Activation Lifecycle</h3>
-						<pre><code>export class Home {
+						<pre><code class="java">export class Home {
 
   //Can we navigate to this page
   canActivate(params, queryString, routeConfig){}
@@ -347,7 +348,7 @@ export class Welcome{}
 
 					<section>
 						<h3>Dynamic Rendering</h3>
-						<p style="margin-top:5%;">Use the <span class="htmlcode">compose</span> attribute to dynamically choose the template to render depending on a condition</p>
+						<p style="margin-top:5%;">Use the <span class="htmlcode">compose</span> element to dynamically choose the template to render depending on a condition</p>
 						<pre><code class="html"><template repeat.for="item of items">
     <compose
       model.bind="item"
@@ -358,8 +359,8 @@ export class Welcome{}
 
 					<section>
 						<h3>Custom Attributes</h3>
-						<p>A simple example : the Aurelia Show attribute</p>
-						<pre><code class="javascript">@customAttribute('my-show')
+						<p>A simple example : the Aurelia <span class="htmlcode">show</span> attribute</p>
+						<pre><code class="java">@customAttribute('my-show')
 @inject(Element)
 export class MyShow {
   constructor(element) {
@@ -380,7 +381,7 @@ export class MyShow {
 
 					<section>
 						<h3>Custom Elements</h3>
-						<pre><code class="javascript">export class SayHelloCustomElement {
+						<pre><code class="java">export class SayHelloCustomElement {
   @bindable to;
 
   speak(){
@@ -390,14 +391,15 @@ export class MyShow {
 <pre><code class="html"><template>
     <button click.trigger="speak()">Say Hello To ${to}</button>
 </template></code></pre>
-<p>Usage</p>
+<div class="fragment">
+	<p>Usage</p>
 <pre><code class="html"><template>
     <require from="./say-hello"></require>
 
     <input type="text" ref="name">
-    <say-hello to.bind="name.value"></say-hello>
+    <say-hello to.bind="name"></say-hello>
 </template></code></pre>
-
+</div>
 					</section>
 
 					<section>
@@ -415,7 +417,7 @@ export class MyShow {
 					<h2>Current Status</h2>
 					<ul>
 						<li>Currently in pre-beta version</li>
-						<li class="fragment">Breaking changes every 2 weeks</li>
+						<li class="fragment">Before last week release, breaking changes every 2 weeks</li>
 						<li class="fragment">Already used for some production app</li>
 						<li class="fragment">Community growing and very active</li>
 						<li class="fragment">Most users and contributors previous Angular adepts</li> 
@@ -438,6 +440,11 @@ export class MyShow {
 
 				<section>
 					<h2>Demo</h2>
+				</section>
+
+				<section>
+					<h2>That's all folks !</h2>
+					<p>Questions ?</p>
 				</section>
 				
 			</div>
