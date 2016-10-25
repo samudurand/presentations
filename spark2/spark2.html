@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Spark 2</title>
+
+    <meta name="description" content="Spark 2, loads of new features">
+    <meta name="author" content="Samuel Durand">
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="../revealjs/css/reveal.css">
+    <link rel="stylesheet" href="../revealjs/css/theme/black.css" id="theme">
+    <link rel="stylesheet" href="css/spark2.css"/>
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="../revealjs/lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? '../revealjs/css/print/pdf.css' : '../revealjs/css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="reveal">
+
+    <div class="slides">
+        <section>
+            <h1 style="text-transform: none">Spark 2.0</h1>
+            <h3>Easier, Faster and Smarter ?</h3>
+            <img class="logo" src="img/spark-logo.png"/>
+            <p>
+                <small>Presentation by <a href="https://twitter.com/samudurand">Samuel Durand</a></small>
+            </p>
+        </section>
+
+        <section>
+            <h3>We will talk about...</h3>
+            <ul>
+                <li>What is Spark ?</li>
+                <li>Spark 2: Goals</li>
+                <li>New features and improvements</li>
+                <li>Future</li>
+                <li>Demo</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Origins</h2>
+            <p>Created by <a href="https://twitter.com/EisenbergEffect">Rob Eisenberg</a> in 2014.</p>
+            <p>Designed as a successor of <a href="http://durandaljs.com/">Durandal</a> after his disappointment on <a>Angular
+                2</a>.</p>
+        </section>
+
+        <section>
+            <h2>Features</h2>
+            <ul>
+                <li class="fragment">MV* Convention over configuration</li>
+                <li class="fragment">Plain Javascript <span class="jscode">ES6</span> / <span class="jscode">ES7</span>
+                    + Polyfills
+                </li>
+                <li class="fragment">Web components (future template tag)</li>
+                <li class="fragment">Databinding</li>
+                <li class="fragment">Dependency Injection</li>
+                <li class="fragment">Easy integration of third party libraries</li>
+                <li class="fragment">Support <span class="htmlcode">TypeScript</span>, <span class="htmlcode">CoffeeScript</span>...
+                </li>
+                <li class="fragment"><b>Entirely customizable</b> with
+                    <span class="jscode">Plugins</span>
+                </li>
+            </ul>
+        </section>
+
+    </div>
+
+</div>
+
+<script src="../revealjs/lib/js/head.min.js"></script>
+<script src="../revealjs/js/reveal.js"></script>
+
+<script>
+
+    // Full list of configuration options available at:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'convex', // none/fade/slide/convex/concave/zoom
+
+        dependencies: [
+            {
+                src: '../revealjs/lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            }
+            },
+            {
+                src: '../revealjs/plugin/markdown/marked.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: '../revealjs/plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: '../revealjs/plugin/highlight/highlight.js', async: true, condition: function () {
+                return !!document.querySelector('pre code');
+            }, callback: function () {
+                hljs.initHighlightingOnLoad();
+            }
+            },
+            {src: '../revealjs/plugin/zoom-js/zoom.js', async: true},
+            {src: '../revealjs/plugin/notes/notes.js', async: true}
+        ]
+    });
+
+</script>
+
+</body>
+</html>
