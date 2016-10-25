@@ -1,5 +1,8 @@
-.reveal h3 {
+.reveal h2 {
 	text-transform: capitalize;
+}
+.reveal h3 {
+	text-transform: none;
 }
 
 .reveal section img.logo {
@@ -9,5 +12,13 @@
 }
 
 .reveal li {
-	margin-bottom: 5%;
+	margin-bottom: 3%;
+}
+
+.highlight-orange {
+    color: darkorange;
+}
+
+.highlight-blue {
+    color: darkturquoise;
 }

@@ -51,10 +51,10 @@
         </section>
 
         <section>
-            <h3>We will talk about...</h3>
+            <h3>Today we will talk about...</h3>
             <ul>
                 <li>What is Spark ?</li>
-                <li>Spark 2: Goals</li>
+                <li>Spark 2 : Goals</li>
                 <li>New features and improvements</li>
                 <li>Future</li>
                 <li>Demo</li>
@@ -62,29 +62,54 @@
         </section>
 
         <section>
-            <h2>Origins</h2>
-            <p>Created by <a href="https://twitter.com/EisenbergEffect">Rob Eisenberg</a> in 2014.</p>
-            <p>Designed as a successor of <a href="http://durandaljs.com/">Durandal</a> after his disappointment on <a>Angular
-                2</a>.</p>
-        </section>
 
-        <section>
-            <h2>Features</h2>
-            <ul>
-                <li class="fragment">MV* Convention over configuration</li>
-                <li class="fragment">Plain Javascript <span class="jscode">ES6</span> / <span class="jscode">ES7</span>
-                    + Polyfills
-                </li>
-                <li class="fragment">Web components (future template tag)</li>
-                <li class="fragment">Databinding</li>
-                <li class="fragment">Dependency Injection</li>
-                <li class="fragment">Easy integration of third party libraries</li>
-                <li class="fragment">Support <span class="htmlcode">TypeScript</span>, <span class="htmlcode">CoffeeScript</span>...
-                </li>
-                <li class="fragment"><b>Entirely customizable</b> with
-                    <span class="jscode">Plugins</span>
-                </li>
-            </ul>
+            <section>
+                <h2 style="margin-bottom: 1em">Apache Spark</h2>
+                <p>Created in <b class="highlight-blue">2009</b> by  Matei Zaharia</p>
+                <p>Maintained since <b class="highlight-blue">2013</b> by the Apache Foundation</p>
+                <br/>
+                <p>Version <b class="highlight-orange">2.0</b> released in June <b class="highlight-blue">2016</b></li></p>
+                <br/>
+                <p>One of the most active Apache project</p>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 1em">What is Spark ?</h2>
+                <p>Advertised as <i>"A fast and general engine for large-scale data processing"</i></p>
+                <p>A <span class="highlight-orange">data</span> processing platform,
+                    running on a <span class="highlight-orange">cluster</span>,
+                    and designed to handle very large amount of data very <span class="highlight-orange">quickly</span> and <span class="highlight-orange">efficiently</span>.</p>
+            </section>
+
+            <section>
+                <h2>What is Spark ?</h2>
+                <ul>
+                    <li>Designed for <span class="highlight-orange">analytical</span>/transforming operations</li>
+                    <li>Minimal amount code</li>
+                        <pre><code data-trim  class="scala">
+sparkContext.textFile("hdfs://...")
+.flatMap(line => line.split(" "))
+.map(word => (word, 1)).reduceByKey(_ + _)
+.saveAsTextFile("hdfs://...")
+                        </code></pre>
+                    <li>Various languages : Scala, Java, Python... </li>
+                    <li>Handle data <span class="highlight-orange">in memory</span></li>
+                    <li>Very large cluster (> 8000 nodes)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 1em">Features</h2>
+                <ul>
+                    <li>Data analysis</li>
+                    <li>SQL like queries</li>
+                    <li>Streaming</li>
+                    <li>Machine Learning</li>
+                    <li>APIs for many datasources (HDFS, Cassandra, Kafka...)</li>
+                </ul>
+            </section>
+
+
         </section>
 
     </div>
