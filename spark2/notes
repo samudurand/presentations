@@ -1,0 +1,12 @@
+Intro :
+
+Is there anyone who never heard of Apache Spark ?
+Who among you used it even once and knows the concept of RDDs (Resilient Distributed Datasets) ?
+
+Spark 2 features :
+
+TPC-DS queries
+99 queries that any Big Data processing tool should be able to handle
+ includes a very large percentage of the SQL 2003 standard
+ => you can do about every operations you might want to perform on an SQL database
+

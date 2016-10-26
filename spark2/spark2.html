@@ -86,12 +86,6 @@
                 <ul>
                     <li>Designed for <span class="highlight-orange">analytical</span>/transforming operations</li>
                     <li>Minimal amount code</li>
-                        <pre><code data-trim  class="scala">
-sparkContext.textFile("hdfs://...")
-.flatMap(line => line.split(" "))
-.map(word => (word, 1)).reduceByKey(_ + _)
-.saveAsTextFile("hdfs://...")
-                        </code></pre>
                     <li>Various languages : Scala, Java, Python... </li>
                     <li>Handle data <span class="highlight-orange">in memory</span></li>
                     <li>Very large cluster (> 8000 nodes)</li>
@@ -102,7 +96,7 @@ sparkContext.textFile("hdfs://...")
                 <h2 style="margin-bottom: 1em">Features</h2>
                 <ul>
                     <li>Data analysis</li>
-                    <li>RDD or SQL like queries</li>
+                    <li>Work with RDDs or SQL like queries</li>
                     <li>Streaming</li>
                     <li>Machine Learning</li>
                     <li>APIs for many datasources <br/>(HDFS, Cassandra, Kafka...)</li>
@@ -112,6 +106,17 @@ sparkContext.textFile("hdfs://...")
             <section>
                 <h2>Spark Ecosystem</h2>
                 <img class="logo" src="img/spark-ecosystem.png"/>
+            </section>
+
+            <section>
+                <p>Code example ?</p>
+                <pre><code data-trim  class="scala">
+val rdd = sparkContext.textFile("hdfs://...")
+
+rdd.flatMap(line => line.split(" "))
+.map(word => (word, 1)).reduceByKey(_ + _)
+.saveAsTextFile("hdfs://...")
+                </code></pre>
             </section>
 
             <section>
@@ -125,6 +130,128 @@ sparkContext.textFile("hdfs://...")
                 <p>Provides services and support for Spark</p>
                 <p>Also offers an <span class="highlight-orange">online platform</span> for experimenting/training (free option since June 2016)</p>
             </section>
+
+        </section>
+
+        <section>
+            <h2>Spark 2 : What's new ?</h2>
+            <ul>
+                <li class="fragment">Focus on <i>Datasets</i> instead of <i>RDDs</i></li>
+                <li class="fragment">Unify <i>Datasets</i> and <i>Dataframes</i></li>
+                <li class="fragment"><b class="highlight-orange">SparkSession</b> : single entry point to data APIs</li>
+                <li class="fragment"><b class="highlight-orange">SparkSQL</b> : all 99 TPC-DS queries</li>
+                <li class="fragment">Performance improvements : <b class="highlight-orange">Tungsten</b></li>
+                <li class="fragment">Spark.ML replaces MLlib</li>
+                <li class="fragment">Window functions</li>
+                <li class="fragment">Many more : CSV support, more features for R users...</li>
+            </ul>
+        </section>
+
+        <section>
+
+            <section>
+
+                <h2>RDDs VS Datasets</h2>
+
+                <p>Why choose to work with Datasets ?</p>
+
+            </section>
+
+            <section>
+
+                <h2 style="margin-bottom: 1em">Resilient Distributed Dataset (RDD)</h2>
+
+                <ul>
+                    <li>Immutable distributed collection of Objects</li>
+                    <li>Unstructured data</li>
+                    <pre><code data-trim  class="scala">
+val lines = sc.textFile("data.txt")
+val total = lines.map(s => s.length)
+                 .reduce((a, b) => a + b)
+                    </code></pre>
+                    <li>Functional programming</li>
+                    <li>Syntax errors caught at compile time</li>
+                    <li>Very limited optimizations possible</li>
+                    <li>More control over operations</li>
+                </ul>
+
+            </section>
+
+            <section>
+
+                <h2 style="margin-bottom: 1em">Datasets</h2>
+
+                <ul>
+                    <li>Immutable distributed collection of Objects</li>
+                    <li>Structured data, similar to tables</li>
+                    <pre><code data-trim  class="scala">
+val ds = spark.read.json("people.json").as[Person]
+ds.map(teenager => "Name: " + teenager(0)).show()
+                    </code></pre>
+                    <li>3 APIs available : SQL, Dataframe, Dataset</li>
+                    <li>Syntax and analysis errors caught at compile time</li>
+                    <li>Structure <b class="highlight-orange">limits</b> what can be done =>
+                        <br/><b class="highlight-orange">Storage and performance optimizations</b></li>
+                </ul>
+
+            </section>
+
+            <section>
+
+                <h2>Optimizations</h2>
+
+                <img src="img/memory-usage.png"/>
+
+                <img src="img/performance.png"/>
+
+            </section>
+
+            <section>
+
+                <h2>Choice of APIs</h2>
+
+                <p>SQL</p>
+                    <pre><code data-trim  class="scala">
+val peopleDF = spark.read.json("people.json")
+peopleDF.createOrReplaceTempView("people")
+spark.sql("SELECT name FROM people").show()
+                    </code></pre>
+                <p>Dataframes</p>
+                    <pre><code data-trim  class="scala">
+val peopleDF = spark.read.json("people.json")
+peopleDF.select("name").show()
+                    </code></pre>
+                <p>Datasets</p>
+                <pre><code data-trim  class="scala">
+val peopleDF = spark.read.json("people.json")
+peopleDF.select("name").show()
+                    </code></pre>
+            </section>
+
+        </section>
+
+
+
+        <section>
+
+            RDD : Object oriented design, cannot optimise as much as Dataframe
+
+            Dataframe and SparkSQL : high level api to work with structured Data (database tables, JSON...)
+                Let Spark automatically optimize storage and computation with Tungstene and Catalyst optimizer
+                like working on data on raw binary form
+
+            Dataset : extension of Dataframe with same advantages, but type-safe and object-oriented
+            A Dataset is a strongly-typed, immutable collection of objects that are mapped to a relational schema.
+
+            query planner
+
+            Datasets also leverage Tungsten’s fast in-memory encoding
+
+            compile-time type safety – meaning production applications can be checked for errors before they are run
+
+            direct operations over user-defined classes
+
+            At the core of the Dataset API is a new concept called an encoder, which is responsible for converting between JVM objects and tabular representation. The tabular representation is stored using Spark’s internal Tungsten binary format, allowing for operations on serialized data and improved memory utilization.
 
         </section>
 
