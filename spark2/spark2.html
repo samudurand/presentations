@@ -162,17 +162,19 @@ rdd.flatMap(line => line.split(" "))
                 <h2 style="margin-bottom: 1em">Resilient Distributed Dataset (RDD)</h2>
 
                 <ul>
-                    <li>Immutable distributed collection of Objects</li>
-                    <li>Unstructured data</li>
-                    <pre><code data-trim  class="scala">
+                    <li class="fragment">Immutable distributed collection of Objects</li>
+                    <div class="fragment">
+                        <li>Unstructured data</li>
+                        <pre><code data-trim  class="scala">
 val lines = sc.textFile("data.txt")
 val total = lines.map(s => s.length)
                  .reduce((a, b) => a + b)
-                    </code></pre>
-                    <li>Functional programming</li>
-                    <li>Syntax errors caught at compile time</li>
-                    <li>Limited optimizations</li>
-                    <li>More control over operations</li>
+                        </code></pre>
+                    </div>
+                    <li class="fragment">Functional programming</li>
+                    <li class="fragment">Syntax errors caught at compile time</li>
+                    <li class="fragment">Limited optimizations</li>
+                    <li class="fragment">More control over operations</li>
                 </ul>
 
             </section>
@@ -182,13 +184,13 @@ val total = lines.map(s => s.length)
                 <h2 style="margin-bottom: 1em">Datasets</h2>
 
                 <ul>
-                    <li>Immutable distributed collection of Objects</li>
-                    <li>Structured data, similar to tables</li>
-                    <li>Rich semantics, high-level abstractions</li>
-                    <li>3 APIs available : SQL, Dataframe, Dataset</li>
-                    <li>Type safe</li>
-                    <li>Syntax and analysis errors caught at compile time</li>
-                    <li>Structure <b class="highlight-orange">limits</b> what can be done =>
+                    <li class="fragment">Immutable distributed collection of Objects</li>
+                    <li class="fragment"><b class="highlight-orange">Structured data</b>, similar to tables (json, sql...)</li>
+                    <li class="fragment">Rich semantics, high-level abstractions</li>
+                    <li class="fragment">3 APIs available : SQL, Dataframe, Dataset</li>
+                    <li class="fragment"><b class="highlight-orange">Type safety</b></li>
+                    <li class="fragment">Syntax and analysis errors caught at <b class="highlight-orange">compile time</b></li>
+                    <li class="fragment">Structure <b class="highlight-orange">limits</b> what can be done =>
                         <br/><b class="highlight-orange">Storage and performance optimizations</b></li>
                 </ul>
 
@@ -214,7 +216,7 @@ val peopleDF = spark.read.json("people.json")
 peopleDF.createOrReplaceTempView("people")
 spark.sql("SELECT name FROM people").show()
                     </code></pre>
-                <p>Dataframes</p>
+                <p>Dataframes = Dataset[Row]</p>
                     <pre><code data-trim  class="scala">
 val peopleDF = spark.read.json("people.json")
 peopleDF.select($"name", $"age" + 1).show()
@@ -247,7 +249,79 @@ org.....AnalysisException:
 
         </section>
 
+        <section>
 
+            <section>
+
+                <h2>SparkSession</h2>
+
+                <p>A unique entry point to all APIs</p>
+
+            </section>
+
+            <section>
+
+                <h2 style="margin-bottom: 1em">Before</h2>
+
+                <p>SparkContext : RDD Api</p>
+                <pre><code data-trim  class="scala">
+val conf = new SparkConf().setAppName("Spark App")
+                      .setMaster("local[2]")
+val sc = new SparkContext(conf)
+                </code></pre>
+
+                <p>SqlContext : Dataframe Api</p>
+                <pre><code data-trim  class="scala">
+val sqlContext = new org.apache.spark.sql.SQLContext(sc)
+                </code></pre>
+
+                <p><div style="display: inline-block">HiveContext : Dataframe Api, Window functions <br/>
+                        and Hive compatibility</div> <img class="logo" src="img/hive-logo.png"/> </p>
+                <pre><code data-trim  class="scala">
+val hContext = new org.apache.spark.sql.hive.HiveContext(sc)
+                </code></pre>
+
+
+            </section>
+
+            <section>
+
+                <h2>Problems</h2>
+
+                <p style="margin-bottom: 1em"><b class="highlight-orange">Confusion</b> between SqlContext and HiveContext : which one to choose ?</p>
+
+                <p style="margin-bottom: 1em">Heavy dependence on Hive especially for <b class="highlight-orange">window functions</b></p>
+
+                <p>Hive has lots of <b class="highlight-orange">dependencies</b></p>
+
+            </section>
+
+            <section>
+
+                <h2 style="margin-bottom: 1em">In Spark 2</h2>
+                <pre><code data-trim  class="scala">
+
+val spark = SparkSession.builder.master("local[2]")
+                                .appName("Spark app")
+                                .getOrCreate()
+
+val personsDF = spark.read.json("persons.json")
+
+val personsDS = personsDF.as[Person]
+                </code></pre>
+
+                <p style="margin-top: 1em; margin-bottom: 1em">The SparkContext is also available</p>
+
+                <pre><code data-trim  class="scala">
+val sc = spark.sparkContext
+                </code></pre>
+
+                <p>But... still dependent on Hive</p>
+            </section>
+
+        </section>
+
+        
 
         <section>
 

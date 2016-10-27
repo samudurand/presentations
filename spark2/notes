@@ -20,3 +20,16 @@ All 3 are compatible and can be used one after the other on the same set of data
 
 Analysis errors caught before distributed batch job starts
 
+SparkSession :
+
+Before : sqlContext/
+
+    HiveContext : work with Hive and window functions
+
+    Window functions allow users of Spark SQL to calculate results such as the rank of a given row or a moving average over a range of input rows.
+
+    Apache Hive is a data warehouse infrastructure built on top of Hadoop for providing data summarization, query, and analysis
+
+In spark 2 :
+
+    Not all problems solved : you still need Hive dependencies to use features such as window functions
