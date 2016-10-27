@@ -171,7 +171,7 @@ val total = lines.map(s => s.length)
                     </code></pre>
                     <li>Functional programming</li>
                     <li>Syntax errors caught at compile time</li>
-                    <li>Very limited optimizations possible</li>
+                    <li>Limited optimizations</li>
                     <li>More control over operations</li>
                 </ul>
 
@@ -184,10 +184,7 @@ val total = lines.map(s => s.length)
                 <ul>
                     <li>Immutable distributed collection of Objects</li>
                     <li>Structured data, similar to tables</li>
-                    <pre><code data-trim  class="scala">
-val ds = spark.read.json("people.json").as[Person]
-ds.map(teenager => "Name: " + teenager(0)).show()
-                    </code></pre>
+                    <li>Rich semantics, high-level abstractions</li>
                     <li>3 APIs available : SQL, Dataframe, Dataset</li>
                     <li>Type safe</li>
                     <li>Syntax and analysis errors caught at compile time</li>
