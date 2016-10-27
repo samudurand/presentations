@@ -10,3 +10,13 @@ TPC-DS queries
  includes a very large percentage of the SQL 2003 standard
  => you can do about every operations you might want to perform on an SQL database
 
+
+
+Dataset APIs :
+
+All 3 are compatible and can be used one after the other on the same set of data
+
+-
+
+Analysis errors caught before distributed batch job starts
+

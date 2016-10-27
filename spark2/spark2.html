@@ -189,6 +189,7 @@ val ds = spark.read.json("people.json").as[Person]
 ds.map(teenager => "Name: " + teenager(0)).show()
                     </code></pre>
                     <li>3 APIs available : SQL, Dataframe, Dataset</li>
+                    <li>Type safe</li>
                     <li>Syntax and analysis errors caught at compile time</li>
                     <li>Structure <b class="highlight-orange">limits</b> what can be done =>
                         <br/><b class="highlight-orange">Storage and performance optimizations</b></li>
@@ -208,7 +209,7 @@ ds.map(teenager => "Name: " + teenager(0)).show()
 
             <section>
 
-                <h2>Choice of APIs</h2>
+                <h2>Structured APIs</h2>
 
                 <p>SQL</p>
                     <pre><code data-trim  class="scala">
@@ -219,13 +220,32 @@ spark.sql("SELECT name FROM people").show()
                 <p>Dataframes</p>
                     <pre><code data-trim  class="scala">
 val peopleDF = spark.read.json("people.json")
-peopleDF.select("name").show()
+peopleDF.select($"name", $"age" + 1).show()
                     </code></pre>
                 <p>Datasets</p>
                 <pre><code data-trim  class="scala">
-val peopleDF = spark.read.json("people.json")
-peopleDF.select("name").show()
+val personDS = spark.read.json("people.json").as[Person]
+peopleDs.foreach(p => println(s"| ${p.name} | ${p.age + 1} |"))
                     </code></pre>
+            </section>
+            
+            <section>
+                
+                <h2>Structured APIs</h2>
+                
+                <img src="img/structured-apis.png">
+
+                <div class="fragment">
+                    <p >Analysis errors caught before job starts</p>
+
+                    <pre><code data-trim  class="scala">
+case class University(numStudents: Int)
+val schools = sqlContext.read.json("/schools.json").as[University]
+org.....AnalysisException:
+  Cannot upcast `numStudents` from string to int as it may truncate
+                    </code></pre>
+                </div>
+                
             </section>
 
         </section>
