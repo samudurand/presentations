@@ -108,18 +108,27 @@
             </section>
 
             <section>
-                <p>Code example ?</p>
+                <h2>What it looks like</h2>
                 <pre><code data-trim  class="scala">
 val rdd = sparkContext.textFile("hdfs://...")
 
 rdd.flatMap(line => line.split(" "))
-.map(word => (word, 1)).reduceByKey(_ + _)
-.saveAsTextFile("hdfs://...")
+   .map(word => (word, 1))
+   .reduceByKey(_ + _)
+   .saveAsTextFile("hdfs://...")
                 </code></pre>
-            </section>
+                <pre><code data-trim  class="scala">
+val data = Array("Spark has potential",
+                 "Flink is not bad either",
+                 "Scala is the best for Spark !")
+val rdd = data.parallelize(data)
+val strWithSpark = rdd.filter(line => line.contains("Spark"))
 
-            <section>
-                What you would do with Spark ? What you would not do ?
+// Cache the RDD in memory for later use
+strWithSpark.cache
+
+strWithSpark.forEach(println)
+                </code></pre>
             </section>
 
             <section>
@@ -184,50 +193,13 @@ val total = lines.map(s => s.length)
 
                 <ul>
                     <li class="fragment">Immutable distributed collection of Objects</li>
-                    <li class="fragment"><b class="highlight-orange">Structured data</b>, similar to tables (json, sql...)</li>
-                    <li class="fragment">Rich semantics, high-level abstractions</li>
+                    <li class="fragment"><b class="highlight-orange">Structured data</b>, similar to <b class="highlight-orange">SQL tables</b></li>
                     <li class="fragment">3 APIs available : SQL, Dataframe, Dataset</li>
                     <li class="fragment"><b class="highlight-orange">Type safe : operate on domain objects with lambda functions</b></li>
                     <li class="fragment">Syntax and analysis errors caught at <b class="highlight-orange">compile time</b></li>
                     <li class="fragment">Structure <b class="highlight-orange">limits</b> what can be done :
                         <br/><b class="highlight-orange">Storage and performance optimizations</b></li>
                 </ul>
-
-            </section>
-
-            <section>
-
-                <h2>Catalyst : Query planner</h2>
-
-                <p>Decides the best way to perform a query by trying several possibilities</p>
-
-                <img src="img/catalyst.png"/>
-
-            </section>
-
-            <section>
-
-                <h2>Optimizations</h2>
-
-                <p>Better <b class="highlight-orange">performances</b> with relational execution engine</p>
-                <img src="img/memory-usage.png"/>
-
-                <p>Spark knows structure of data : it can optimize <b class="highlight-orange">storage</b></p>
-                <img src="img/performance.png"/>
-
-            </section>
-
-            <section>
-
-                <h2>Optimizations</h2>
-
-                <p>Serialized using <b class="highlight-orange">Encoders</b> into Tungsten binary format</p>
-
-                <p>Far better performances with less space (up to 2x less)</p>
-
-                <img src="img/encoder-performances.png"/>
-
-                <p>Operate Directly On Serialized Data when possible</p>
 
             </section>
 
@@ -270,6 +242,62 @@ org.....AnalysisException:
                     </code></pre>
                 </div>
                 
+            </section>
+
+            <section>
+
+                <h2>Better performances ?</h2>
+
+            </section>
+
+            <section>
+
+                <h2>Catalyst : Query planner</h2>
+
+                <p>Decides the best way to perform a query by trying several possibilities</p>
+
+                <img src="img/catalyst.png"/>
+
+            </section>
+
+            <section>
+
+                <h2>Optimizations</h2>
+
+                <p>Better <b class="highlight-orange">performances</b> with relational execution engine</p>
+                <img src="img/performance.png"/>
+
+                <p>Spark knows structure of data : it can optimize <b class="highlight-orange">storage</b></p>
+                <img src="img/memory-usage.png"/>
+
+            </section>
+
+            <section>
+
+                <h2>Optimizations</h2>
+
+                <p>Serialized using <b class="highlight-orange">Encoders</b> into Tungsten binary format</p>
+
+                <p>Far better performances with less space (up to 2x less)</p>
+
+                <img src="img/encoder-performances.png"/>
+
+                <p>Operate Directly On Serialized Data when possible</p>
+
+            </section>
+
+            <section>
+
+                <h2>Optimizations</h2>
+
+                <p>Spark works only with a limited number of types<br/>
+                   => can use its own compact encoding
+                </p>
+
+                <img class="logo" src="img/tungsten-format.png">
+
+                <p>Encoders translate between domain objects and Spark's internal format</p>
+
             </section>
 
         </section>
