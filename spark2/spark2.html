@@ -43,7 +43,6 @@
     <div class="slides">
         <section>
             <h1 style="text-transform: none">Spark 2.0</h1>
-            <h3>Easier, Faster and Smarter ?</h3>
             <img class="logo" src="img/spark-logo.png"/>
             <p>
                 <small>Presentation by <a href="https://twitter.com/samudurand">Samuel Durand</a></small>
@@ -54,8 +53,8 @@
             <h3>Today we will talk about...</h3>
             <ul>
                 <li>What is Spark ?</li>
-                <li>Spark 2 : Goals</li>
-                <li>New features and improvements</li>
+                <li>What's new in Spark 2.0</li>
+                <li>The most interesting features</li>
                 <li>Future</li>
                 <li>Demo</li>
             </ul>
@@ -65,10 +64,10 @@
 
             <section>
                 <h2 style="margin-bottom: 1em">Apache Spark</h2>
-                <p>Created in <b class="highlight-blue">2009</b> by  Matei Zaharia</p>
-                <p>Maintained since <b class="highlight-blue">2013</b> by the Apache Foundation</p>
+                <p>Created in <b>2009</b> by  Matei Zaharia</p>
+                <p>Maintained since <b>2013</b> by the Apache Foundation</p>
                 <br/>
-                <p>Version <b class="highlight-orange">2.0</b> released in June <b class="highlight-blue">2016</b></li></p>
+                <p>Version <b class="highlight-orange">2.0</b> released in June <b>2016</b></li></p>
                 <br/>
                 <p>One of the most active Apache project</p>
             </section>
@@ -84,11 +83,11 @@
             <section>
                 <h2>What is Spark ?</h2>
                 <ul>
-                    <li>Designed for <span class="highlight-orange">analytical</span>/transforming operations</li>
-                    <li>Minimal amount code</li>
-                    <li>Various languages : Scala, Java, Python... </li>
-                    <li>Handle data <span class="highlight-orange">in memory</span></li>
-                    <li>Very large cluster (> 8000 nodes)</li>
+                    <li>Designed for <span class="highlight-orange">analytical</span> and transforming operations</li>
+                    <li>Little amount of code required to use it</li>
+                    <li>Available in Scala, Java, Python and R</li>
+                    <li>Handle data <span class="highlight-orange">in memory</span> for speed</li>
+                    <li>Can work on very large cluster (> 8000 nodes)</li>
                 </ul>
             </section>
 
@@ -96,7 +95,7 @@
                 <h2 style="margin-bottom: 1em">Features</h2>
                 <ul>
                     <li>Data analysis</li>
-                    <li>Work with RDDs or SQL like queries</li>
+                    <li>Based RDDs or SQL like queries</li>
                     <li>Streaming</li>
                     <li>Machine Learning</li>
                     <li>APIs for many datasources <br/>(HDFS, Cassandra, Kafka...)</li>
@@ -105,7 +104,7 @@
 
             <section>
                 <h2>Spark Ecosystem</h2>
-                <img class="logo" src="img/spark-ecosystem.png"/>
+                <img class="logo" src="img/spark-ecosystem.jpg"/>
             </section>
 
             <section>
@@ -465,24 +464,143 @@ for (ss_item_sk in store_sales) {
 
         <section>
 
-            RDD : Object oriented design, cannot optimise as much as Dataframe
+            <section>
 
-            Dataframe and SparkSQL : high level api to work with structured Data (database tables, JSON...)
-                Let Spark automatically optimize storage and computation with Tungstene and Catalyst optimizer
-                like working on data on raw binary form
+                <h2>Structured Streaming</h2>
 
-            Dataset : extension of Dataframe with same advantages, but type-safe and object-oriented
-            A Dataset is a strongly-typed, immutable collection of objects that are mapped to a relational schema.
+                <p>The simplest way to perform streaming analytics
+                    is not having to reason about streaming.</p>
 
-            query planner
+            </section>
 
-            Datasets also leverage Tungsten’s fast in-memory encoding
+            <section>
 
-            compile-time type safety – meaning production applications can be checked for errors before they are run
+                <h2>Objectives of Streaming in Spark 2</h2>
 
-            direct operations over user-defined classes
+                <ul>
+                    <li class="fragment">Must be equivalent to a <b class="highlight-orange">batch job</b> at regular interval</li>
+                    <li class="fragment">Guarantee the events processing and delivery <b class="highlight-orange">order</b></li>
+                    <li class="fragment"><b class="highlight-orange">Fault tolerance</b> is handled entirely by API</li>
+                    <li class="fragment">Capable to filter out or handle <b class="highlight-orange">out-of-order data</b></li>
+                    <li class="fragment">API must be identical in usage to Datasets APIs</li>
+                    <li class="fragment">Allow to join a stream against a static DataFrame</li>
+                </ul>
 
-            At the core of the Dataset API is a new concept called an encoder, which is responsible for converting between JVM objects and tabular representation. The tabular representation is stored using Spark’s internal Tungsten binary format, allowing for operations on serialized data and improved memory utilization.
+            </section>
+
+            <section>
+
+                <h2>Identical API</h2>
+
+                <p>Basic dataframe processing</p>
+
+                <pre><code data-trim class="scala">
+val inputDF = spark.read.json("s3://logs")
+
+// Do operations using the standard DataFrame API and write to MySQL
+inputDF.groupBy($"action", window($"time", "1 hour")).count()
+       .write.format("jdbc")
+       .save("jdbc:mysql//...")
+                 </code></pre>
+
+                <p>With structured streaming</p>
+
+                <pre><code data-trim class="scala">
+val inputDF = spark.readStream.json("s3://logs")
+
+// Do operations using the standard DataFrame API and write to MySQL
+inputDF.groupBy($"action", window($"time", "1 hour")).count()
+       .writeStream.format("jdbc")
+       .start("jdbc:mysql//...")
+                 </code></pre>
+
+            </section>
+
+            <section>
+
+                <h2>Joining Streams with static data</h2>
+
+                <pre><code data-trim class="scala">
+// Bring in data about each customer from a static "customers" table,
+// then join it with a streaming DataFrame
+val customersDF = spark.table("customers")
+inputStreamDF.join(customersDF, "customer_id")
+.groupBy($"customer_name", hour($"time"))
+.count()
+                </code></pre>
+
+            </section>
+
+            <section>
+
+                <h2>Unbounded table</h2>
+
+                <img style="background: white" class="logo" src="img/unbounded-table.png"/>
+
+            </section>
+
+            <section>
+
+                <h2>Incrementalization</h2>
+
+                <p>Converts the batch-like query to a streaming execution plan</p>
+
+                <img style="background: white" class="logo" src="img/incrementalisation.png"/>
+
+            </section>
+
+            <section>
+
+                <h2 style="margin-bottom: 1em">Ouput modes</h2>
+
+                <p style="margin-bottom: 1.5em">There is 3 ways to write the results of a stream processing</p>
+
+                <ul>
+                    <li><b>Append</b> : write only the new rows to the result table</li>
+                    <li><b>Complete</b> : write entire result table each time</li>
+                    <li><b>Update</b> : write only updated rows in the result table</li>
+                </ul>
+
+            </section>
+
+            <section>
+
+                <h2>Fault tolerance</h2>
+
+                <p>Spark impose two requirements on datasources to guarantee fault tolerance</p>
+
+                <ul>
+                    <li class="fragment"><b class="highlight-orange">Input sources</b> must be <b class="highlight-orange">replayable</b>, so that recent data can be re-read if the job crashes (at least for a few minutes</li>
+                    <li class="fragment"><b class="highlight-orange">Output sinks</b> must support <b class="highlight-orange">transactional updates</b>, so that the system can make a set of records appear atomically</li>
+                </ul>
+
+            </section>
+
+        </section>
+
+        <section>
+
+            <h2>Future</h2>
+
+            <ul>
+                <li>More sources/sinks for Structured Streaming</li>
+                <li>Coverage of all 2003 queries</li>
+                <li>Improve Datasets APIs performances</li>
+                <li>Focus on Spark.ML</li>
+                <li>Add missing features to Python and R</li>
+            </ul>
+
+        </section>
+
+        <section>
+
+            <h2>Demo</h2>
+
+        </section>
+
+        <section>
+
+            <h2>Any Question ?</h2>
 
         </section>
 
