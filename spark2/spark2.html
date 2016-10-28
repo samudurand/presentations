@@ -443,6 +443,24 @@ for (ss_item_sk in store_sales) {
 
             </section>
 
+            <section>
+
+                <h2 style="margin-bottom: 1em">Performances</h2>
+
+                <table>
+                    <thead>
+                        <tr><td>Primitive</td><td>Spark 1.6</td><td>Spark 2.0</td></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>filter</td><td>15 ns</td><td>1.1 ns</td></tr>
+                        <tr><td>sum</td><td>14 ns</td><td>0.9 ns</td></tr>
+                        <tr><td>hash join</td><td>115 ns</td><td>4.0 ns</td></tr>
+                        <tr><td>sort</td><td>620 ns</td><td>5.3 ns</td></tr>
+                    </tbody>
+                </table>
+
+            </section>
+
         </section>
 
         <section>
