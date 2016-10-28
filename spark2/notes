@@ -11,7 +11,6 @@ TPC-DS queries
  => you can do about every operations you might want to perform on an SQL database
 
 
-
 Dataset APIs :
 
 All 3 are compatible and can be used one after the other on the same set of data
@@ -19,6 +18,17 @@ All 3 are compatible and can be used one after the other on the same set of data
 -
 
 Analysis errors caught before distributed batch job starts
+
+-
+
+Catalyst : in the demo show execution plan
+
+-
+
+Optimizations :
+Full power of relational engine
+In contrast, getting the same performance using RDDs would require users to manually consider how to express the computation in a way that parallelizes optimally.
+Since Spark understands the structure of data in Datasets, it can create a more optimal layout in memory when caching Datasets.
 
 SparkSession :
 
@@ -33,3 +43,11 @@ Before : sqlContext/
 In spark 2 :
 
     Not all problems solved : you still need Hive dependencies to use features such as window functions
+
+Tungsten :
+
+    No virtual function dispatches: this reduces multiple CPU calls
+    which can have a profound impact on performance when dispatching billions of times.
+
+    Intermediate data in memory vs CPU registers: Tungsten Phase 2 places intermediate data into CPU registers.
+    This is an order of magnitudes reduction in the number of cycles to obtain data from the CPU registers instead of from memory

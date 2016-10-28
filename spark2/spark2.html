@@ -188,9 +188,9 @@ val total = lines.map(s => s.length)
                     <li class="fragment"><b class="highlight-orange">Structured data</b>, similar to tables (json, sql...)</li>
                     <li class="fragment">Rich semantics, high-level abstractions</li>
                     <li class="fragment">3 APIs available : SQL, Dataframe, Dataset</li>
-                    <li class="fragment"><b class="highlight-orange">Type safety</b></li>
+                    <li class="fragment"><b class="highlight-orange">Type safe : operate on domain objects with lambda functions</b></li>
                     <li class="fragment">Syntax and analysis errors caught at <b class="highlight-orange">compile time</b></li>
-                    <li class="fragment">Structure <b class="highlight-orange">limits</b> what can be done =>
+                    <li class="fragment">Structure <b class="highlight-orange">limits</b> what can be done :
                         <br/><b class="highlight-orange">Storage and performance optimizations</b></li>
                 </ul>
 
@@ -198,11 +198,37 @@ val total = lines.map(s => s.length)
 
             <section>
 
+                <h2>Catalyst : Query planner</h2>
+
+                <p>Decides the best way to perform a query by trying several possibilities</p>
+
+                <img src="img/catalyst.png"/>
+
+            </section>
+
+            <section>
+
                 <h2>Optimizations</h2>
 
+                <p>Better <b class="highlight-orange">performances</b> with relational execution engine</p>
                 <img src="img/memory-usage.png"/>
 
+                <p>Spark knows structure of data : it can optimize <b class="highlight-orange">storage</b></p>
                 <img src="img/performance.png"/>
+
+            </section>
+
+            <section>
+
+                <h2>Optimizations</h2>
+
+                <p>Serialized using <b class="highlight-orange">Encoders</b> into Tungsten binary format</p>
+
+                <p>Far better performances with less space (up to 2x less)</p>
+
+                <img src="img/encoder-performances.png"/>
+
+                <p>Operate Directly On Serialized Data when possible</p>
 
             </section>
 
@@ -298,7 +324,7 @@ val hContext = new org.apache.spark.sql.hive.HiveContext(sc)
 
             <section>
 
-                <h2 style="margin-bottom: 1em">In Spark 2</h2>
+                <h2>In Spark 2</h2>
                 <pre><code data-trim  class="scala">
 
 val spark = SparkSession.builder.master("local[2]")
@@ -310,18 +336,114 @@ val personsDF = spark.read.json("persons.json")
 val personsDS = personsDF.as[Person]
                 </code></pre>
 
-                <p style="margin-top: 1em; margin-bottom: 1em">The SparkContext is also available</p>
+                <div class="fragment">
+                    <p style="margin-top: 1em; margin-bottom: 1em">The SparkContext is also available</p>
 
-                <pre><code data-trim  class="scala">
+                    <pre><code data-trim  class="scala">
 val sc = spark.sparkContext
-                </code></pre>
+                    </code></pre>
 
-                <p>But... still dependent on Hive</p>
+                 </div>
+
+                <p class="fragment">But... still dependent on Hive</p>
             </section>
 
         </section>
 
-        
+        <section>
+
+            <section>
+
+                <h2>Tungsten 2nd generation</h2>
+
+            </section>
+
+            <section>
+
+                <h2>What is Tungsten ?</h2>
+
+                <p>Project aiming to improve the efficiency of memory and CPU for Spark applications.</p>
+
+                <ul class="fragment">
+                    <li style="margin-bottom: 2%;">Memory : eliminate the <b class="highlight-orange">overhead</b> of JVM object model</li>
+                    <li style="margin-bottom: 2%;">Find ways around the limitations of <b class="highlight-orange">garbage collection</b></li>
+                    <li style="margin-bottom: 2%;"><b class="highlight-orange">Cache-aware</b> computation: exploit memory hierarchy</li>
+                    <li style="margin-bottom: 2%;">Improve <b class="highlight-orange">bytecode generation</b> to exploit modern compilers and CPUs</li>
+                </ul>
+
+            </section>
+
+            <section>
+
+                <h2>Tungsten 2nd Generation</h2>
+
+                <p>Introduce a new mechanism : <i>whole-stage code generation</i></p>
+
+                <p class="fragment">Emits <b class="highlight-orange">optimized bytecode</b> at runtime that collapses
+                    the entire query into a <b class="highlight-orange">single function</b></p>
+
+                <ul>
+                    <li class="fragment">Eliminates virtual function calls</li>
+                    <li class="fragment">Uses CPU registers for intermediate data</li>
+                </ul>
+
+            </section>
+
+            <section>
+
+                <h2 style="margin-bottom: 1em">Volcano Iterator Model</h2>
+
+                <img class="fragment logo" data-fragment-index="1" style="margin-left:1em; float: right;" src="img/volcano-iterator-model.png"/>
+
+                <p style="margin-bottom: 2em">A query consists of multiple operators, and each operator presents an interface, next()</p>
+
+                <p class="fragment" style="margin-bottom: 2em" data-fragment-index="1"><i>select count(*) from store_sales<br/> where ss_item_sk = 1000</i></p>
+
+                <ul class="fragment" data-fragment-index="2" style="width: 65%">
+                    <li>Process any combination of operations</li>
+                    <li>No concerns on the type of data</li>
+                </ul>
+
+            </section>
+
+            <section>
+
+                <h2 style="margin-bottom: 1em">Compared with hand-written code ?</h2>
+
+                <pre style="box-shadow: none"><code data-trim  class="java">
+var count = 0
+for (ss_item_sk in store_sales) {
+  if (ss_item_sk == 1000) {
+    count += 1
+  }
+}
+                </code></pre>
+
+                <img style="margin-top: 1em" class="fragment" src="img/volcano-vs-hand-written-code.png"/>
+
+            </section>
+
+            <section>
+
+                <h2>Why such a difference ?</h2>
+
+                <ul>
+                    <li>No virtual function calls</li>
+                    <li>No need to save data in memory</li>
+                    <li>CPUs are incredibly efficient when handling for loops</li>
+                </ul>
+
+            </section>
+
+            <section>
+
+                <h2>Whole-stage code generation</h2>
+
+                <img style="background: white; padding: 15px" class="logo" src="img/whole-stage-code-generation-model.png"/>
+
+            </section>
+
+        </section>
 
         <section>
 
