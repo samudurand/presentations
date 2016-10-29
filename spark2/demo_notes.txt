@@ -1,0 +1,17 @@
+en.b
+
+wikibooks: ".b"
+wiktionary: ".d"
+wikimedia: ".m"
+wikipedia mobile: ".mw"
+wikinews: ".n"
+wikiquote: ".q"
+wikisource: ".s"
+wikiversity: ".v"
+mediawiki: ".w"
+
+
+Popular pages
+
+http://www.skysports.com/golf/news/14897/10518892/jimmy-walker-snatches-one-shot-victory-over-jason-day-at-pga-championship
+
