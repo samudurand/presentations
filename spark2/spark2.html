@@ -50,11 +50,11 @@
         </section>
 
         <section>
-            <h3>Today we will talk about...</h3>
+            <h3 style="margin-bottom: 1em">Today we will talk about...</h3>
             <ul>
                 <li>What is Spark ?</li>
                 <li>What's new in Spark 2.0</li>
-                <li>The most interesting features</li>
+                <li>Most interesting features</li>
                 <li>Future</li>
                 <li>Demo</li>
             </ul>
@@ -68,20 +68,19 @@
                 <p>Maintained since <b>2013</b> by the Apache Foundation</p>
                 <br/>
                 <p>Version <b class="highlight-orange">2.0</b> released in June <b>2016</b></li></p>
-                <br/>
                 <p>One of the most active Apache project</p>
             </section>
 
             <section>
                 <h2 style="margin-bottom: 1em">What is Spark ?</h2>
-                <p>Advertised as <i>"A fast and general engine for large-scale data processing"</i></p>
-                <p>A <span class="highlight-orange">data processing</span> platform,
+                <p style="margin-bottom: 1em">Advertised as <i>"A fast and general engine for large-scale data processing"</i></p>
+                <p style="margin-bottom: 1em">A <span class="highlight-orange">data processing</span> platform,
                     running on a <span class="highlight-orange">cluster</span></p>
                 <p>Designed to handle very large amount of archived or live data very <span class="highlight-orange">quickly</span> and <span class="highlight-orange">efficiently</span>.</p>
             </section>
 
             <section>
-                <h2>What is Spark ?</h2>
+                <h2 style="margin-bottom: 1em">What is Spark ?</h2>
                 <ul>
                     <li>Designed for <span class="highlight-orange">analytical</span> and transforming operations</li>
                     <li>Little amount of code required to use it</li>
@@ -94,10 +93,10 @@
             <section>
                 <h2 style="margin-bottom: 1em">Features</h2>
                 <ul>
-                    <li>Data analysis</li>
-                    <li>Based RDDs or SQL like queries</li>
-                    <li>Streaming</li>
-                    <li>Machine Learning</li>
+                    <li style="margin-bottom: 1em">Data analysis</li>
+                    <li style="margin-bottom: 1em">Scala like manipulation of RDDs <br/>or SQL like queries</li>
+                    <li style="margin-bottom: 1em">Live data streaming</li>
+                    <li style="margin-bottom: 1em">Machine Learning</li>
                     <li>APIs for many datasources <br/>(HDFS, Cassandra, Kafka...)</li>
                 </ul>
             </section>
@@ -183,6 +182,19 @@ val total = lines.map(s => s.length)
                     <li class="fragment">Syntax errors caught at compile time</li>
                     <li class="fragment">Limited optimizations</li>
                     <li class="fragment">More control over operations</li>
+                </ul>
+
+            </section>
+
+            <section>
+
+                <h2 style="margin-bottom: 1em">Dataframes</h2>
+
+                <ul>
+                    <li class="fragment">A distributed collection of data organized into named columns</li>
+                    <li class="fragment">Equivalent to a <b class="highlight-orange">table</b> in a relational database</li>
+                    <li class="fragment">Optimization and code generation with Spark SQL <b class="highlight-orange">Catalyst</b></li>
+                    <li class="fragment">In Spark 2, only a subtype of Datasets</li>
                 </ul>
 
             </section>
@@ -612,7 +624,7 @@ inputStreamDF.join(customersDF, "customer_id")
 
             <ul>
                 <li>More sources/sinks for Structured Streaming</li>
-                <li>Coverage of all 2003 queries</li>
+                <li>Coverage of all SQL 2003 queries</li>
                 <li>Improve Datasets APIs performances</li>
                 <li>Focus on Spark.ML</li>
                 <li>Add missing features to Python and R</li>
@@ -623,6 +635,8 @@ inputStreamDF.join(customersDF, "customer_id")
         <section>
 
             <h2>Demo</h2>
+
+            <a target="_blank" href="https://ssw2016.cloud.databricks.com/?o=4480125715694487#notebook/2720120816673847">Spark 2 Notebook</a>
 
         </section>
 
