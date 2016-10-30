@@ -82,7 +82,7 @@
             <section>
                 <h2 style="margin-bottom: 1em">What is Spark ?</h2>
                 <ul>
-                    <li>Designed for <span class="highlight-orange">analytical</span> and transforming operations</li>
+                    <li>Designed for <span class="highlight-orange">analytical</span> and transformation operations</li>
                     <li>Little amount of code required to use it</li>
                     <li>Available in Scala, Java, Python and R</li>
                     <li>Handle data <span class="highlight-orange">in memory</span> for speed</li>
@@ -93,8 +93,8 @@
             <section>
                 <h2 style="margin-bottom: 1em">Features</h2>
                 <ul>
-                    <li style="margin-bottom: 1em">Data analysis</li>
-                    <li style="margin-bottom: 1em">Scala like manipulation of RDDs <br/>or SQL like queries</li>
+                    <li style="margin-bottom: 1em">Data analysis of large amount of data</li>
+                    <li style="margin-bottom: 1em">Manipulation of RDDs by Scala like code <br/>or SQL queries</li>
                     <li style="margin-bottom: 1em">Live data streaming</li>
                     <li style="margin-bottom: 1em">Machine Learning</li>
                     <li>APIs for many datasources <br/>(HDFS, Cassandra, Kafka...)</li>
@@ -118,7 +118,7 @@ rdd.flatMap(line => line.split(" "))
                 </code></pre>
                 <pre><code data-trim  class="scala">
 val data = Array("Spark has potential",
-                 "Flink is not bad either",
+                 "Storm is not bad either",
                  "Scala is the best for Spark !")
 val rdd = data.parallelize(data)
 val strWithSpark = rdd.filter(line => line.contains("Spark"))
@@ -144,12 +144,12 @@ strWithSpark.forEach(println)
             <h2>Spark 2 : What's new ?</h2>
             <ul>
                 <li class="fragment">Focus on <i>Datasets</i> instead of <i>RDDs</i></li>
-                <li class="fragment">Unify <i>Datasets</i> and <i>Dataframes</i></li>
+                <li class="fragment">Structured Streaming</li>
                 <li class="fragment"><b class="highlight-orange">SparkSession</b> : single entry point to data APIs</li>
                 <li class="fragment"><b class="highlight-orange">SparkSQL</b> : all 99 TPC-DS queries</li>
                 <li class="fragment">Performance improvements : <b class="highlight-orange">Tungsten</b></li>
                 <li class="fragment">Spark.ML replaces MLlib</li>
-                <li class="fragment">Window functions</li>
+                <li class="fragment">Event time window functions on streaming</li>
                 <li class="fragment">Many more : CSV support, more features for R users...</li>
             </ul>
         </section>
@@ -193,6 +193,7 @@ val total = lines.map(s => s.length)
                 <ul>
                     <li class="fragment">A distributed collection of data organized into named columns</li>
                     <li class="fragment">Equivalent to a <b class="highlight-orange">table</b> in a relational database</li>
+                    <li class="fragment">Higher abstraction on top of RDDs, less control by automation</li>
                     <li class="fragment">Optimization and code generation with Spark SQL <b class="highlight-orange">Catalyst</b></li>
                     <li class="fragment">In Spark 2, only a subtype of Datasets</li>
                 </ul>
@@ -205,9 +206,9 @@ val total = lines.map(s => s.length)
 
                 <ul>
                     <li class="fragment">Immutable distributed collection of Objects</li>
-                    <li class="fragment"><b class="highlight-orange">Structured data</b>, similar to <b class="highlight-orange">SQL tables</b></li>
+                    <li class="fragment">Abstraction on top of Dataframe : <b class="highlight-orange">structured data</b></li>
                     <li class="fragment">3 APIs available : SQL, Dataframe, Dataset</li>
-                    <li class="fragment"><b class="highlight-orange">Type safe : operate on domain objects with lambda functions</b></li>
+                    <li class="fragment"><b class="highlight-orange">Type safe : operate on domain objects with DSL or lambda functions</b></li>
                     <li class="fragment">Syntax and analysis errors caught at <b class="highlight-orange">compile time</b></li>
                     <li class="fragment">Structure <b class="highlight-orange">limits</b> what can be done :
                         <br/><b class="highlight-orange">Storage and performance optimizations</b></li>
@@ -519,10 +520,10 @@ for (ss_item_sk in store_sales) {
 
                 <ul>
                     <li class="fragment">Must be equivalent to a <b class="highlight-orange">batch job</b> at regular interval</li>
+                    <li class="fragment">API must be identical in usage to Datasets APIs</li>
                     <li class="fragment">Guarantee the events processing and delivery <b class="highlight-orange">order</b></li>
                     <li class="fragment"><b class="highlight-orange">Fault tolerance</b> is handled entirely by API</li>
                     <li class="fragment">Capable to filter out or handle <b class="highlight-orange">out-of-order data</b></li>
-                    <li class="fragment">API must be identical in usage to Datasets APIs</li>
                     <li class="fragment">Allow to join a stream against a static DataFrame</li>
                 </ul>
 
@@ -610,7 +611,7 @@ inputStreamDF.join(customersDF, "customer_id")
                 <p>Spark impose two requirements on datasources to guarantee fault tolerance</p>
 
                 <ul>
-                    <li class="fragment"><b class="highlight-orange">Input sources</b> must be <b class="highlight-orange">replayable</b>, so that recent data can be re-read if the job crashes (at least for a few minutes</li>
+                    <li class="fragment"><b class="highlight-orange">Input sources</b> must be <b class="highlight-orange">replayable</b>, so that recent data can be re-read if the job crashes</li>
                     <li class="fragment"><b class="highlight-orange">Output sinks</b> must support <b class="highlight-orange">transactional updates</b>, so that the system can make a set of records appear atomically</li>
                 </ul>
 

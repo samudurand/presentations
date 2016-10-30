@@ -3,6 +3,10 @@ Intro :
 Is there anyone who never heard of Apache Spark ?
 Who among you used it even once and knows the concept of RDDs (Resilient Distributed Datasets) ?
 
+What is Spark ?
+
+Used in 2014 to win a competition for sorting a Petabyte of data in 4h
+
 Spark 2 features :
 
 TPC-DS queries
@@ -17,7 +21,7 @@ All 3 are compatible and can be used one after the other on the same set of data
 
 -
 
-Analysis errors caught before distributed batch job starts
+Analysis errors caught before distributed batch job starts, probably through Catalyst attempts
 
 -
 
