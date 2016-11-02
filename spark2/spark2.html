@@ -536,15 +536,16 @@ for (ss_item_sk in store_sales) {
 
             <section>
 
-                <h2>Objectives of Streaming in Spark 2</h2>
+                <h2 style="margin-bottom: 1em">Structured Streaming in Spark 2</h2>
 
                 <ul>
-                    <li class="fragment">Must be equivalent to a <b class="highlight-orange">batch job</b> at regular interval</li>
-                    <li class="fragment">API must be identical in usage to Datasets APIs</li>
+                    <li class="fragment">Equivalent to a <b class="highlight-orange">batch job</b> at regular interval</li>
+                    <li class="fragment">API identical in usage to Datasets APIs</li>
                     <li class="fragment">Guarantee the events processing and delivery <b class="highlight-orange">order</b></li>
                     <li class="fragment"><b class="highlight-orange">Fault tolerance</b> is handled entirely by API</li>
                     <li class="fragment">Capable to filter out or handle <b class="highlight-orange">out-of-order data</b></li>
                     <li class="fragment">Allow to join a stream against a static DataFrame</li>
+                    <li class="fragment">Change queries at runtime</li>
                 </ul>
 
             </section>
@@ -582,8 +583,8 @@ inputDF.groupBy($"action", window($"time", "1 hour")).count()
                 <h2>Joining Streams with static data</h2>
 
                 <pre><code data-trim class="scala">
-// Bring in data about each customer from a static "customers" table,
-// then join it with a streaming DataFrame
+// Bring in data about each customers from a static table,
+// then join it with a streaming Dataframe
 val customersDF = spark.table("customers")
 inputStreamDF.join(customersDF, "customer_id")
 .groupBy($"customer_name", hour($"time"))
