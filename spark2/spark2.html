@@ -170,16 +170,15 @@ strWithSpark.forEach(println)
 
                 <ul>
                     <li class="fragment">Immutable distributed collection of Objects</li>
+                    <li class="fragment">Unstructured data</li>
                     <div class="fragment">
-                        <li>Unstructured data</li>
+                        <li>Functional programming</li>
                         <pre><code data-trim  class="scala">
 val lines = sc.textFile("data.txt")
 val total = lines.map(s => s.length)
                  .reduce((a, b) => a + b)
                         </code></pre>
-                    </div>
-                    <li class="fragment">Functional programming</li>
-                    <li class="fragment">Syntax errors caught at compile time</li>
+                    </div><li class="fragment">Syntax errors caught at compile time</li>
                     <li class="fragment">Limited optimizations</li>
                     <li class="fragment">More control over operations</li>
                 </ul>
