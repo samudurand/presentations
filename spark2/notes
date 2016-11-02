@@ -14,6 +14,9 @@ TPC-DS queries
  includes a very large percentage of the SQL 2003 standard
  => you can do about every operations you might want to perform on an SQL database
 
+partition size from 50 to 200MB , standard setting
+1 partition by core
+
 
 Dataset APIs :
 
