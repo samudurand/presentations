@@ -53,6 +53,8 @@ In spark 2 :
 
 Tungsten :
 
+    Object "abcd" = 4 bytes value + 44 bytes of Java Object description = 48 bytes !!
+
     No virtual function dispatches: this reduces multiple CPU calls
     which can have a profound impact on performance when dispatching billions of times.
 
