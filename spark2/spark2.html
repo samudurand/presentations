@@ -44,7 +44,7 @@
         <section>
             <h1 style="text-transform: none">Spark 2.0</h1>
             <img class="logo" src="img/spark-logo.png"/>
-            <p>
+            <p style="margin-top: 1em">
                 <small>Presentation by <a href="https://twitter.com/samudurand">Samuel Durand</a></small>
             </p>
         </section>
@@ -143,7 +143,7 @@ strWithSpark.forEach(println)
         <section>
             <h2>Spark 2 : What's new ?</h2>
             <ul>
-                <li class="fragment">Focus on <i>Datasets</i> instead of <i>RDDs</i></li>
+                <li class="fragment">Clear focus on <i>Datasets/Dataframes</i> instead of <i>RDDs</i></li>
                 <li class="fragment">Structured Streaming</li>
                 <li class="fragment"><b class="highlight-orange">SparkSession</b> : single entry point to data APIs</li>
                 <li class="fragment"><b class="highlight-orange">SparkSQL</b> : all 99 TPC-DS queries</li>
@@ -160,7 +160,7 @@ strWithSpark.forEach(println)
 
                 <h2>RDDs VS Datasets</h2>
 
-                <p>Why choose to work with Datasets ?</p>
+                <p>Better performances for less efforts</p>
 
             </section>
 
@@ -193,8 +193,10 @@ val total = lines.map(s => s.length)
                 <ul>
                     <li class="fragment">A distributed collection of data organized into named columns</li>
                     <li class="fragment">Equivalent to a <b class="highlight-orange">table</b> in a relational database</li>
-                    <li class="fragment">Higher abstraction on top of RDDs, less control by automation</li>
-                    <li class="fragment">Optimization and code generation with Spark SQL <b class="highlight-orange">Catalyst</b></li>
+                    <li class="fragment">Handles <b class="highlight-orange">structured data</b>, can infer the schema</li>
+                    <li class="fragment">Higher abstraction on top of RDDs, <b class="highlight-orange">less control</b></li>
+                    <li class="fragment">Designed to simplify the tasks of users</li>
+                    <li class="fragment">Optimization and code generation : Spark SQL <b class="highlight-orange">Catalyst</b></li>
                     <li class="fragment">In Spark 2, only a subtype of Datasets</li>
                 </ul>
 
@@ -221,21 +223,22 @@ val total = lines.map(s => s.length)
                 <h2>Structured APIs</h2>
 
                 <p>SQL</p>
-                    <pre><code data-trim  class="scala">
+                <pre><code data-trim  class="scala">
 val peopleDF = spark.read.json("people.json")
 peopleDF.createOrReplaceTempView("people")
 spark.sql("SELECT name FROM people").show()
-                    </code></pre>
+                </code></pre>
                 <p>Dataframes = Dataset[Row]</p>
-                    <pre><code data-trim  class="scala">
+                <pre><code data-trim  class="scala">
 val peopleDF = spark.read.json("people.json")
-peopleDF.select($"name", $"age" + 1).show()
-                    </code></pre>
+peopleDF.select($"name", ($"age" < 25).as("young"))
+        .orderBy($"young".desc, $"name").show()
+                </code></pre>
                 <p>Datasets</p>
                 <pre><code data-trim  class="scala">
 val personDS = spark.read.json("people.json").as[Person]
-peopleDs.foreach(p => println(s"| ${p.name} | ${p.age + 1} |"))
-                    </code></pre>
+personDs.foreach(p => println(s"| ${p.name} | ${p.age + 1} |"))
+                </code></pre>
             </section>
             
             <section>
