@@ -120,7 +120,7 @@ rdd.flatMap(line => line.split(" "))
 val data = Array("Spark has potential",
                  "Storm is not bad either",
                  "Scala is the best for Spark !")
-val rdd = data.parallelize(data)
+val rdd = sparkContext.parallelize(data)
 val strWithSpark = rdd.filter(line => line.contains("Spark"))
 
 // Cache the RDD in memory for later use
