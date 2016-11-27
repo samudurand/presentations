@@ -322,10 +322,6 @@ org.....AnalysisException:
 
                 <h2>Optimizations</h2>
 
-                <p>Spark works only with a limited number of types<br/>
-                   => can use its own compact encoding
-                </p>
-
                 <img class="logo" src="img/tungsten-format.png">
 
                 <p>Encoders translate between domain objects and Spark's internal format</p>
@@ -647,6 +643,7 @@ inputStreamDF.join(customersDF, "customer_id")
                     <li>Sorting operations limited</li>
                     <li>Limited outer joins between streamed and static data</li>
                     <li>No support for joining streams</li>
+                    <li>Very few Sources/Sinks available (files, TCP port, Kafka)</li>
                 </ul>
 
             </section>
