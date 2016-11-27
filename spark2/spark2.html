@@ -44,8 +44,8 @@
         <section>
             <h1 style="text-transform: none">Spark 2.0</h1>
             <img class="logo" src="img/spark-logo.png"/>
-            <p>
-                <small>Presentation by <a href="https://twitter.com/samudurand">Samuel Durand</a></small>
+            <p style="margin-top: 1em">
+                <small>Presentation by <a href="https://twitter.com/samudurand">@samudurand</a></small>
             </p>
         </section>
 
@@ -143,7 +143,7 @@ strWithSpark.forEach(println)
         <section>
             <h2>Spark 2 : What's new ?</h2>
             <ul>
-                <li class="fragment">Focus on <i>Datasets</i> instead of <i>RDDs</i></li>
+                <li class="fragment">Clear focus on <i>Datasets/Dataframes</i> instead of <i>RDDs</i></li>
                 <li class="fragment">Structured Streaming</li>
                 <li class="fragment"><b class="highlight-orange">SparkSession</b> : single entry point to data APIs</li>
                 <li class="fragment"><b class="highlight-orange">SparkSQL</b> : all 99 TPC-DS queries</li>
@@ -160,7 +160,7 @@ strWithSpark.forEach(println)
 
                 <h2>RDDs VS Datasets</h2>
 
-                <p>Why choose to work with Datasets ?</p>
+                <p>Better performances for less efforts</p>
 
             </section>
 
@@ -170,16 +170,15 @@ strWithSpark.forEach(println)
 
                 <ul>
                     <li class="fragment">Immutable distributed collection of Objects</li>
+                    <li class="fragment">Unstructured data</li>
                     <div class="fragment">
-                        <li>Unstructured data</li>
+                        <li>Functional programming</li>
                         <pre><code data-trim  class="scala">
 val lines = sc.textFile("data.txt")
 val total = lines.map(s => s.length)
                  .reduce((a, b) => a + b)
                         </code></pre>
-                    </div>
-                    <li class="fragment">Functional programming</li>
-                    <li class="fragment">Syntax errors caught at compile time</li>
+                    </div><li class="fragment">Syntax errors caught at compile time</li>
                     <li class="fragment">Limited optimizations</li>
                     <li class="fragment">More control over operations</li>
                 </ul>
@@ -193,8 +192,10 @@ val total = lines.map(s => s.length)
                 <ul>
                     <li class="fragment">A distributed collection of data organized into named columns</li>
                     <li class="fragment">Equivalent to a <b class="highlight-orange">table</b> in a relational database</li>
-                    <li class="fragment">Higher abstraction on top of RDDs, less control by automation</li>
-                    <li class="fragment">Optimization and code generation with Spark SQL <b class="highlight-orange">Catalyst</b></li>
+                    <li class="fragment">Handles <b class="highlight-orange">structured data</b>, can infer the schema</li>
+                    <li class="fragment">Higher abstraction on top of RDDs, <b class="highlight-orange">less control</b></li>
+                    <li class="fragment">Designed to simplify the tasks of users</li>
+                    <li class="fragment">Optimization and code generation : Spark SQL <b class="highlight-orange">Catalyst</b></li>
                     <li class="fragment">In Spark 2, only a subtype of Datasets</li>
                 </ul>
 
@@ -221,21 +222,22 @@ val total = lines.map(s => s.length)
                 <h2>Structured APIs</h2>
 
                 <p>SQL</p>
-                    <pre><code data-trim  class="scala">
+                <pre><code data-trim  class="scala">
 val peopleDF = spark.read.json("people.json")
 peopleDF.createOrReplaceTempView("people")
 spark.sql("SELECT name FROM people").show()
-                    </code></pre>
+                </code></pre>
                 <p>Dataframes = Dataset[Row]</p>
-                    <pre><code data-trim  class="scala">
+                <pre><code data-trim  class="scala">
 val peopleDF = spark.read.json("people.json")
-peopleDF.select($"name", $"age" + 1).show()
-                    </code></pre>
+peopleDF.select($"name", ($"age" < 25).as("young"))
+        .orderBy($"young".desc, $"name").show()
+                </code></pre>
                 <p>Datasets</p>
                 <pre><code data-trim  class="scala">
 val personDS = spark.read.json("people.json").as[Person]
-peopleDs.foreach(p => println(s"| ${p.name} | ${p.age + 1} |"))
-                    </code></pre>
+personDs.foreach(p => println(s"| ${p.name} | ${p.age + 1} |"))
+                </code></pre>
             </section>
             
             <section>
@@ -275,6 +277,14 @@ org.....AnalysisException:
 
             <section>
 
+                <h2>Catalyst : Query planner</h2>
+
+                <img src="img/catalyst-optimization.png"/>
+
+            </section>
+
+            <section>
+
                 <h2>Optimizations</h2>
 
                 <p>Better <b class="highlight-orange">performances</b> with relational execution engine</p>
@@ -282,6 +292,15 @@ org.....AnalysisException:
 
                 <p>Spark knows structure of data : it can optimize <b class="highlight-orange">storage</b></p>
                 <img src="img/memory-usage.png"/>
+
+            </section>
+
+            <section>
+
+                <h2>Optimizations</h2>
+
+                <p>Same performances for all languages</p>
+                <img src="img/same-perfs.png"/>
 
             </section>
 
@@ -516,15 +535,16 @@ for (ss_item_sk in store_sales) {
 
             <section>
 
-                <h2>Objectives of Streaming in Spark 2</h2>
+                <h2 style="margin-bottom: 1em">Structured Streaming in Spark 2</h2>
 
                 <ul>
-                    <li class="fragment">Must be equivalent to a <b class="highlight-orange">batch job</b> at regular interval</li>
-                    <li class="fragment">API must be identical in usage to Datasets APIs</li>
+                    <li class="fragment">Equivalent to a <b class="highlight-orange">batch job</b> at regular interval</li>
+                    <li class="fragment">API identical in usage to Datasets APIs</li>
                     <li class="fragment">Guarantee the events processing and delivery <b class="highlight-orange">order</b></li>
                     <li class="fragment"><b class="highlight-orange">Fault tolerance</b> is handled entirely by API</li>
                     <li class="fragment">Capable to filter out or handle <b class="highlight-orange">out-of-order data</b></li>
                     <li class="fragment">Allow to join a stream against a static DataFrame</li>
+                    <li class="fragment">Change queries at runtime</li>
                 </ul>
 
             </section>
@@ -562,8 +582,8 @@ inputDF.groupBy($"action", window($"time", "1 hour")).count()
                 <h2>Joining Streams with static data</h2>
 
                 <pre><code data-trim class="scala">
-// Bring in data about each customer from a static "customers" table,
-// then join it with a streaming DataFrame
+// Bring in data about each customers from a static table,
+// then join it with a streaming Dataframe
 val customersDF = spark.table("customers")
 inputStreamDF.join(customersDF, "customer_id")
 .groupBy($"customer_name", hour($"time"))
@@ -651,7 +671,7 @@ inputStreamDF.join(customersDF, "customer_id")
 
             <h2>Demo</h2>
 
-            <a target="_blank" href="https://ssw2016.cloud.databricks.com/?o=4480125715694487#notebook/2720120816673847">Spark 2 Notebook</a>
+            <a target="_blank" href="https://community.cloud.databricks.com/?o=4480125715694487#notebook/2720120816673847">Spark 2 Notebook</a>
 
         </section>
 
