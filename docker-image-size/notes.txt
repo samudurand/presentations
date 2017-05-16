@@ -1,0 +1,1 @@
+What is Docker and why is it so popular : http://www.zdnet.com/article/what-is-docker-and-why-is-it-so-darn-popular/

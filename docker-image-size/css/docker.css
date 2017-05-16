@@ -1,0 +1,24 @@
+.reveal h1 {
+    font-size: 2.2em
+}
+
+.reveal h2 {
+    text-transform: capitalize;
+}
+.reveal h3 {
+    text-transform: none;
+}
+
+.reveal section img.logo {
+    background: none;
+    border: none;
+    box-shadow: none;
+}
+
+.reveal li {
+    margin-bottom: 3%;
+}
+
+.highlight {
+    color: rgb(2,186,247);
+}

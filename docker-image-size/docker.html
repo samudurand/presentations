@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Docker Image Size</title>
+
+    <meta name="description" content="Docker: Size does matter, at least for containers">
+    <meta name="author" content="Samuel Durand">
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="../revealjs/css/reveal.css">
+    <link rel="stylesheet" href="../revealjs/css/theme/black.css" id="theme">
+    <link rel="stylesheet" href="css/docker.css"/>
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="../revealjs/lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? '../revealjs/css/print/pdf.css' : '../revealjs/css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="../revealjs/lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="reveal">
+
+    <div class="slides">
+        <section>
+            <h1 style="text-transform: none">Docker: Size does matter</h1>
+            <h2 style="font-size: 1.4em">...At least for containers</h2>
+            <img class="logo" src="img/docker-image-minimal-trans.png"/>
+            <p style="margin-top: 1em">
+                <small>Presentation by <a href="https://twitter.com/samudurand">@samudurand</a></small>
+            </p>
+        </section>
+
+        <section>
+            <h2 style="margin-bottom: 1em">A quick overview</h2>
+            <div style="display: inline-block; margin-right: 2em">
+                <ul>
+                    <li>Docker and Containers</li>
+                    <li>Real life illustration</li>
+                    <li>Why does it matter ?</li>
+                    <li>How to do it ?</li>
+                    <li>Improving build speed</li>
+                </ul>
+            </div>
+            <div style="display: inline-block">
+                <img class="logo" src="img/docker-read.png"/>
+            </div>
+        </section>
+
+        <section>
+            <h2>What is docker ?</h2>
+            <p>A very popular <b class="highlight">Container</b> platform</p>
+            <img style="width: 49%" class="logo" src="img/vm-diagram.png"/>
+            <img style="width: 49%" class="logo" src="img/docker-diagram.png"/>
+        </section>
+
+        <section>
+            <h2 style="margin-bottom: 1em">Images & Containers</h2>
+
+            <p style="margin-bottom: 1em">An <span class="highlight">image</span> is a <b>lightweight</b> object that includes everything needed to run a piece of software</p>
+            <p>A <span class="highlight">container</span> is a runtime instance of an <span class="highlight">image</span></p>
+        </section>
+
+        <section>
+            <h2>A Container layers</h2>
+            <img src="img/container-layers.jpg">
+        </section>
+
+        <section>
+
+            <h2>Any Question ?</h2>
+
+        </section>
+
+    </div>
+
+</div>
+
+<script src="../revealjs/lib/js/head.min.js"></script>
+<script src="../revealjs/js/reveal.js"></script>
+
+<script>
+
+    // Full list of configuration options available at:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'convex', // none/fade/slide/convex/concave/zoom
+
+        dependencies: [
+            {
+                src: '../revealjs/lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            }
+            },
+            {
+                src: '../revealjs/plugin/markdown/marked.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: '../revealjs/plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: '../revealjs/plugin/highlight/highlight.js', async: true, condition: function () {
+                return !!document.querySelector('pre code');
+            }, callback: function () {
+                hljs.initHighlightingOnLoad();
+            }
+            },
+            {src: '../revealjs/plugin/zoom-js/zoom.js', async: true},
+            {src: '../revealjs/plugin/notes/notes.js', async: true}
+        ]
+    });
+
+</script>
+
+</body>
+</html>
