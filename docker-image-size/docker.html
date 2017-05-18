@@ -76,19 +76,130 @@
         <section>
             <h2 style="margin-bottom: 1em">Images & Containers</h2>
 
-            <p style="margin-bottom: 1em">An <span class="highlight">image</span> is a <b>lightweight</b> object that includes everything needed to run a piece of software</p>
+            <p >An <span class="highlight">image</span> is a <b>lightweight</b> object that includes everything needed to run a piece of software</p>
+            <p style="margin-bottom: 1.5em">=> <b>immutable</b> state</p>
             <p>A <span class="highlight">container</span> is a runtime instance of an <span class="highlight">image</span></p>
         </section>
 
         <section>
-            <h2>A Container layers</h2>
+            <h2 style="margin-bottom: 0.5em">Layers</h2>
             <img src="img/container-layers.jpg">
+            https://www.google.co.uk/search?q=layer+cake&source=lnms&tbm=isch&sa=X&ved=0ahUKEwij4bPvtvbTAhXCB8AKHTJNC3YQ_AUICigB&biw=1440&bih=730#imgrc=OBNVHrpibKy6wM:
+        </section>
+
+        <section>
+            <h2 style="margin-bottom: 0.5em">Dockerfile</h2>
+            <pre><code data-trim class="dockerfile">
+FROM node:boron
+
+# Create app directory
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+# Install app dependencies
+COPY package.json /usr/src/app/
+RUN npm install
+
+# Bundle app source
+COPY . /usr/src/app
+
+EXPOSE 8080
+CMD [ "npm", "start" ]
+            </code></pre>
+        </section>
+
+        <section>
+            <h2>Real life illustration</h2>
+            <img class="logo" style="width: 70%" src="img/docker-whale-sea.jpg"/>
+        </section>
+
+        <section>
+            <section>
+                <h2>Why reduce the Image size ?</h2>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 0.5em">Faster Uploads/Downloads</h2>
+                <ul>
+                    <li class="fragment"><b>Upload</b>
+                        <ul style="margin-top: 3%">
+                            <li>Limited bandwidth</li>
+                            <li>Quicker hotfix deployment</li>
+                        </ul>
+                    </li>
+                    <li class="fragment"><b>Download</b>
+                        <ul style="margin-top: 3%">
+                            <li>Faster CI / CD</li>
+                            <li>Faster recovery, spin up of instances</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h2 style="margin-bottom: 1em">Data Transfer & Security</h2>
+                <div style="display: inline-block;">
+                    <ul style="display: inline-block;">
+                        <li class="fragment" data-fragment-index="1" style="margin-bottom: 1em">Reduce <b class="highlight">costs</b></li>
+                        <li class="fragment" data-fragment-index="2" style="margin-bottom: 1em">Reduce overall <b class="highlight">traffic</b></li>
+                        <li class="fragment" data-fragment-index="3">Less unused tools<br/>
+                            <span style="text-indent: 30px; display: inline-block;">=> less <b class="highlight">weapons</b> available</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="fragment" data-fragment-index="3" style="display: inline-block; width: 20%; vertical-align: top;">
+                    <img class="logo" src="img/docker-secure.png"/>
+                </div>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h2>Useful commands</h2>
+                <div class="fragment">
+                    <p>docker images</p>
+                    <pre style="font-size: 0.4em;"><code data-trim class="dockerfile">
+sam@Sam-Cake-Laptop ~ $ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+openjdk             8-jre               2b1609ecd02f        2 weeks ago         310MB
+mysql               5.7.17              9546ca122d3a        6 weeks ago         407MB
+                    </code></pre>
+                </div>
+                <div class="fragment">
+                    <p>docker history [IMAGE_NAME]:[TAG]</p>
+                    <pre style="font-size: 0.4em;"><code data-trim class="dockerfile">
+sam@Sam-Cake-Laptop ~ $ docker history openjdk:8-jre
+IMAGE            CREATED             CREATED BY                                      SIZE
+2b1609ecd02f     2 weeks ago         /bin/sh -c /var/lib/dpkg/info/ca-certifica...   419kB
+<-missing->      2 weeks ago         /bin/sh -c set -ex;   apt-get update;  apt...   141MB
+<-missing->      3 weeks ago         /bin/sh -c #(nop)  ENV CA_CERTIFICATES_JAV...   0B
+<-missing->      3 weeks ago         /bin/sh -c #(nop)  ENV JAVA_DEBIAN_VERSION...   0B
+<-missing->      3 weeks ago         /bin/sh -c #(nop)  ENV JAVA_VERSION=8u121       0B
+<-missing->      3 weeks ago         /bin/sh -c #(nop)  ENV JAVA_HOME=/usr/lib/...   0B
+<-missing->      3 weeks ago         /bin/sh -c {   echo '#!/bin/sh';   echo 's...   87B
+<-missing->      3 weeks ago         /bin/sh -c #(nop)  ENV LANG=C.UTF-8             0B
+<-missing->      3 weeks ago         /bin/sh -c echo 'deb http://deb.debian.org...   55B
+<-missing->      3 weeks ago         /bin/sh -c apt-get update && apt-get insta...   1.18MB
+<-missing->      3 weeks ago         /bin/sh -c apt-get update && apt-get insta...   44.6MB
+<-missing->      3 weeks ago         /bin/sh -c #(nop)  CMD ["/bin/bash"]            0B
+<-missing->      3 weeks ago         /bin/sh -c #(nop) ADD file:712c48086043553...   123MB
+                    </code></pre>
+                </div>
+            </section>
+
+            <section>
+
+            </section>
         </section>
 
         <section>
 
             <h2>Any Question ?</h2>
 
+        </section>
+
+        <section>
+            <h2>Interesting links</h2>
+            <a href="http://blog.jeduncan.com/docker-image-dissection.html">Dissecting a docker image by Jamie Duncan</a>
         </section>
 
     </div>
