@@ -56,7 +56,7 @@
                 <ul>
                     <li>Docker and Containers</li>
                     <li>Real life illustration</li>
-                    <li>Why does it matter ?</li>
+                    <li>Why does image size matter ?</li>
                     <li>How to do it ?</li>
                     <li>Improving build speed</li>
                 </ul>
@@ -83,8 +83,8 @@
 
         <section>
             <h2 style="margin-bottom: 0.5em">Layers</h2>
-            <img src="img/container-layers.jpg">
-            https://www.google.co.uk/search?q=layer+cake&source=lnms&tbm=isch&sa=X&ved=0ahUKEwij4bPvtvbTAhXCB8AKHTJNC3YQ_AUICigB&biw=1440&bih=730#imgrc=OBNVHrpibKy6wM:
+            <img class="logo" src="img/container-layers.jpg"\>
+            <!--<img class="logo" width="49%" src="img/layer-cake-1.jpg"\>-->
         </section>
 
         <section>
@@ -115,7 +115,8 @@ CMD [ "npm", "start" ]
 
         <section>
             <section>
-                <h2>Why reduce the Image size ?</h2>
+                <h2 style="margin-bottom: 1em">Why reduce the Image size</h2>
+                <img class="logo" style="width: 60%" src="img/question.png">
             </section>
 
             <section>
@@ -154,6 +155,10 @@ CMD [ "npm", "start" ]
 
         <section>
             <section>
+                <h2>How to do it ?</h2>
+                <p>The secret is in the recipe</p>
+            </section>
+            <section>
                 <h2>Useful commands</h2>
                 <div class="fragment">
                     <p>docker images</p>
@@ -187,7 +192,61 @@ IMAGE            CREATED             CREATED BY                                 
             </section>
 
             <section>
+                <h2 style="margin-bottom: 0.5em">Our starting point</h2>
+                <p style="padding-bottom: 0.5em">A very simple Play app</p>
+                <div style="display: inline-block; width: 39%; vertical-align: top;">
+                    <img style="margin-top: 0" class="logo" src="img/basic-scope.png"/>
+                </div>
+                <div style="display: inline-block; width: 60%; vertical-align: top">
+                    <pre style="font-size: 0.38em; width: 100%; margin: 0"><code data-trim class="dockerfile">
+FROM openjdk:8-jre
 
+LABEL description="Simple demo app"
+LABEL category="article-demo"
+LABEL git.repo="https://github.com/firens/docker-reduce-size"
+
+RUN apt-get update
+RUN apt-get install -y vim
+
+EXPOSE 9000
+
+ENV APP_VERSION 0.1
+ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
+
+COPY target ./target
+
+ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdefghijk
+ target/scala-2.11/reduce-size-assembly-${FULL_APP_VERSION}.jar
+            </code></pre>
+                </div>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 0.5em">Our starting point</h2>
+                <pre style="font-size: 0.4em; width: 100%"><code data-trim class="bash" data-noescape>
+sam@Sam-Cake-Laptop reduce-size $ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+reduce-size         latest              4f94b19cd0a4        2 minutes ago       <mark>499MB</mark>
+
+sam@Sam-Cake-Laptop reduce-size $ docker history reduce-size
+IMAGE               CREATED             CREATED BY                                      SIZE
+4f94b19cd0a4        3 minutes ago       /bin/sh -c #(nop)  ENTRYPOINT ["/bin/sh" "...   0B
+29a4ffd6fa2a        3 minutes ago       /bin/sh -c #(nop)  ENV FULL_APP_VERSION=0....   0B
+2d38e0523b6f        3 minutes ago       /bin/sh -c #(nop)  ENV APP_VERSION=0.1          0B
+eb2098b61835        3 minutes ago       /bin/sh -c #(nop)  EXPOSE 5005/tcp              0B
+1b2c0129b248        3 minutes ago       /bin/sh -c #(nop)  EXPOSE 9000/tcp              0B
+55cfe87f1d44        15 minutes ago      /bin/sh -c apt-get install -y vim               29.9MB
+c4c080d067c3        15 minutes ago      /bin/sh -c apt-get update                       11.3MB
+3e4d5ea89439        15 minutes ago      /bin/sh -c #(nop) COPY dir:48aa4cbcc1f9dd3...   147MB
+41429e6e5a6b        15 minutes ago      /bin/sh -c #(nop)  LABEL git.repo=https://...   0B
+58282ed5c22e        15 minutes ago      /bin/sh -c #(nop)  LABEL category=article-...   0B
+2abf60129be9        15 minutes ago      /bin/sh -c #(nop)  LABEL description=Simpl...   0B
+2b1609ecd02f        3 weeks ago         /bin/sh -c /var/lib/dpkg/info/ca-certifica...   419kB
+...
+<-missing->         3 weeks ago         /bin/sh -c apt-get update && apt-get insta...   44.6MB
+<-missing->         3 weeks ago         /bin/sh -c #(nop) ADD file:712c48086043553...   123MB
+                </code></pre>
+                <p>We will attempt to reduce this initial size of <b>499 MB</b></p>
             </section>
         </section>
 
