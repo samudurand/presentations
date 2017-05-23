@@ -15,10 +15,22 @@
     box-shadow: none;
 }
 
+.reveal blockquote {
+    width: 100%
+}
+
 .reveal li {
     margin-bottom: 3%;
 }
 
 .highlight {
     color: rgb(2,186,247);
+}
+
+.top-slide {
+    top: 20px !important;
+}
+
+mark {
+    background-color: honeydew !important;
 }
