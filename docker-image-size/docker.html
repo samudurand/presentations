@@ -582,7 +582,7 @@ target/scala-2.11/reduce-size-assembly-${FULL_APP_VERSION}.jar
                 <pre style="font-size: 0.4em; width: 100%"><code data-trim class="bash" data-noescape>
 sam@Sam-Cake-Laptop reduce-size $ docker images
 REPOSITORY          TAG                 IMAGE ID            CREATED              SIZE
-<-none->            <-none->            29aff50c3e88        About an hour ago   <mark>488MB</mark>
+reduce-size         latest              29aff50c3e88        About an hour ago   <mark>488MB</mark>
 <-none->            <-none->            879525d6d046        20 hours ago        499MB
 <-none->            <-none->            4f94b19cd0a4        44 hours ago        499MB
                 </code></pre>
@@ -601,34 +601,35 @@ a0cb4f8c7b47        About an hour ago   /bin/sh -c #(nop)  LABEL description=Sim
             </section>
 
             <section class="top-slide">
-                <h2 style="margin-bottom: 1em">Step 2: Merging layers</h2>
+                <h2 style="margin-bottom: 0.5em">Step 3: Only the Necessary</h2>
+                <p style="margin-bottom: 1em">Include only the files you really need</p>
                 <div style="display: inline-block; width: 40%; vertical-align: top;">
-                    <ul style="font-size: 0.8em">
-                        <li class="fragment" data-fragment-index="1">A single RUN command</li>
-                        <li class="fragment" data-fragment-index="2">Grouped PORTs</li>
-                        <li class="fragment" data-fragment-index="3">Grouped LABELs</li>
-                        <li class="fragment" data-fragment-index="4">Grouped ENVs ?</li>
-                        <p class="fragment" data-fragment-index="5"><b>Cannot if dependency</b></p>
-                    </ul>
+                    <div class="fragment" data-fragment-index="1">
+                        <p style="float: left">Copy the app files</p>
+                        <ul style="margin-left: 0; font-size: 0.7em">
+                            <li>if possible directly</li>
+                            <li>or use <b>.dockerignore</b></li>
+                        </ul>
+                    </div>
+                    <p class="fragment" data-fragment-index="2" style="float: left">No optional content</p>
                 </div>
                 <div style="display: inline-block; width: 59%; vertical-align: top">
                     <div class="fragment current-visible" data-fragment-index="0" style="position:relative; vertical-align: top;">
                         <pre style="font-size: 0.38em; width: 100%; margin: 0; position:absolute;top:0;left:0;"><code data-trim class="dockerfile" data-noescape>
 FROM openjdk:8-jre
 
-LABEL description="Simple demo app"
-LABEL category="article-demo"
-LABEL git.repo="https://github.com/firens/docker-reduce-size"
+LABEL description="Simple demo app" \
+      category="article-demo" \
+      git.repo="https://github.com/firens/docker-reduce-size"
 
 COPY target ./target
 
-RUN apt-get update
-RUN apt-get install -y vim
-RUN apt-get clean
-RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get update && \
+    apt-get install -y vim && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
 
-EXPOSE 9000
-EXPOSE 5005
+EXPOSE 9000 5005
 
 ENV APP_VERSION 0.1
 ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
@@ -641,126 +642,79 @@ target/scala-2.11/reduce-size-assembly-${FULL_APP_VERSION}.jar
                         <pre style="font-size: 0.38em; width: 100%; margin: 0; position:absolute;top:0;left:0;"><code data-trim class="dockerfile" data-noescape>
 FROM openjdk:8-jre
 
-LABEL description="Simple demo app"
-LABEL category="article-demo"
-LABEL git.repo="https://github.com/firens/docker-reduce-size"
-
-COPY target ./target
-
-<mark>RUN apt-get update && \
-    apt-get install -y vim && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \</mark>
-
-EXPOSE 9000
-EXPOSE 5005
+LABEL description="Simple demo app" \
+      category="article-demo" \
+      git.repo="https://github.com/firens/docker-reduce-size"
 
 ENV APP_VERSION 0.1
 ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
 
-ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdefghijk
-target/scala-2.11/reduce-size-assembly-${FULL_APP_VERSION}.jar
+<mark>COPY target/scala-2.11
+           /reduce-size-assembly-${FULL_APP_VERSION}.jar app.jar</mark>
+
+RUN apt-get update && \
+    apt-get install -y vim && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+EXPOSE 9000 5005
+
+ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdef app.jar
+
                         </code></pre>
                     </div>
                     <div class="fragment current-visible" data-fragment-index="2" style="position:relative; vertical-align: top;">
                         <pre style="font-size: 0.38em; width: 100%; margin: 0; position:absolute;top:0;left:0;"><code data-trim class="dockerfile" data-noescape>
 FROM openjdk:8-jre
 
-LABEL description="Simple demo app"
-LABEL category="article-demo"
-LABEL git.repo="https://github.com/firens/docker-reduce-size"
-
-COPY target ./target
-
-RUN apt-get update && \
-    apt-get install -y vim && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
-
-<mark>EXPOSE 9000 5005</mark>
-
-ENV APP_VERSION 0.1
-ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
-
-ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdefghijk
-target/scala-2.11/reduce-size-assembly-${FULL_APP_VERSION}.jar
-                        </code></pre>
-                    </div>
-                    <div class="fragment current-visible" data-fragment-index="3" style="position:relative; vertical-align: top;">
-                        <pre style="font-size: 0.38em; width: 100%; margin: 0; position:absolute;top:0;left:0;"><code data-trim class="dockerfile" data-noescape>
-FROM openjdk:8-jre
-
-<mark>LABEL description="Simple demo app" \
-      category="article-demo" \
-      git.repo="https://github.com/firens/docker-reduce-size"</mark>
-
-COPY target ./target
-
-RUN apt-get update && \
-    apt-get install -y vim && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
-
-EXPOSE 9000 5005
-
-ENV APP_VERSION 0.1
-ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
-
-ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdefghijk
-target/scala-2.11/reduce-size-assembly-${FULL_APP_VERSION}.jar
-                        </code></pre>
-                    </div>
-                    <div class="fragment current-visible" data-fragment-index="4" style="position:relative; vertical-align: top;">
-                        <pre style="font-size: 0.38em; width: 100%; margin: 0; position:absolute;top:0;left:0;"><code data-trim class="dockerfile" data-noescape>
-FROM openjdk:8-jre
-
 LABEL description="Simple demo app" \
       category="article-demo" \
       git.repo="https://github.com/firens/docker-reduce-size"
 
-COPY target ./target
-
-RUN apt-get update && \
-    apt-get install -y vim && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
-
-EXPOSE 9000 5005
-
-<mark>ENV APP_VERSION=0.1 FULL_APP_VERSION=${APP_VERSION}-SNAPSHOT</mark>
-
-ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdefghijk
-target/scala-2.11/reduce-size-assembly-${FULL_APP_VERSION}.jar
-                        </code></pre>
-                    </div>
-                    <div class="fragment current-visible" data-fragment-index="5" style="position:relative; vertical-align: top;">
-                        <pre style="font-size: 0.38em; width: 100%; margin: 0; position:absolute;top:0;left:0;"><code data-trim class="dockerfile" data-noescape>
-FROM openjdk:8-jre
-
-LABEL description="Simple demo app" \
-      category="article-demo" \
-      git.repo="https://github.com/firens/docker-reduce-size"
-
-COPY target ./target
-
-RUN apt-get update && \
-    apt-get install -y vim && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
-
-EXPOSE 9000 5005
-
 ENV APP_VERSION 0.1
-ENV FULL_APP_VERSION <mark>${APP_VERSION}</mark>-SNAPSHOT
+ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
 
-ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdefghijk
-target/scala-2.11/reduce-size-assembly-${FULL_APP_VERSION}.jar
+COPY target/scala-2.11
+           /reduce-size-assembly-${FULL_APP_VERSION}.jar app.jar
+
+RUN apt-get update && \
+    apt-get install -y <mark>--no-install-recommends</mark> vim && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+EXPOSE 9000 5005
+
+ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdef app.jar
                         </code></pre>
                     </div>
                 </div>
 
             </section>
 
+            <section>
+                <h2 style="margin-bottom: 0.5em">Step 3: Result</h2>
+                <pre style="font-size: 0.4em; width: 100%"><code data-trim class="bash" data-noescape>
+sam@Sam-Cake-Laptop reduce-size $ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED              SIZE
+reduce-size         latest              8a777494d3ad        35 seconds ago      <mark>379MB</mark>
+<-none->            <-none->            29aff50c3e88        4 hours ago         488MB
+<-none->            <-none->            4f94b19cd0a4        46 hours ago        499MB
+<-none->            <-none->            854dc64df997        46 hours ago        499MB
+                </code></pre>
+                <pre style="font-size: 0.4em; width: 100%"><code data-trim class="bash" data-noescape>
+sam@Sam-Cake-Laptop reduce-size $ docker history reduce-size
+IMAGE               CREATED             CREATED BY                                      SIZE
+8a777494d3ad        42 seconds ago      /bin/sh -c #(nop)  ENTRYPOINT ["/bin/sh" "...   0B
+4f99232acbb8        42 seconds ago      /bin/sh -c #(nop)  EXPOSE 5005/tcp 9000/tcp     0B
+38a8f1427041        42 seconds ago      /bin/sh -c apt-get update &&     apt-get i...   29.9MB
+8363cf1632ff        2 hours ago         /bin/sh -c #(nop) COPY file:f69d12f7e30135...   38.3MB
+261e9b57c9e2        2 hours ago         /bin/sh -c #(nop)  ENV FULL_APP_VERSION=0....   0B
+b65d6b169eb7        2 hours ago         /bin/sh -c #(nop)  ENV APP_VERSION=0.1          0B
+a0cb4f8c7b47        4 hours ago         /bin/sh -c #(nop)  LABEL description=Simpl...   0B
+...
+                </code></pre>
+                <p>More than a 100MB saved this time</p>
+            </section>
         </section>
 
         <section>
