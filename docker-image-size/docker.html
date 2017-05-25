@@ -597,7 +597,7 @@ d5905f0e4747        About an hour ago   /bin/sh -c apt-get update &&     apt-get
 a0cb4f8c7b47        About an hour ago   /bin/sh -c #(nop)  LABEL description=Simpl...   0B
 ...
                 </code></pre>
-                <p><span class="highlight">Fewer</span> layers and 11MB <span class="highlight">smaller</span>!</p>
+                <p>Fewer layers and 11MB smaller!</p>
             </section>
 
             <section class="top-slide">
@@ -723,7 +723,7 @@ a0cb4f8c7b47        4 hours ago         /bin/sh -c #(nop)  LABEL description=Sim
                     <li>Debian</li>
                     <li>Ubuntu</li>
                 </ul>
-                <div style="margin-top: 1em" class="fragment">
+                <div style="margin-top: 1em">
                     <p>We need to use something smaller</p>
                     <ul>
                         <li><b class="highlight">Alpine</b></li>
@@ -731,6 +731,151 @@ a0cb4f8c7b47        4 hours ago         /bin/sh -c #(nop)  LABEL description=Sim
                     </ul>
                 </div>
             </section>
+
+            <section>
+                <h2 style="margin-bottom: 1em">Step 4: Base Image</h2>
+                <div style="display: inline-block; vertical-align: top">
+                    <h3 style="text-align: left; font-size: 1em">Alpine</h3>
+                    <ul style="font-size: 0.8em;">
+                        <li>Based on Busybox</li>
+                        <li>130MB installed on Disk</li>
+                        <li><b class="highlight">8MB</b> on a container</li>
+                        <li>No bash, no debug tool</li>
+                        <li>Minimalistic package installer APK</li>
+                    </ul>
+                </div>
+                <div style="display: inline-block; vertical-align: top; margin-left: 0.5em">
+                    <h3 style="text-align: left; font-size: 1em">Scratch container</h3>
+                    <ul style="font-size: 0.8em">
+                        <li>Literally <b class="highlight">empty</b></li>
+                        <li>Programs copied in as binaries</li>
+                        <li>Relies only on the host Kernel</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="top-slide">
+                <h2 style="margin-bottom: 0.5em">Step 4: Base image</h2>
+                <p style="margin-bottom: 1em">We are going to use Alpine</p>
+                <div style="display: inline-block; width: 40%; vertical-align: top;">
+                    <ul style="font-size: 0.8em">
+                        <li class="fragment" data-fragment-index="1">Use Alpine base image</li>
+                        <li class="fragment" data-fragment-index="2">Install VIM via APK</li>
+                    </ul>
+                </div>
+                <div style="display: inline-block; width: 59%; vertical-align: top">
+                    <div class="fragment current-visible" data-fragment-index="0" style="position:relative; vertical-align: top;">
+                        <pre style="font-size: 0.38em; width: 100%; margin: 0; position:absolute;top:0;left:0;"><code data-trim class="dockerfile" data-noescape>
+FROM openjdk:8-jre
+
+LABEL description="Simple demo app" \
+      category="article-demo" \
+      git.repo="https://github.com/firens/docker-reduce-size"
+
+ENV APP_VERSION 0.1
+ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
+
+COPY target/scala-2.11
+           /reduce-size-assembly-${FULL_APP_VERSION}.jar app.jar
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends vim && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+EXPOSE 9000 5005
+
+ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdef app.jar
+                        </code></pre>
+                    </div>
+                    <div class="fragment current-visible" data-fragment-index="1" style="position:relative; vertical-align: top;">
+                        <pre style="font-size: 0.38em; width: 100%; margin: 0; position:absolute;top:0;left:0;"><code data-trim class="dockerfile" data-noescape>
+FROM openjdk:<mark>8-jre-alpine</mark>
+
+LABEL description="Simple demo app" \
+      category="article-demo" \
+      git.repo="https://github.com/firens/docker-reduce-size"
+
+ENV APP_VERSION 0.1
+ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
+
+COPY target/scala-2.11
+           /reduce-size-assembly-${FULL_APP_VERSION}.jar app.jar
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends vim && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+EXPOSE 9000 5005
+
+ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdef app.jar
+                        </code></pre>
+                    </div>
+                    <div class="fragment current-visible" data-fragment-index="2" style="position:relative; vertical-align: top;">
+                        <pre style="font-size: 0.38em; width: 100%; margin: 0; position:absolute;top:0;left:0;"><code data-trim class="dockerfile" data-noescape>
+FROM openjdk:8-jre-alpine
+
+LABEL description="Simple demo app" \
+      category="article-demo" \
+      git.repo="https://github.com/firens/docker-reduce-size"
+
+ENV APP_VERSION 0.1
+ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
+
+COPY target/scala-2.11
+           /reduce-size-assembly-${FULL_APP_VERSION}.jar app.jar
+
+RUN <mark>apk --no-cache add vim</mark>
+
+EXPOSE 9000 5005
+
+ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdef app.jar
+                        </code></pre>
+                    </div>
+                </div>
+
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 0.5em">Step 4: Result</h2>
+                <pre style="font-size: 0.4em; width: 100%"><code data-trim class="bash" data-noescape>
+sam@Sam-Cake-Laptop reduce-size $ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED              SIZE
+reduce-size          latest              0be7c6d395d1        55 seconds ago      <mark>145MB</mark>
+<-none->             <-none->            8a777494d3ad        20 hours ago        379MB
+<-none->             <-none->            29aff50c3e88        24 hours ago        488MB
+<-none->             <-none->            4f94b19cd0a4        2 days ago          499MB
+<-none->             <-none->            854dc64df997        2 days ago          499MB
+                </code></pre>
+                <pre style="font-size: 0.4em; width: 100%"><code data-trim class="bash" data-noescape>
+sam@Sam-Cake-Laptop reduce-size $ docker history reduce-size
+IMAGE               CREATED             CREATED BY                                      SIZE
+0be7c6d395d1        9 minutes ago       /bin/sh -c #(nop)  ENTRYPOINT ["/bin/sh" "...   0B
+0ec3164e0bae        9 minutes ago       /bin/sh -c #(nop)  EXPOSE 5005/tcp 9000/tcp     0B
+fdb34b2963c8        9 minutes ago       /bin/sh -c apk --no-cache add vim               25.8MB
+2c01c1ee0fdd        10 minutes ago      /bin/sh -c #(nop) COPY file:f69d12f7e30135...   38.3MB
+7936173bc33c        10 minutes ago      /bin/sh -c #(nop)  ENV FULL_APP_VERSION=0....   0B
+793059c5a601        10 minutes ago      /bin/sh -c #(nop)  ENV APP_VERSION=0.1          0B
+d26a438851b6        10 minutes ago      /bin/sh -c #(nop)  LABEL description=Simpl...   0B
+319698b3b71a        2 weeks ago         /bin/sh -c set -x  && apk add --no-cache  ...   77.4MB
+<-missing->         2 weeks ago         /bin/sh -c #(nop)  ENV JAVA_ALPINE_VERSION...   0B
+<-missing->         2 weeks ago         /bin/sh -c #(nop)  ENV JAVA_VERSION=8u121       0B
+<-missing->         2 weeks ago         /bin/sh -c #(nop)  ENV PATH=/usr/local/sbi...   0B
+<-missing->         2 weeks ago         /bin/sh -c #(nop)  ENV JAVA_HOME=/usr/lib/...   0B
+<-missing->         2 weeks ago         /bin/sh -c {   echo '#!/bin/sh';   echo 's...   87B
+<-missing->         2 weeks ago         /bin/sh -c #(nop)  ENV LANG=C.UTF-8             0B
+<-missing->         2 weeks ago         /bin/sh -c #(nop)  CMD ["/bin/sh"]              0B
+<-missing->         2 weeks ago         /bin/sh -c #(nop) ADD file:63f63606d6e289e...   3.99MB
+                </code></pre>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 1em">Et Voilà !</h2>
+                <p>From 499MB to 145MB</p>
+                <p>An image much <b class="highlight">smaller</b> and <b class="highlight">simpler</b></p>
+            </section>
+
         </section>
 
         <section>
