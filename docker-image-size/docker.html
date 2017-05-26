@@ -876,6 +876,99 @@ d26a438851b6        10 minutes ago      /bin/sh -c #(nop)  LABEL description=Sim
                 <p>An image much <b class="highlight">smaller</b> and <b class="highlight">simpler</b></p>
             </section>
 
+            <section>
+                <h2 style="margin-bottom: 0.5em">Squashing images</h2>
+                <ul>
+                    <li>Squash all layers into one</li>
+                    <li>Can reduce <b class="highlight">image size</b>
+                        <ul>
+                            <li style="margin-top: 0.5em">Cleanup in separate layers</li>
+                            <li>Files modified or deleted</li>
+                            <li>Less metadata</li>
+                        </ul>
+                    </li>
+                    <li>More <b class="highlight">overhead</b> when moving the image around</li>
+                </ul>
+            </section>
+
+        </section>
+
+        <section>
+
+            <section>
+                <h2>Boosting the build speed</h2>
+                <p>A small image is good but a <b class="highlight">quickly built image</b> is better</p>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 1em">Build context</h2>
+                <p style="margin-bottom: 1em">Before building an image, docker needs the <span class="highlight">build context</span></p>
+                <ul>
+                    <li>Dockerfile location</li>
+                    <li>Sent to deamon</li>
+                    <li>If remote can take time</li>
+                </ul>
+                <p>...here again, <b class="highlight">size matters</b></p>
+            </section>
+
+            <section>
+                <h2>Build Context</h2>
+                <p>Illustration by Demo</p>
+            </section>
+
+            <section>
+                <h2>Build Context</h2>
+                <p>We need to isolate our Dockerfile</p>
+                <div style="display: inline-block; width: 49%; vertical-align: top">
+                    <img src="img/initial-scope.png" class="logo"/>
+                    <p style="margin-top: 0; margin-bottom: 0; font-size: 0.8em"><i>Broad scope</i></p>
+                </div>
+                <div style="display: inline-block; width: 49%; vertical-align: top">
+                    <img src="img/final-scope.png" class="logo"/>
+                    <p style="margin-top: 0; margin-bottom: 0; font-size: 0.8em"><i>Isolated scope</i></p>
+                </div>
+            </section>
+
+            <section>
+                <h2>Build Context</h2>
+                <div style="display: inline-block; width: 49%; vertical-align: top">
+                    <pre style="font-size: 0.4em; width: 95%"><code data-trim class="bash" data-noescape>
+sam@Laptop $ docker build <mark>.</mark> -t reduce-size
+Sending build context to Docker daemon <mark>204.7MB</mark>
+Step 1/8 : FROM openjdk:8-jre-alpine
+ ---> 319698b3b71a
+...
+...
+Successfully built 20be4c829495
+Successfully tagged reduce-size:latest
+sam@Sam-Cake-Laptop reduce-size $
+                    </code></pre>
+                </div>
+                <div style="display: inline-block; width: 49%; vertical-align: top">
+                    <pre style="font-size: 0.4em;  width: 95%"><code data-trim class="bash" data-noescape>
+sam@Laptop $ docker build <mark>docker</mark> -t reduce-size
+Sending build context to Docker daemon <mark>38.35MB</mark>
+Step 1/8 : FROM openjdk:8-jre-alpine
+ ---> 319698b3b71a
+...
+...
+Successfully built 6ccb44737f1d
+Successfully tagged reduce-size:latest
+                    </code></pre>
+                </div>
+                <p>A much <b class="highlight">smaller context</b> is a <b class="highlight">quicker upload</b></p>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 0.5em">Step 4: Result</h2>
+
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 0.5em">Step 4: Result</h2>
+            </section>
+
+
         </section>
 
         <section>
