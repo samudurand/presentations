@@ -904,7 +904,7 @@ d26a438851b6        10 minutes ago      /bin/sh -c #(nop)  LABEL description=Sim
                 <h2 style="margin-bottom: 1em">Build context</h2>
                 <p style="margin-bottom: 1em">Before building an image, docker needs the <span class="highlight">build context</span></p>
                 <ul>
-                    <li>Dockerfile location</li>
+                    <li>Dockerfile and location content</li>
                     <li>Sent to deamon</li>
                     <li>If remote can take time</li>
                 </ul>
@@ -932,7 +932,7 @@ d26a438851b6        10 minutes ago      /bin/sh -c #(nop)  LABEL description=Sim
             <section>
                 <h2>Build Context</h2>
                 <div style="display: inline-block; width: 49%; vertical-align: top">
-                    <pre style="font-size: 0.4em; width: 95%"><code data-trim class="bash" data-noescape>
+                    <pre style="font-size: 0.35em; width: 95%"><code data-trim class="bash" data-noescape>
 sam@Laptop $ docker build <mark>.</mark> -t reduce-size
 Sending build context to Docker daemon <mark>204.7MB</mark>
 Step 1/8 : FROM openjdk:8-jre-alpine
@@ -941,11 +941,10 @@ Step 1/8 : FROM openjdk:8-jre-alpine
 ...
 Successfully built 20be4c829495
 Successfully tagged reduce-size:latest
-sam@Sam-Cake-Laptop reduce-size $
                     </code></pre>
                 </div>
                 <div style="display: inline-block; width: 49%; vertical-align: top">
-                    <pre style="font-size: 0.4em;  width: 95%"><code data-trim class="bash" data-noescape>
+                    <pre style="font-size: 0.35em;  width: 95%"><code data-trim class="bash" data-noescape>
 sam@Laptop $ docker build <mark>docker</mark> -t reduce-size
 Sending build context to Docker daemon <mark>38.35MB</mark>
 Step 1/8 : FROM openjdk:8-jre-alpine
@@ -960,14 +959,96 @@ Successfully tagged reduce-size:latest
             </section>
 
             <section>
-                <h2 style="margin-bottom: 0.5em">Step 4: Result</h2>
-
+                <h2 style="margin-bottom: 0.8em">Build Context</h2>
+                <p style="margin-bottom: 1.2em">If you cannot isolate, then use <i class="highlight">.dockerignore</i></p>
+                <pre style="font-size: 0.4em;  width: 30%"><code data-trim class="bash" data-noescape>
+.git
+.gitignore
+build.sbt
+README.md
+project/
+target/
+conf/
+app/
+.idea/
+                </code></pre>
+                <p style="font-size: 0.7em"><i>.dockerignore file</i></p>
             </section>
 
             <section>
-                <h2 style="margin-bottom: 0.5em">Step 4: Result</h2>
+                <h2 style="margin-bottom: 0.5em">Docker Cache</h2>
+                <p>Each image layer is cached during the build process</p>
+                <p>A cached image is always used if possible</p>
+                <p style="margin-bottom: 1em">This dramatically speeds up the build</p>
+                <pre style="font-size: 0.35em;  width: 90%"><code data-trim class="bash" data-noescape>
+sam@Sam-Cake-Laptop reduce-size $ docker build . -t reduce-size
+Sending build context to Docker daemon  38.36MB
+Step 1/8 : FROM openjdk:8-jre-alpine
+---> 319698b3b71a
+Step 2/8 : LABEL description "Simple demo app" category "article-demo"
+---> <mark>Using cache</mark>
+---> ffb9315a11cd
+Step 3/8 : ENV APP_VERSION 0.1
+---> <mark>Using cache</mark>
+---> 5dfb0c667e85
+Step 5/8 : COPY ./docker/reduce-size-assembly-${APP_VERSION}.jar app.jar
+---> 14a66e16db04
+...
+...
+Successfully tagged reduce-size:latest
+                </code></pre>
             </section>
 
+            <section>
+                <h2 style="margin-bottom: 0.5em">Docker Cache</h2>
+                <p>Build all <b class="highlight">changing layers</b> last</p>
+                <div style="display: inline-block; width: 49%; vertical-align: top">
+                    <pre style="font-size: 0.32em;  width: 97%"><code data-trim class="dockerfile" data-noescape>
+FROM openjdk:8-jre-alpine
+
+LABEL description="Simple demo app" \
+      category="article-demo" \
+      git.repo="https://github.com/firens/docker-reduce-size"
+
+ENV APP_VERSION 0.1
+ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
+
+COPY ./reduce-size-assembly-${FULL_APP_VERSION}.jar app.jar
+
+RUN apk --no-cache add vim
+
+EXPOSE 9000 5005
+
+ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdef app.jar
+                    </code></pre>
+                </div>
+                <div style="display: inline-block; width: 49%; vertical-align: top">
+                    <pre style="font-size: 0.32em;  width: 100%"><code data-trim class="dockerfile" data-noescape>
+FROM openjdk:8-jre-alpine
+
+LABEL description="Simple demo app" \
+      category="article-demo" \
+      git.repo="https://github.com/firens/docker-reduce-size"
+
+ENV APP_VERSION 0.1
+ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
+
+RUN apk --no-cache add vim
+
+EXPOSE 9000 5005
+
+<mark>COPY ./reduce-size-assembly-${FULL_APP_VERSION}.jar app.jar</mark>
+
+ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdef app.jar
+                    </code></pre>
+                </div>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 0.5em">Compressed Context</h2>
+                <p>The <i>--compress</i> flag <b class="highlight">compress</b> the context to GZIP</p>
+                <p>Useful with remote Docker daemon</p>
+            </section>
 
         </section>
 
@@ -979,7 +1060,7 @@ Successfully tagged reduce-size:latest
 
         <section>
             <h2>Interesting links</h2>
-            <a href="http://blog.jeduncan.com/docker-image-dissection.html">Dissecting a docker image by Jamie Duncan</a>
+            <p><a href="http://blog.jeduncan.com/docker-image-dissection.html">Dissecting a docker image</a> by Jamie Duncan</p>
         </section>
 
     </div>
