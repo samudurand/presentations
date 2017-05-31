@@ -55,7 +55,6 @@
             <div style="display: inline-block; margin-right: 2em">
                 <ul>
                     <li>Docker and Containers</li>
-                    <li>Real life illustration</li>
                     <li>Why does image size matter ?</li>
                     <li>How to do it ?</li>
                     <li>Improving build speed</li>
@@ -109,11 +108,6 @@ CMD [ "npm", "start" ]
         </section>
 
         <section>
-            <h2>Real life illustration</h2>
-            <img class="logo" style="width: 70%" src="img/docker-whale-sea.jpg"/>
-        </section>
-
-        <section>
             <section>
                 <h2 style="margin-bottom: 1em">Why reduce the Image size</h2>
                 <img class="logo" style="width: 60%" src="img/question.png">
@@ -151,6 +145,11 @@ CMD [ "npm", "start" ]
                     <img class="logo" src="img/docker-secure.png"/>
                 </div>
             </section>
+        </section>
+
+        <section>
+            <h2>Real life illustration</h2>
+            <img class="logo" style="width: 70%" src="img/docker-whale-sea.jpg"/>
         </section>
 
         <section>
@@ -406,13 +405,13 @@ c4c080d067c3        23 hours ago        /bin/sh -c apt-get update               
                 <h2 style="margin-bottom: 1em">Step 2: Merging layers</h2>
                 <ul>
                     <li><b class="highlight">Installation</b> and <b class="highlight">Cleanup</b> must happen at the same time</li>
-                    <li>Less layers means also:
+                    <li class="fragment">Less layers means also:
                         <ul>
                             <li style="padding-top: 0.5em">Clearer and better <b class="highlight">organisation</b></li>
                             <li>Less network <b class="highlight">requests</b> when uploading/downloading</li>
                         </ul>
                     </li>
-                    <li>Maximum of <b>127</b> layers</li>
+                    <li class="fragment">Maximum of <b>127</b> layers</li>
                 </ul>
             </section>
 

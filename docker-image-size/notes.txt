@@ -15,7 +15,11 @@ Dockerfile
 Data transfer & Security
     Reduce costs : ex between AWS region and your datacenter if containers in remote registry or the opposite
 
+Cleanup
+
+    You cannot change the size of a layer by adding more layers
 
 Group commands :
 
     Less layers (LABEL, ENV etc) means less requests when uploading or downloading . More a matter of organisation and good practice than size saving.
+
