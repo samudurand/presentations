@@ -68,8 +68,8 @@
         <section>
             <h2>What is docker ?</h2>
             <p>A very popular <b class="highlight">Container</b> platform</p>
-            <img style="width: 49%" class="logo" src="img/vm-diagram.png"/>
-            <img style="width: 49%" class="logo" src="img/docker-diagram.png"/>
+            <img style="width: 49%" class="logo fragment" src="img/vm-diagram.png"/>
+            <img style="width: 49%" class="logo fragment" src="img/docker-diagram.png"/>
         </section>
 
         <section>
@@ -722,7 +722,7 @@ a0cb4f8c7b47        4 hours ago         /bin/sh -c #(nop)  LABEL description=Sim
                     <li>Debian</li>
                     <li>Ubuntu</li>
                 </ul>
-                <div style="margin-top: 1em">
+                <div style="margin-top: 1em" class="fragment">
                     <p>We need to use something smaller</p>
                     <ul>
                         <li><b class="highlight">Alpine</b></li>
@@ -878,7 +878,7 @@ d26a438851b6        10 minutes ago      /bin/sh -c #(nop)  LABEL description=Sim
             <section>
                 <h2 style="margin-bottom: 0.5em">Squashing images</h2>
                 <ul>
-                    <li>Squash all layers into one</li>
+                    <li>Squash all layers into one <i>--squash</i></li>
                     <li>Can reduce <b class="highlight">image size</b>
                         <ul>
                             <li style="margin-top: 0.5em">Cleanup in separate layers</li>
@@ -922,7 +922,7 @@ d26a438851b6        10 minutes ago      /bin/sh -c #(nop)  LABEL description=Sim
                     <img src="img/initial-scope.png" class="logo"/>
                     <p style="margin-top: 0; margin-bottom: 0; font-size: 0.8em"><i>Broad scope</i></p>
                 </div>
-                <div style="display: inline-block; width: 49%; vertical-align: top">
+                <div style="display: inline-block; width: 49%; vertical-align: top" class="fragment">
                     <img src="img/final-scope.png" class="logo"/>
                     <p style="margin-top: 0; margin-bottom: 0; font-size: 0.8em"><i>Isolated scope</i></p>
                 </div>
@@ -1055,11 +1055,7 @@ ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdef app.jar
 
             <h2>Any Question ?</h2>
 
-        </section>
-
-        <section>
-            <h2>Interesting links</h2>
-            <p><a href="http://blog.jeduncan.com/docker-image-dissection.html">Dissecting a docker image</a> by Jamie Duncan</p>
+            <img style="width: 40%" class="logo" src="img/question.png">
         </section>
 
     </div>
