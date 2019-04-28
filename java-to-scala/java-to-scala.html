@@ -1,0 +1,1129 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Java to Scala</title>
+
+    <meta name="description" content="Using a Java recipe for a Scala cake">
+    <meta name="author" content="Samuel Durand">
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="../revealjs/css/reveal.css">
+    <link rel="stylesheet" href="../revealjs/css/theme/black.css" id="theme">
+    <link rel="stylesheet" href="css/java-to-scala.css"/>
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="../revealjs/lib/css/zenburn.css">
+
+    <!--[if lt IE 9]>
+    <script src="../revealjs/lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="reveal">
+
+    <div class="slides">
+        <section>
+            <h1 style="text-transform: none; font-size: 1.8em">How to make a Scala cake</h1>
+            <h2 style="text-transform: none; font-size: 1.2em; color: darkgrey">For experienced Java bakers</h2>
+            <img class="logo" src="img/cake.jpg" style="width: 49%; margin-top: 40px"/>
+            <p style="margin-top: 1em">
+                <small>Presentation by 
+                    <a href="https://twitter.com/samudurand">@samudurand</a>
+                    (<a href="https://github.com/samudurand">github.com/samudurand</a>)
+                </small>
+            </p>
+        </section>
+
+        <section>
+            <h2 style="margin-bottom: 1em">Why switch to Scala ?</h2>
+            <div style="display: inline-block;">
+                <ul>
+                    <li>Type safety</li>
+                    <li>Type inference</li>
+                    <li>Powerful compiler</li>
+                    <li>Utilities</li>
+                    <li>OOP + FP</li>
+                    <li>Unique patterns</li>
+                    <li>Much more concise</li>
+                    <li>Java compatible</li>
+                </ul>
+            </div>
+            <div style="display: inline-block; vertical-align: top; margin-top: 8%">
+                <img class="logo" style="width: 30%;" src="img/scala-spiral-3d-2-toned-down.png"/>
+            </div>
+        </section>
+
+        <section>
+            <section>
+                <h2 style="margin-bottom: 1em">Java to Scala basics</h2>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 1em">Creating an executable class</h2>
+                
+                <p>Java</p>
+                <pre style="font-size: 0.4em;"><code data-trim class="java">
+public class CakeShop {
+    public static void main (String[] args) {
+        // code
+    }
+}
+                </code></pre>
+
+                <div class="fragment">
+                    <p>Scala</p>
+                    <pre style="font-size: 0.4em;"><code data-trim class="scala">
+object CakeShop extends App {
+    // code
+}
+                    </code></pre>
+                </div>
+            </section>
+            <section>
+                <h2 style="margin-bottom: 1em">Defining a simple class</h2>
+                
+                <p>Java</p>
+                <pre style="font-size: 0.4em;"><code data-trim class="java">
+public class Cake {
+    private name;
+    
+    public Cake(String name) {
+        this.name = name;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+
+Cake brownie = new Cake("Brownie");
+                </code></pre>
+
+                <div class="fragment">
+                    <p>Scala</p>
+                    <pre style="font-size: 0.4em;"><code data-trim class="scala">
+case class Cake(name: String)
+
+val brownie = Cake("Brownie")
+                    </code></pre>
+                </div>
+            </section>
+            <section>
+                <h2 style="margin-bottom: 1em">Collections</h2>
+                
+                <p>Java</p>
+                <pre style="font-size: 0.4em;"><code data-trim class="java">
+List&lt;Cake&gt; cakes = new LinkedList&lt;&gt;();
+
+List&lt;Cake&gt; cakes = Arrays.asList(new Cake("Brownie"), new Cake("Blondie"));
+                </code></pre>
+
+                <div class="fragment">
+                    <p>Scala</p>
+                    <pre style="font-size: 0.4em;"><code data-trim class="scala">
+val cakes = new List[Cake]()
+
+val cakes = new List(Cake("Brownie"), Cake("Blondie"))
+
+val cakes_list_as_java = cakes.asJava
+                    </code></pre>
+                </div>
+            </section>
+            <section>
+                <h2 style="margin-bottom: 1em">Functions and loops</h2>
+                
+                <p>Java</p>
+                <pre style="font-size: 0.4em;"><code data-trim class="java">
+public List&lt;Slice&gt; pickASliceFromEach(List&lt;Cake&gt; cakes) {
+    List&lt;Slice&gt; slices = new ArrayList&lt;Slice&gt;();  
+    for (Cake c: cakes) {
+        slices.add(c.takeOneSlice());
+    }
+    return slices;
+}
+                </code></pre>
+
+                <div class="fragment">
+                    <p>Scala</p>
+                    <pre style="font-size: 0.4em;"><code data-trim class="scala">
+def pickASliceFromEach(cakes: List[Cake]) = cakes.map(_.takeOneSlice())
+
+def pickASliceFromEachV2(cakes: List[Cake]) = for(cake &lt;- cakes) yield cake.takeOneSlice()
+                    </code></pre>
+                </div>
+            </section>
+        </section>
+
+        <section>
+            <h2>Real life illustration</h2>
+            <img class="logo" style="width: 70%" src="img/docker-whale-sea.jpg"/>
+        </section>
+
+        <section>
+            <section>
+                <h2>How ?</h2>
+                <p>The secret is in the recipe</p>
+            </section>
+            <section>
+                <h2>Useful commands</h2>
+                <div class="fragment">
+                    <p>docker images</p>
+                    <pre style="font-size: 0.4em;"><code data-trim class="dockerfile">
+sam@Sam-Cake-Laptop ~ $ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+openjdk             8-jre               2b1609ecd02f        2 weeks ago         310MB
+mysql               5.7.17              9546ca122d3a        6 weeks ago         407MB
+                    </code></pre>
+                </div>
+                <div class="fragment">
+                    <p>docker history [IMAGE_NAME]:[TAG]</p>
+                    <pre style="font-size: 0.4em;"><code data-trim class="dockerfile">
+sam@Sam-Cake-Laptop ~ $ docker history openjdk:8-jre
+IMAGE            CREATED             CREATED BY                                      SIZE
+2b1609ecd02f     2 weeks ago         /bin/sh -c /var/lib/dpkg/info/ca-certifica...   419kB
+<-missing->      2 weeks ago         /bin/sh -c set -ex;   apt-get update;  apt...   141MB
+<-missing->      3 weeks ago         /bin/sh -c #(nop)  ENV CA_CERTIFICATES_JAV...   0B
+<-missing->      3 weeks ago         /bin/sh -c #(nop)  ENV JAVA_DEBIAN_VERSION...   0B
+<-missing->      3 weeks ago         /bin/sh -c #(nop)  ENV JAVA_VERSION=8u121       0B
+<-missing->      3 weeks ago         /bin/sh -c #(nop)  ENV JAVA_HOME=/usr/lib/...   0B
+<-missing->      3 weeks ago         /bin/sh -c {   echo '#!/bin/sh';   echo 's...   87B
+<-missing->      3 weeks ago         /bin/sh -c #(nop)  ENV LANG=C.UTF-8             0B
+<-missing->      3 weeks ago         /bin/sh -c echo 'deb http://deb.debian.org...   55B
+<-missing->      3 weeks ago         /bin/sh -c apt-get update && apt-get insta...   1.18MB
+<-missing->      3 weeks ago         /bin/sh -c apt-get update && apt-get insta...   44.6MB
+<-missing->      3 weeks ago         /bin/sh -c #(nop)  CMD ["/bin/bash"]            0B
+<-missing->      3 weeks ago         /bin/sh -c #(nop) ADD file:712c48086043553...   123MB
+                    </code></pre>
+                </div>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 0.5em">Our starting point</h2>
+                <p style="padding-bottom: 0.5em">A very simple Play app</p>
+                <div style="display: inline-block; width: 39%; vertical-align: top;">
+                    <img style="margin-top: 0" class="logo" src="img/basic-scope.png"/>
+                </div>
+                <div style="display: inline-block; width: 60%; vertical-align: top">
+                    <pre style="font-size: 0.38em; width: 100%; margin: 0"><code data-trim class="dockerfile">
+FROM openjdk:8-jre
+
+LABEL description="Simple demo app"
+LABEL category="article-demo"
+LABEL git.repo="https://github.com/firens/docker-reduce-size"
+
+COPY target ./target
+
+RUN apt-get update
+RUN apt-get install -y vim
+
+EXPOSE 9000
+EXPOSE 5005
+
+ENV APP_VERSION 0.1
+ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
+
+ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdefghijk
+ target/scala-2.11/reduce-size-assembly-${FULL_APP_VERSION}.jar
+            </code></pre>
+                </div>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 0.5em">Our starting point</h2>
+                <pre style="font-size: 0.4em; width: 100%"><code data-trim class="bash" data-noescape>
+sam@Sam-Cake-Laptop reduce-size $ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+reduce-size         latest              4f94b19cd0a4        2 minutes ago       <mark>499MB</mark>
+
+sam@Sam-Cake-Laptop reduce-size $ docker history reduce-size
+IMAGE               CREATED             CREATED BY                                      SIZE
+4f94b19cd0a4        3 minutes ago       /bin/sh -c #(nop)  ENTRYPOINT ["/bin/sh" "...   0B
+29a4ffd6fa2a        3 minutes ago       /bin/sh -c #(nop)  ENV FULL_APP_VERSION=0....   0B
+2d38e0523b6f        3 minutes ago       /bin/sh -c #(nop)  ENV APP_VERSION=0.1          0B
+eb2098b61835        3 minutes ago       /bin/sh -c #(nop)  EXPOSE 5005/tcp              0B
+1b2c0129b248        3 minutes ago       /bin/sh -c #(nop)  EXPOSE 9000/tcp              0B
+55cfe87f1d44        15 minutes ago      /bin/sh -c apt-get install -y vim               29.9MB
+c4c080d067c3        15 minutes ago      /bin/sh -c apt-get update                       11.3MB
+3e4d5ea89439        15 minutes ago      /bin/sh -c #(nop) COPY dir:48aa4cbcc1f9dd3...   147MB
+41429e6e5a6b        15 minutes ago      /bin/sh -c #(nop)  LABEL git.repo=https://...   0B
+58282ed5c22e        15 minutes ago      /bin/sh -c #(nop)  LABEL category=article-...   0B
+2abf60129be9        15 minutes ago      /bin/sh -c #(nop)  LABEL description=Simpl...   0B
+2b1609ecd02f        3 weeks ago         /bin/sh -c /var/lib/dpkg/info/ca-certifica...   419kB
+...
+<-missing->         3 weeks ago         /bin/sh -c apt-get update && apt-get insta...   44.6MB
+<-missing->         3 weeks ago         /bin/sh -c #(nop) ADD file:712c48086043553...   123MB
+                </code></pre>
+                <p>We will attempt to reduce this initial size of <b>499 MB</b></p>
+            </section>
+
+            <section class="top-slide">
+                <h2 style="margin-bottom: 0.5em">Step 1: Cleanup</h2>
+                <div style="display: inline-block; width: 40%; vertical-align: top;">
+                    <ul style="font-size: 0.8em">
+                        <li class="fragment" data-fragment-index="1">Installation packages</li>
+                        <li class="fragment" data-fragment-index="2">Installation temp files</li>
+                        <li class="fragment" data-fragment-index="3">Any other temporary file</li>
+                    </ul>
+                </div>
+                <div style="display: inline-block; width: 59%; vertical-align: top">
+                    <div class="fragment current-visible" data-fragment-index="0" style="position:relative; vertical-align: top;">
+                        <pre style="font-size: 0.38em; width: 100%; margin: 0; position:absolute;top:0;left:0;"><code data-trim class="dockerfile" data-noescape>
+FROM openjdk:8-jre
+
+LABEL description="Simple demo app"
+LABEL category="article-demo"
+LABEL git.repo="https://github.com/firens/docker-reduce-size"
+
+COPY target ./target
+
+RUN apt-get update
+RUN apt-get install -y vim
+
+EXPOSE 9000
+EXPOSE 5005
+
+ENV APP_VERSION 0.1
+ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
+
+ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdefghijk
+ target/scala-2.11/reduce-size-assembly-${FULL_APP_VERSION}.jar
+                </code></pre>
+                    </div>
+                    <div class="fragment current-visible" data-fragment-index="1" style="position:relative; vertical-align: top;">
+                        <pre style="font-size: 0.38em; width: 100%; margin: 0; position:absolute;top:0;left:0;"><code data-trim class="dockerfile" data-noescape>
+FROM openjdk:8-jre
+
+LABEL description="Simple demo app"
+LABEL category="article-demo"
+LABEL git.repo="https://github.com/firens/docker-reduce-size"
+
+COPY target ./target
+
+RUN apt-get update
+RUN apt-get install -y vim
+<mark>RUN apt-get clean</mark>
+
+EXPOSE 9000
+EXPOSE 5005
+
+ENV APP_VERSION 0.1
+ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
+
+ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdefghijk
+ target/scala-2.11/reduce-size-assembly-${FULL_APP_VERSION}.jar
+                </code></pre>
+                    </div>
+                    <div class="fragment current-visible" data-fragment-index="2" style="position:relative; vertical-align: top;">
+                        <pre style="font-size: 0.38em; width: 100%; margin: 0; position:absolute;top:0;left:0;"><code data-trim class="dockerfile" data-noescape>
+FROM openjdk:8-jre
+
+LABEL description="Simple demo app"
+LABEL category="article-demo"
+LABEL git.repo="https://github.com/firens/docker-reduce-size"
+
+COPY target ./target
+
+RUN apt-get update
+RUN apt-get install -y vim
+RUN apt-get clean
+<mark>RUN rm -rf /var/lib/apt/lists/*</mark>
+
+EXPOSE 9000
+EXPOSE 5005
+
+ENV APP_VERSION 0.1
+ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
+
+ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdefghijk
+ target/scala-2.11/reduce-size-assembly-${FULL_APP_VERSION}.jar
+                </code></pre>
+                    </div>
+                    <div class="fragment current-visible" data-fragment-index="3" style="position:relative; vertical-align: top;">
+                        <pre style="font-size: 0.38em; width: 100%; margin: 0; position:absolute;top:0;left:0;"><code data-trim class="dockerfile" data-noescape>
+FROM openjdk:8-jre
+
+LABEL description="Simple demo app"
+LABEL category="article-demo"
+LABEL git.repo="https://github.com/firens/docker-reduce-size"
+
+COPY target ./target
+
+RUN apt-get update
+RUN apt-get install -y vim
+RUN apt-get clean
+RUN rm -rf /var/lib/apt/lists/* <mark>/tmp/* /var/tmp/*</mark>
+
+EXPOSE 9000
+EXPOSE 5005
+
+ENV APP_VERSION 0.1
+ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
+
+ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdefghijk
+ target/scala-2.11/reduce-size-assembly-${FULL_APP_VERSION}.jar
+                </code></pre>
+                    </div>
+                </div>
+
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 0.5em">Step 1: Cleanup</h2>
+                <pre style="font-size: 0.4em; width: 100%"><code data-trim class="bash" data-noescape>
+sam@Sam-Cake-Laptop reduce-size $ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED              SIZE
+reduce-size         latest              879525d6d046        About a minute ago   <mark>499MB</mark>
+<-none->            <-none->            4f94b19cd0a4        23 hours ago         499MB
+                </code></pre>
+                <p>... no difference ?</p>
+                <div class="fragment">
+                    <pre style="font-size: 0.4em; width: 100%"><code data-trim class="bash" data-noescape>
+sam@Sam-Cake-Laptop reduce-size $ docker history reduce-size
+IMAGE               CREATED             CREATED BY                                      SIZE
+879525d6d046        4 minutes ago       /bin/sh -c #(nop)  ENTRYPOINT ["/bin/sh" "...   0B
+41ec75122bb1        4 minutes ago       /bin/sh -c #(nop)  ENV FULL_APP_VERSION=0....   0B
+fb8ef11b3abf        4 minutes ago       /bin/sh -c #(nop)  ENV APP_VERSION=0.1          0B
+6402b9aa3283        4 minutes ago       /bin/sh -c #(nop)  EXPOSE 5005/tcp              0B
+456dca6c9792        4 minutes ago       /bin/sh -c #(nop)  EXPOSE 9000/tcp              0B
+af7d97531f4d        4 minutes ago       /bin/sh -c rm -rf /var/lib/apt/lists/* /tm...   <mark>0B</mark>
+f66ba9e8b835        5 minutes ago       /bin/sh -c apt-get clean                        <mark>0B</mark>
+55cfe87f1d44        23 hours ago        /bin/sh -c apt-get install -y vim               29.9MB
+c4c080d067c3        23 hours ago        /bin/sh -c apt-get update                       11.3MB
+3e4d5ea89439        23 hours ago        /bin/sh -c #(nop) COPY dir:48aa4cbcc1f9dd3...   147MB
+41429e6e5a6b        23 hours ago        /bin/sh -c #(nop)  LABEL git.repo=https://...   0B
+58282ed5c22e        23 hours ago        /bin/sh -c #(nop)  LABEL category=article-...   0B
+2abf60129be9        23 hours ago        /bin/sh -c #(nop)  LABEL description=Simpl...   0B
+...
+                    </code></pre>
+                    <p>The cleanup does not seem to have any effect... Why ?</p>
+                </div>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 1em">Step 1: Cleanup</h2>
+                <p>Always remember</p>
+                <blockquote>"The size of an image is the sum of the size of its layers"</blockquote>
+                <p>And</p>
+                <blockquote>"A layer content is immutable"</blockquote>
+                <p style="margin-top: 2em" class="fragment"><b>A <span class="highlight">previous layer size</span> cannot be modified by a new layer !</b></p>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 1em">Step 2: Merging layers</h2>
+                <ul>
+                    <li><b class="highlight">Installation</b> and <b class="highlight">Cleanup</b> must happen at the same time</li>
+                    <li class="fragment">Less layers means also:
+                        <ul>
+                            <li style="padding-top: 0.5em">Clearer and better <b class="highlight">organisation</b></li>
+                            <li>Less network <b class="highlight">requests</b> when uploading/downloading</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Maximum of <b>127</b> layers</li>
+                </ul>
+            </section>
+
+            <section class="top-slide">
+                <h2 style="margin-bottom: 1em">Step 2: Merging layers</h2>
+                <div style="display: inline-block; width: 40%; vertical-align: top;">
+                    <ul style="font-size: 0.8em">
+                        <li class="fragment" data-fragment-index="1">A single RUN command</li>
+                        <li class="fragment" data-fragment-index="2">Grouped PORTs</li>
+                        <li class="fragment" data-fragment-index="3">Grouped LABELs</li>
+                        <li class="fragment" data-fragment-index="4">Grouped ENVs ?</li>
+                        <p class="fragment" data-fragment-index="5"><b>Cannot if dependency</b></p>
+                    </ul>
+                </div>
+                <div style="display: inline-block; width: 59%; vertical-align: top">
+                    <div class="fragment current-visible" data-fragment-index="0" style="position:relative; vertical-align: top;">
+                        <pre style="font-size: 0.38em; width: 100%; margin: 0; position:absolute;top:0;left:0;"><code data-trim class="dockerfile" data-noescape>
+FROM openjdk:8-jre
+
+LABEL description="Simple demo app"
+LABEL category="article-demo"
+LABEL git.repo="https://github.com/firens/docker-reduce-size"
+
+COPY target ./target
+
+RUN apt-get update
+RUN apt-get install -y vim
+RUN apt-get clean
+RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+EXPOSE 9000
+EXPOSE 5005
+
+ENV APP_VERSION 0.1
+ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
+
+ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdefghijk
+target/scala-2.11/reduce-size-assembly-${FULL_APP_VERSION}.jar
+                        </code></pre>
+                    </div>
+                    <div class="fragment current-visible" data-fragment-index="1" style="position:relative; vertical-align: top;">
+                        <pre style="font-size: 0.38em; width: 100%; margin: 0; position:absolute;top:0;left:0;"><code data-trim class="dockerfile" data-noescape>
+FROM openjdk:8-jre
+
+LABEL description="Simple demo app"
+LABEL category="article-demo"
+LABEL git.repo="https://github.com/firens/docker-reduce-size"
+
+COPY target ./target
+
+<mark>RUN apt-get update && \
+    apt-get install -y vim && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \</mark>
+
+EXPOSE 9000
+EXPOSE 5005
+
+ENV APP_VERSION 0.1
+ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
+
+ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdefghijk
+target/scala-2.11/reduce-size-assembly-${FULL_APP_VERSION}.jar
+                        </code></pre>
+                    </div>
+                    <div class="fragment current-visible" data-fragment-index="2" style="position:relative; vertical-align: top;">
+                        <pre style="font-size: 0.38em; width: 100%; margin: 0; position:absolute;top:0;left:0;"><code data-trim class="dockerfile" data-noescape>
+FROM openjdk:8-jre
+
+LABEL description="Simple demo app"
+LABEL category="article-demo"
+LABEL git.repo="https://github.com/firens/docker-reduce-size"
+
+COPY target ./target
+
+RUN apt-get update && \
+    apt-get install -y vim && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+
+<mark>EXPOSE 9000 5005</mark>
+
+ENV APP_VERSION 0.1
+ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
+
+ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdefghijk
+target/scala-2.11/reduce-size-assembly-${FULL_APP_VERSION}.jar
+                        </code></pre>
+                    </div>
+                    <div class="fragment current-visible" data-fragment-index="3" style="position:relative; vertical-align: top;">
+                        <pre style="font-size: 0.38em; width: 100%; margin: 0; position:absolute;top:0;left:0;"><code data-trim class="dockerfile" data-noescape>
+FROM openjdk:8-jre
+
+<mark>LABEL description="Simple demo app" \
+      category="article-demo" \
+      git.repo="https://github.com/firens/docker-reduce-size"</mark>
+
+COPY target ./target
+
+RUN apt-get update && \
+    apt-get install -y vim && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+
+EXPOSE 9000 5005
+
+ENV APP_VERSION 0.1
+ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
+
+ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdefghijk
+target/scala-2.11/reduce-size-assembly-${FULL_APP_VERSION}.jar
+                        </code></pre>
+                    </div>
+                    <div class="fragment current-visible" data-fragment-index="4" style="position:relative; vertical-align: top;">
+                        <pre style="font-size: 0.38em; width: 100%; margin: 0; position:absolute;top:0;left:0;"><code data-trim class="dockerfile" data-noescape>
+FROM openjdk:8-jre
+
+LABEL description="Simple demo app" \
+      category="article-demo" \
+      git.repo="https://github.com/firens/docker-reduce-size"
+
+COPY target ./target
+
+RUN apt-get update && \
+    apt-get install -y vim && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+
+EXPOSE 9000 5005
+
+<mark>ENV APP_VERSION=0.1 FULL_APP_VERSION=${APP_VERSION}-SNAPSHOT</mark>
+
+ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdefghijk
+target/scala-2.11/reduce-size-assembly-${FULL_APP_VERSION}.jar
+                        </code></pre>
+                    </div>
+                    <div class="fragment current-visible" data-fragment-index="5" style="position:relative; vertical-align: top;">
+                        <pre style="font-size: 0.38em; width: 100%; margin: 0; position:absolute;top:0;left:0;"><code data-trim class="dockerfile" data-noescape>
+FROM openjdk:8-jre
+
+LABEL description="Simple demo app" \
+      category="article-demo" \
+      git.repo="https://github.com/firens/docker-reduce-size"
+
+COPY target ./target
+
+RUN apt-get update && \
+    apt-get install -y vim && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+
+EXPOSE 9000 5005
+
+ENV APP_VERSION 0.1
+ENV FULL_APP_VERSION <mark>${APP_VERSION}</mark>-SNAPSHOT
+
+ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdefghijk
+target/scala-2.11/reduce-size-assembly-${FULL_APP_VERSION}.jar
+                        </code></pre>
+                    </div>
+                </div>
+
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 0.5em">Step 2: Result</h2>
+                <pre style="font-size: 0.4em; width: 100%"><code data-trim class="bash" data-noescape>
+sam@Sam-Cake-Laptop reduce-size $ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED              SIZE
+reduce-size         latest              29aff50c3e88        About an hour ago   <mark>488MB</mark>
+<-none->            <-none->            879525d6d046        20 hours ago        499MB
+<-none->            <-none->            4f94b19cd0a4        44 hours ago        499MB
+                </code></pre>
+                <pre style="font-size: 0.4em; width: 100%"><code data-trim class="bash" data-noescape>
+sam@Sam-Cake-Laptop reduce-size $ docker history reduce-size
+IMAGE               CREATED             CREATED BY                                      SIZE
+4061bb2144c5        About an hour ago   /bin/sh -c #(nop)  ENTRYPOINT ["/bin/sh" "...   0B
+41b06bd9df40        About an hour ago   /bin/sh -c #(nop)  ENV FULL_APP_VERSION=0....   0B
+1a770e688730        About an hour ago   /bin/sh -c #(nop)  ENV APP_VERSION=0.1          0B
+d5905f0e4747        About an hour ago   /bin/sh -c apt-get update &&     apt-get i...   29.9MB
+394199425370        About an hour ago   /bin/sh -c #(nop) COPY dir:48aa4cbcc1f9dd3...   147MB
+a0cb4f8c7b47        About an hour ago   /bin/sh -c #(nop)  LABEL description=Simpl...   0B
+...
+                </code></pre>
+                <p>Fewer layers and 11MB smaller!</p>
+            </section>
+
+            <section class="top-slide">
+                <h2 style="margin-bottom: 0.5em">Step 3: Only the Necessary</h2>
+                <p style="margin-bottom: 1em">Include only the files you really need</p>
+                <div style="display: inline-block; width: 40%; vertical-align: top;">
+                    <div class="fragment" data-fragment-index="1">
+                        <p style="float: left">Copy the app files</p>
+                        <ul style="margin-left: 0; font-size: 0.7em">
+                            <li>if possible directly</li>
+                            <li>or use <b>.dockerignore</b></li>
+                        </ul>
+                    </div>
+                    <p class="fragment" data-fragment-index="2" style="float: left">No optional content</p>
+                </div>
+                <div style="display: inline-block; width: 59%; vertical-align: top">
+                    <div class="fragment current-visible" data-fragment-index="0" style="position:relative; vertical-align: top;">
+                        <pre style="font-size: 0.38em; width: 100%; margin: 0; position:absolute;top:0;left:0;"><code data-trim class="dockerfile" data-noescape>
+FROM openjdk:8-jre
+
+LABEL description="Simple demo app" \
+      category="article-demo" \
+      git.repo="https://github.com/firens/docker-reduce-size"
+
+COPY target ./target
+
+RUN apt-get update && \
+    apt-get install -y vim && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+
+EXPOSE 9000 5005
+
+ENV APP_VERSION 0.1
+ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
+
+ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdefghijk
+target/scala-2.11/reduce-size-assembly-${FULL_APP_VERSION}.jar
+                        </code></pre>
+                    </div>
+                    <div class="fragment current-visible" data-fragment-index="1" style="position:relative; vertical-align: top;">
+                        <pre style="font-size: 0.38em; width: 100%; margin: 0; position:absolute;top:0;left:0;"><code data-trim class="dockerfile" data-noescape>
+FROM openjdk:8-jre
+
+LABEL description="Simple demo app" \
+      category="article-demo" \
+      git.repo="https://github.com/firens/docker-reduce-size"
+
+ENV APP_VERSION 0.1
+ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
+
+<mark>COPY target/scala-2.11
+           /reduce-size-assembly-${FULL_APP_VERSION}.jar app.jar</mark>
+
+RUN apt-get update && \
+    apt-get install -y vim && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+EXPOSE 9000 5005
+
+ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdef app.jar
+
+                        </code></pre>
+                    </div>
+                    <div class="fragment current-visible" data-fragment-index="2" style="position:relative; vertical-align: top;">
+                        <pre style="font-size: 0.38em; width: 100%; margin: 0; position:absolute;top:0;left:0;"><code data-trim class="dockerfile" data-noescape>
+FROM openjdk:8-jre
+
+LABEL description="Simple demo app" \
+      category="article-demo" \
+      git.repo="https://github.com/firens/docker-reduce-size"
+
+ENV APP_VERSION 0.1
+ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
+
+COPY target/scala-2.11
+           /reduce-size-assembly-${FULL_APP_VERSION}.jar app.jar
+
+RUN apt-get update && \
+    apt-get install -y <mark>--no-install-recommends</mark> vim && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+EXPOSE 9000 5005
+
+ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdef app.jar
+                        </code></pre>
+                    </div>
+                </div>
+
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 0.5em">Step 3: Result</h2>
+                <pre style="font-size: 0.4em; width: 100%"><code data-trim class="bash" data-noescape>
+sam@Sam-Cake-Laptop reduce-size $ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED              SIZE
+reduce-size         latest              8a777494d3ad        35 seconds ago      <mark>379MB</mark>
+<-none->            <-none->            29aff50c3e88        4 hours ago         488MB
+<-none->            <-none->            4f94b19cd0a4        46 hours ago        499MB
+<-none->            <-none->            854dc64df997        46 hours ago        499MB
+                </code></pre>
+                <pre style="font-size: 0.4em; width: 100%"><code data-trim class="bash" data-noescape>
+sam@Sam-Cake-Laptop reduce-size $ docker history reduce-size
+IMAGE               CREATED             CREATED BY                                      SIZE
+8a777494d3ad        42 seconds ago      /bin/sh -c #(nop)  ENTRYPOINT ["/bin/sh" "...   0B
+4f99232acbb8        42 seconds ago      /bin/sh -c #(nop)  EXPOSE 5005/tcp 9000/tcp     0B
+38a8f1427041        42 seconds ago      /bin/sh -c apt-get update &&     apt-get i...   29.9MB
+8363cf1632ff        2 hours ago         /bin/sh -c #(nop) COPY file:f69d12f7e30135...   38.3MB
+261e9b57c9e2        2 hours ago         /bin/sh -c #(nop)  ENV FULL_APP_VERSION=0....   0B
+b65d6b169eb7        2 hours ago         /bin/sh -c #(nop)  ENV APP_VERSION=0.1          0B
+a0cb4f8c7b47        4 hours ago         /bin/sh -c #(nop)  LABEL description=Simpl...   0B
+...
+                </code></pre>
+                <p>More than a 100MB saved this time</p>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 1em">Step 4: Base Image</h2>
+                <p>Images are often based on common Linux distributions</p>
+                <ul>
+                    <li>Debian</li>
+                    <li>Ubuntu</li>
+                </ul>
+                <div style="margin-top: 1em" class="fragment">
+                    <p>We need to use something smaller</p>
+                    <ul>
+                        <li><b class="highlight">Alpine</b></li>
+                        <li>Or even <b class="highlight">Scratch</b></li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 1em">Step 4: Base Image</h2>
+                <div style="display: inline-block; vertical-align: top">
+                    <h3 style="text-align: left; font-size: 1em">Alpine</h3>
+                    <ul style="font-size: 0.8em;">
+                        <li>Based on Busybox</li>
+                        <li>130MB installed on Disk</li>
+                        <li><b class="highlight">8MB</b> on a container</li>
+                        <li>No bash, no debug tool</li>
+                        <li>Minimalistic package installer APK</li>
+                    </ul>
+                </div>
+                <div style="display: inline-block; vertical-align: top; margin-left: 0.5em">
+                    <h3 style="text-align: left; font-size: 1em">Scratch container</h3>
+                    <ul style="font-size: 0.8em">
+                        <li>Literally <b class="highlight">empty</b></li>
+                        <li>Programs copied in as binaries</li>
+                        <li>Relies only on the host Kernel</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="top-slide">
+                <h2 style="margin-bottom: 0.5em">Step 4: Base image</h2>
+                <p style="margin-bottom: 1em">We are going to use Alpine</p>
+                <div style="display: inline-block; width: 40%; vertical-align: top;">
+                    <ul style="font-size: 0.8em">
+                        <li class="fragment" data-fragment-index="1">Use Alpine base image</li>
+                        <li class="fragment" data-fragment-index="2">Install VIM via APK</li>
+                    </ul>
+                </div>
+                <div style="display: inline-block; width: 59%; vertical-align: top">
+                    <div class="fragment current-visible" data-fragment-index="0" style="position:relative; vertical-align: top;">
+                        <pre style="font-size: 0.38em; width: 100%; margin: 0; position:absolute;top:0;left:0;"><code data-trim class="dockerfile" data-noescape>
+FROM openjdk:8-jre
+
+LABEL description="Simple demo app" \
+      category="article-demo" \
+      git.repo="https://github.com/firens/docker-reduce-size"
+
+ENV APP_VERSION 0.1
+ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
+
+COPY target/scala-2.11
+           /reduce-size-assembly-${FULL_APP_VERSION}.jar app.jar
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends vim && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+EXPOSE 9000 5005
+
+ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdef app.jar
+                        </code></pre>
+                    </div>
+                    <div class="fragment current-visible" data-fragment-index="1" style="position:relative; vertical-align: top;">
+                        <pre style="font-size: 0.38em; width: 100%; margin: 0; position:absolute;top:0;left:0;"><code data-trim class="dockerfile" data-noescape>
+FROM openjdk:<mark>8-jre-alpine</mark>
+
+LABEL description="Simple demo app" \
+      category="article-demo" \
+      git.repo="https://github.com/firens/docker-reduce-size"
+
+ENV APP_VERSION 0.1
+ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
+
+COPY target/scala-2.11
+           /reduce-size-assembly-${FULL_APP_VERSION}.jar app.jar
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends vim && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+EXPOSE 9000 5005
+
+ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdef app.jar
+                        </code></pre>
+                    </div>
+                    <div class="fragment current-visible" data-fragment-index="2" style="position:relative; vertical-align: top;">
+                        <pre style="font-size: 0.38em; width: 100%; margin: 0; position:absolute;top:0;left:0;"><code data-trim class="dockerfile" data-noescape>
+FROM openjdk:8-jre-alpine
+
+LABEL description="Simple demo app" \
+      category="article-demo" \
+      git.repo="https://github.com/firens/docker-reduce-size"
+
+ENV APP_VERSION 0.1
+ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
+
+COPY target/scala-2.11
+           /reduce-size-assembly-${FULL_APP_VERSION}.jar app.jar
+
+RUN <mark>apk --no-cache add vim</mark>
+
+EXPOSE 9000 5005
+
+ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdef app.jar
+                        </code></pre>
+                    </div>
+                </div>
+
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 0.5em">Step 4: Result</h2>
+                <pre style="font-size: 0.4em; width: 100%"><code data-trim class="bash" data-noescape>
+sam@Sam-Cake-Laptop reduce-size $ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED              SIZE
+reduce-size          latest              0be7c6d395d1        55 seconds ago      <mark>145MB</mark>
+<-none->             <-none->            8a777494d3ad        20 hours ago        379MB
+<-none->             <-none->            29aff50c3e88        24 hours ago        488MB
+<-none->             <-none->            4f94b19cd0a4        2 days ago          499MB
+<-none->             <-none->            854dc64df997        2 days ago          499MB
+                </code></pre>
+                <pre style="font-size: 0.4em; width: 100%"><code data-trim class="bash" data-noescape>
+sam@Sam-Cake-Laptop reduce-size $ docker history reduce-size
+IMAGE               CREATED             CREATED BY                                      SIZE
+0be7c6d395d1        9 minutes ago       /bin/sh -c #(nop)  ENTRYPOINT ["/bin/sh" "...   0B
+0ec3164e0bae        9 minutes ago       /bin/sh -c #(nop)  EXPOSE 5005/tcp 9000/tcp     0B
+fdb34b2963c8        9 minutes ago       /bin/sh -c apk --no-cache add vim               25.8MB
+2c01c1ee0fdd        10 minutes ago      /bin/sh -c #(nop) COPY file:f69d12f7e30135...   38.3MB
+7936173bc33c        10 minutes ago      /bin/sh -c #(nop)  ENV FULL_APP_VERSION=0....   0B
+793059c5a601        10 minutes ago      /bin/sh -c #(nop)  ENV APP_VERSION=0.1          0B
+d26a438851b6        10 minutes ago      /bin/sh -c #(nop)  LABEL description=Simpl...   0B
+319698b3b71a        2 weeks ago         /bin/sh -c set -x  && apk add --no-cache  ...   77.4MB
+<-missing->         2 weeks ago         /bin/sh -c #(nop)  ENV JAVA_ALPINE_VERSION...   0B
+<-missing->         2 weeks ago         /bin/sh -c #(nop)  ENV JAVA_VERSION=8u121       0B
+<-missing->         2 weeks ago         /bin/sh -c #(nop)  ENV PATH=/usr/local/sbi...   0B
+<-missing->         2 weeks ago         /bin/sh -c #(nop)  ENV JAVA_HOME=/usr/lib/...   0B
+<-missing->         2 weeks ago         /bin/sh -c {   echo '#!/bin/sh';   echo 's...   87B
+<-missing->         2 weeks ago         /bin/sh -c #(nop)  ENV LANG=C.UTF-8             0B
+<-missing->         2 weeks ago         /bin/sh -c #(nop)  CMD ["/bin/sh"]              0B
+<-missing->         2 weeks ago         /bin/sh -c #(nop) ADD file:63f63606d6e289e...   3.99MB
+                </code></pre>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 1em">Et Voilà !</h2>
+                <p>From 499MB to 145MB</p>
+                <p>An image much <b class="highlight">smaller</b> and <b class="highlight">simpler</b></p>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 0.5em">Squashing images</h2>
+                <ul>
+                    <li>Squash all layers into one <i>--squash</i></li>
+                    <li>Can reduce <b class="highlight">image size</b>
+                        <ul>
+                            <li style="margin-top: 0.5em">Cleanup in separate layers</li>
+                            <li>Files modified or deleted</li>
+                            <li>Less metadata</li>
+                        </ul>
+                    </li>
+                    <li>More <b class="highlight">overhead</b> when moving the image around</li>
+                </ul>
+            </section>
+
+        </section>
+
+        <section>
+
+            <section>
+                <h2>Boosting the build speed</h2>
+                <p>A small image is good but a <b class="highlight">quickly built image</b> is better</p>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 1em">Build context</h2>
+                <p style="margin-bottom: 1em">Before building an image, docker needs the <span class="highlight">build context</span></p>
+                <ul>
+                    <li>Dockerfile and location content</li>
+                    <li>Sent to deamon</li>
+                    <li>If remote can take time</li>
+                </ul>
+                <p>...here again, <b class="highlight">size matters</b></p>
+            </section>
+
+            <section>
+                <h2>Build Context</h2>
+                <p>Illustration by Demo</p>
+            </section>
+
+            <section>
+                <h2>Build Context</h2>
+                <p>We need to isolate our Dockerfile</p>
+                <div style="display: inline-block; width: 49%; vertical-align: top">
+                    <img src="img/initial-scope.png" class="logo"/>
+                    <p style="margin-top: 0; margin-bottom: 0; font-size: 0.8em"><i>Broad scope</i></p>
+                </div>
+                <div style="display: inline-block; width: 49%; vertical-align: top" class="fragment">
+                    <img src="img/final-scope.png" class="logo"/>
+                    <p style="margin-top: 0; margin-bottom: 0; font-size: 0.8em"><i>Isolated scope</i></p>
+                </div>
+            </section>
+
+            <section>
+                <h2>Build Context</h2>
+                <div style="display: inline-block; width: 49%; vertical-align: top">
+                    <pre style="font-size: 0.35em; width: 95%"><code data-trim class="bash" data-noescape>
+sam@Laptop $ docker build <mark>.</mark> -t reduce-size
+Sending build context to Docker daemon <mark>204.7MB</mark>
+Step 1/8 : FROM openjdk:8-jre-alpine
+ ---> 319698b3b71a
+...
+...
+Successfully built 20be4c829495
+Successfully tagged reduce-size:latest
+                    </code></pre>
+                </div>
+                <div style="display: inline-block; width: 49%; vertical-align: top">
+                    <pre style="font-size: 0.35em;  width: 95%"><code data-trim class="bash" data-noescape>
+sam@Laptop $ docker build <mark>docker</mark> -t reduce-size
+Sending build context to Docker daemon <mark>38.35MB</mark>
+Step 1/8 : FROM openjdk:8-jre-alpine
+ ---> 319698b3b71a
+...
+...
+Successfully built 6ccb44737f1d
+Successfully tagged reduce-size:latest
+                    </code></pre>
+                </div>
+                <p>A much <b class="highlight">smaller context</b> is a <b class="highlight">quicker upload</b></p>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 0.8em">Build Context</h2>
+                <p style="margin-bottom: 1.2em">If you cannot isolate, then use <i class="highlight">.dockerignore</i></p>
+                <pre style="font-size: 0.4em;  width: 30%"><code data-trim class="bash" data-noescape>
+.git
+.gitignore
+build.sbt
+README.md
+project/
+target/
+conf/
+app/
+.idea/
+                </code></pre>
+                <p style="font-size: 0.7em"><i>.dockerignore file</i></p>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 0.5em">Docker Cache</h2>
+                <p>Each image layer is cached during the build process</p>
+                <p>A cached image is always used if possible</p>
+                <p style="margin-bottom: 1em">This dramatically speeds up the build</p>
+                <pre style="font-size: 0.35em;  width: 90%"><code data-trim class="bash" data-noescape>
+sam@Sam-Cake-Laptop reduce-size $ docker build . -t reduce-size
+Sending build context to Docker daemon  38.36MB
+Step 1/8 : FROM openjdk:8-jre-alpine
+---> 319698b3b71a
+Step 2/8 : LABEL description "Simple demo app" category "article-demo"
+---> <mark>Using cache</mark>
+---> ffb9315a11cd
+Step 3/8 : ENV APP_VERSION 0.1
+---> <mark>Using cache</mark>
+---> 5dfb0c667e85
+Step 5/8 : COPY ./docker/reduce-size-assembly-${APP_VERSION}.jar app.jar
+---> 14a66e16db04
+...
+...
+Successfully tagged reduce-size:latest
+                </code></pre>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 0.5em">Docker Cache</h2>
+                <p>Build all <b class="highlight">changing layers</b> last</p>
+                <div style="display: inline-block; width: 49%; vertical-align: top">
+                    <pre style="font-size: 0.32em;  width: 97%"><code data-trim class="dockerfile" data-noescape>
+FROM openjdk:8-jre-alpine
+
+LABEL description="Simple demo app" \
+      category="article-demo" \
+      git.repo="https://github.com/firens/docker-reduce-size"
+
+ENV APP_VERSION 0.1
+ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
+
+COPY ./reduce-size-assembly-${FULL_APP_VERSION}.jar app.jar
+
+RUN apk --no-cache add vim
+
+EXPOSE 9000 5005
+
+ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdef app.jar
+                    </code></pre>
+                </div>
+                <div style="display: inline-block; width: 49%; vertical-align: top">
+                    <pre style="font-size: 0.32em;  width: 100%"><code data-trim class="dockerfile" data-noescape>
+FROM openjdk:8-jre-alpine
+
+LABEL description="Simple demo app" \
+      category="article-demo" \
+      git.repo="https://github.com/firens/docker-reduce-size"
+
+ENV APP_VERSION 0.1
+ENV FULL_APP_VERSION ${APP_VERSION}-SNAPSHOT
+
+RUN apk --no-cache add vim
+
+EXPOSE 9000 5005
+
+<mark>COPY ./reduce-size-assembly-${FULL_APP_VERSION}.jar app.jar</mark>
+
+ENTRYPOINT exec java -jar -Dplay.crypto.secret=abcdef app.jar
+                    </code></pre>
+                </div>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 0.5em">Compressed Context</h2>
+                <p>The <i>--compress</i> flag <b class="highlight">compress</b> the context to GZIP</p>
+                <p>Useful with remote Docker daemon</p>
+            </section>
+
+        </section>
+
+        <section>
+            <img style="width: 50%" class="logo" src="img/question.png">
+        </section>
+
+    </div>
+
+</div>
+
+<script src="../revealjs/lib/js/head.min.js"></script>
+<script src="../revealjs/js/reveal.js"></script>
+
+<script>
+
+    // Full list of configuration options available at:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'convex', // none/fade/slide/convex/concave/zoom
+
+        dependencies: [
+            {
+                src: '../revealjs/lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            }
+            },
+            {
+                src: '../revealjs/plugin/markdown/marked.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: '../revealjs/plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: '../revealjs/plugin/highlight/highlight.js', async: true, condition: function () {
+                return !!document.querySelector('pre code');
+            }, callback: function () {
+                hljs.initHighlightingOnLoad();
+            }
+            },
+            {src: '../revealjs/plugin/zoom-js/zoom.js', async: true},
+            {src: '../revealjs/plugin/notes/notes.js', async: true}
+        ]
+    });
+
+</script>
+
+</body>
+</html>

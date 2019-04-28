@@ -1,0 +1,25 @@
+What is Docker and why is it so popular : http://www.zdnet.com/article/what-is-docker-and-why-is-it-so-darn-popular/
+
+What is docker ?
+    Containers run apps natively on the host machine’s kernel. They have better performance characteristics than virtual machines that only get virtual access to host resources through a hypervisor. Containers can get native access, each one running in a discrete process, taking no more memory than any other executable.
+
+Layers
+    Each layer has a different size
+    The total of those sizes is the size of the image
+
+    A docker image is a tarball, more accurately a tarball of tarballs
+
+Dockerfile
+    Each instruction represent one layer
+
+Data transfer & Security
+    Reduce costs : ex between AWS region and your datacenter if containers in remote registry or the opposite
+
+Cleanup
+
+    You cannot change the size of a layer by adding more layers
+
+Group commands :
+
+    Less layers (LABEL, ENV etc) means less requests when uploading or downloading . More a matter of organisation and good practice than size saving.
+
