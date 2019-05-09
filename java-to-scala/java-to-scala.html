@@ -66,27 +66,6 @@
             </section>
 
             <section>
-                <h2 style="margin-bottom: 1em">Creating an executable class</h2>
-                
-                <p>Java</p>
-                <pre style="font-size: 0.4em;"><code data-trim class="java">
-public class CakeShop {
-    public static void main (String[] args) {
-        // code
-    }
-}
-                </code></pre>
-
-                <div class="fragment">
-                    <p>Scala</p>
-                    <pre style="font-size: 0.4em;"><code data-trim class="scala">
-object CakeShop extends App {
-    // code
-}
-                    </code></pre>
-                </div>
-            </section>
-            <section>
                 <h2 style="margin-bottom: 1em">Defining a simple class</h2>
                 
                 <p>Java</p>
@@ -132,9 +111,9 @@ List&lt;Cake&gt; cakes = Arrays.asList(new Cake("Brownie"), new Cake("Blondie"))
                 <div class="fragment">
                     <p>Scala</p>
                     <pre style="font-size: 0.4em;"><code data-trim class="scala">
-val cakes = new List[Cake]()
+val cakes = List[Cake]()
 
-val cakes = new List(Cake("Brownie"), Cake("Blondie"))
+val cakes = List(Cake("Brownie"), Cake("Blondie"))
 
 val cakes_list_as_java = cakes.asJava
                     </code></pre>
@@ -206,7 +185,7 @@ val cakeName = "Brownie"	// String
 val cakeCount = 5 * 3 - 4	// Int
 val sliceSize = 5.35		// Double
 
-val cakes = List(Cake("Brownie", sweetness=5), Cake("Blondie", sweetness=10)) // List[Cake]
+val cakes = List(Pie("Pecan pie", sweetness=5), Cupcake("Muffin", sweetness=10)) // List[Cake]
 
 def makeCake(name: String, sugarAmount: Double) = {	// return type is Cake
   val sweetness = (sugarAmount / 5).toInt
@@ -241,16 +220,18 @@ cakes.add(creamCake)
 cakes.remove(creamCake)
             </code></pre>
 
-            <p>Scala</p>
+            <div class="fragment">
+                <p>Scala</p>
 
-            <pre style="font-size: 0.4em;"><code data-trim class="scala">
+                <pre style="font-size: 0.4em;"><code data-trim class="scala">
 val panettone = new Cake("Panettone")
 val cakes = List(panettone)
 val cakesWithMuffin = Cake("Muffin") :: cakes
 val cakesWithoutMuffin = cakesWithMuffin.filter(_.name != "Muffin")
-            </code></pre>
+                </code></pre>
 
-            <p>Make your variables immutable, unless there’s a good reason not to.</p>
+                <p>Make your variables immutable, unless there’s a good reason not to.</p>
+            </div>
 
         </section>
 
@@ -336,7 +317,7 @@ case class PecanPie(name: String,
         </section>
 
         <section>
-            <h2 style="margin-bottom: 1em">Use and abuse pattern matching</h2>
+            <h2 style="margin-bottom: 1em">Use pattern matching</h2>
 
             <pre style="font-size: 0.4em;"><code data-trim class="scala">
 def findOutWhatItIs(mysteryValue: Any) = 
