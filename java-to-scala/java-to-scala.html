@@ -71,7 +71,7 @@
                 <p>Java</p>
                 <pre style="font-size: 0.4em;"><code data-trim class="java">
 public class Cake {
-    private name;
+    private String name;
     
     public Cake(String name) {
         this.name = name;
@@ -262,7 +262,7 @@ aLotOfBiscuits.reverse
             <h2 style="margin-bottom: 1em">Use Options instead of Nulls</h2>
 
             <pre style="font-size: 0.4em;"><code data-trim class="java">
-Cake pecanPie = new Cake("Pecan pie", slices=2)
+Cake pecanPie = new Cake("Pecan pie", 2)    // Cake with two slices
 Slice slice1 = pecanPie.takeASlice()
 Slice slice2 = pecanPie.takeASlice()
 Slice slice3 = pecanPie.takeASlice()    // = Null since there is no slice left
