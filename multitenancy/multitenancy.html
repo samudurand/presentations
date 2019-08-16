@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>The way to multitenancy</title>
+
+    <meta name="description" content="Converting an in house app to multitenancy">
+    <meta name="author" content="Samuel Durand">
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="../revealjs/css/reveal.css">
+    <link rel="stylesheet" href="../revealjs/css/theme/black.css" id="theme">
+    <link rel="stylesheet" href="css/multitenancy.css"/>
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="../revealjs/lib/css/zenburn.css">
+
+    <!--[if lt IE 9]>
+    <script src="../revealjs/lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="reveal">
+
+    <div class="slides">
+
+        <section>
+            <h1 style="text-transform: none; font-size: 1.8em">Making a SAAS</h1>
+            <h2 style="text-transform: none; font-size: 1.2em; color: darkgrey; margin-top: 1em">Converting an in house app into a multi-tenant software</h2>
+            <p style="margin-top: 5em">
+                <small>Presentation by Samuel Durand (<a href="https://github.com/samudurand">github.com/samudurand</a>)</small>
+            </p>
+        </section>
+
+        <section>
+            <h2 style="margin-bottom: 1em">What will you have to deal with ?</h2>
+            <div style="display: inline-block;">
+
+                    <p class="fragment">1 - Business concerns</p>
+                    <p  class="fragment" style="margin-top: 2em">2 - Technical challenges</p>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <section>
+                <h2 style="margin-bottom: 1em">Business concerns</h2>
+                <img class="logo" style="background: white; width: 25%" src="img/9614_005_Risk-Finance-icon.png"/>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 1em">Business practices</h2>
+                <ul>
+                    <li class="fragment">How different are your potential clients ?</li>
+                    <li class="fragment">How different are their processes ?</li>
+                    <li class="fragment">
+                        How flexible are you going to be ?
+                        <ul>
+                            <li>With your business model</li>
+                            <li>Within your software</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 1em">Personal Client Data (PII)</h2>
+                <ul style="background-image: url('img/GDPR-badge.png');background-size: contain;
+                background-repeat: no-repeat; background-position: center center">
+                    <li class="fragment">Does your system manipulates/stores PII ?</li>
+                    <li class="fragment">Will you handle PII on the behalf of your clients ?
+                        <ul class="fragment">
+                            <li>GDPR and other data regulations</li>
+                            <li>Anonymisation (logs, network messages)</li>
+                            <li>Limit access: establish a request process</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 1em">Technical Support</h2>
+                <div style="display: inline-block">
+                    <ul>
+                        <li class="fragment">Do you need to provide support ?</li>
+                        <li class="fragment">Is your system critical ? (needed 24/7)</li>
+                        <li class="fragment">Should you provide different levels ?</li>
+                    </ul>
+                </div>
+                <div style="display: inline-block; vertical-align: top;">
+                    <img class="logo" style="width: 20%;" src="img/MI_DARK_BLUE_ICON_SUPPORT.png"/>
+                    <img class="logo" style="width: 20%;" src="img/MI_DARK_BLUE_ICON_SUPPORT.png"/>
+                    <img class="logo" style="width: 20%;" src="img/MI_DARK_BLUE_ICON_SUPPORT.png"/>
+                </div>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 1em">Business Intelligence</h2>
+                <div style="display: inline-block">
+                    <ul>
+                        <li class="fragment">Do you generate BI data ?</li>
+                        <li class="fragment">Do your client need their own ?</li>
+                        <li class="fragment">Do they need different/formatted data ?</li>
+                        <li class="fragment">How will you provide it ?</li>
+                    </ul>
+                </div>
+                <div style="display: inline-block; vertical-align: top;">
+                    <img class="logo" style="width: 40%;" src="img/bizint.png"/>
+                </div>
+            </section>
+
+        </section>
+        <section>
+            <section>
+                <h2 style="margin-bottom: 1em">Technical challenges</h2>
+                <img class="logo" style="background: white; width: 25%" src="img/Maintenance.png"/>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 0.5em">Codebase</h2>
+                <ul style="background-image: url('img/thumb1400.jpg');background-size: contain;
+                background-repeat: no-repeat; background-position: center center">
+                    <li style="margin-top: 0" class="fragment">Duplicate codebase
+                        <ul>
+                            <li style="margin-bottom: 0">Doesn't interfere with BAU</li>
+                            <li style="margin-bottom: 0">Harder to keep up to date with BAU version</li>
+                            <li style="margin-bottom: 0">High risk of divergence</li>
+                            <li style="margin-bottom: 0">Implies one giant and complex migration when ready</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Same codebase
+                        <ul>
+                            <li style="margin-bottom: 0">Progressive changes/migrations</li>
+                            <li style="margin-bottom: 0">Every change is a risk for user experience and data</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Data Isolation</h2>
+                <p>The tech defines the challenges and solutions</p>
+                <img class="logo fragment" style="width: 75%" src="img/postgres.png"/>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 1em">Assets/Products storage</h2>
+                <div style="display: inline-block">
+                    <ul>
+                        <li class="fragment">Will your clients want to display products/assets ?</li>
+                        <li class="fragment">Will you store the clients' products details/images ?
+                            <ul>
+                                <li style="margin-bottom: 0">If yes, how will you load it (portal, files...)?</li>
+                                <li style="margin-bottom: 0">If no, how will you access the client's data?</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div style="display: inline-block; vertical-align: top;">
+                    <img class="logo" style="width: 120%;" src="img/products.png"/>
+                </div>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 1em">Finances & Transactions</h2>
+                <div style="display: inline-block">
+                    <ul>
+                        <li class="fragment">How do you intent to handle buying/selling transactions ?</li>
+                        <li class="fragment">Will you delegate it to a third party/the client services ?</li>
+                        <li class="fragment">Will you need to connect to their billing system ?</li>
+                    </ul>
+                </div>
+                <div style="display: inline-block; vertical-align: top;">
+                    <img class="logo" style="width: 50%;" src="img/ecommerce-2140604_1920.jpg"/>
+                </div>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 1em">Security</h2>
+                <div style="display: inline-block">
+                    <ul style="background-image: url('img/security.jpg');background-size: contain;
+                background-repeat: no-repeat; background-position: center center">
+                        <li class="fragment">How will clients' employees/users log in ?
+                            <ul>
+                                <li style="margin-bottom: 0">Create new users on your system ?</li>
+                                <li style="margin-bottom: 0">Use Single Sign On ?</li>
+                                <li style="margin-bottom: 0">Be redirected to the clients' pages ?</li>
+                            </ul>
+                        </li>
+                        <li class="fragment">Will you need to open your network ?</li>
+                        <li class="fragment">Will you need to change your whitelists ?</li>
+                        <li class="fragment">And many more...</li>
+                    </ul>
+                </div>
+            </section>
+
+        </section>
+
+        <section>
+            <h1 style="text-transform: none; font-size: 1.8em">Any more questions ?</h1>
+            <h2 style="text-transform: none; font-size: 1.2em; color: darkgrey; margin-top: 1em">(If you haven't had enough asked of you yet)</h2>
+        </section>
+
+    </div>
+
+</div>
+
+<script src="../revealjs/lib/js/head.min.js"></script>
+<script src="../revealjs/js/reveal.js"></script>
+
+<script>
+
+    // Full list of configuration options available at:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'convex', // none/fade/slide/convex/concave/zoom
+
+        dependencies: [
+            {
+                src: '../revealjs/lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            }
+            },
+            {
+                src: '../revealjs/plugin/markdown/marked.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: '../revealjs/plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: '../revealjs/plugin/highlight/highlight.js', async: true, condition: function () {
+                return !!document.querySelector('pre code');
+            }, callback: function () {
+                hljs.initHighlightingOnLoad();
+            }
+            },
+            {src: '../revealjs/plugin/zoom-js/zoom.js', async: true},
+            {src: '../revealjs/plugin/notes/notes.js', async: true}
+        ]
+    });
+
+</script>
+
+</body>
+</html>
