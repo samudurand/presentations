@@ -33,31 +33,31 @@
 
     <div class="slides">
         <section>
-            <h1 style="text-transform: none; font-size: 1.8em">How to make a Scala cake</h1>
-            <h2 style="text-transform: none; font-size: 1.2em; color: darkgrey">For experienced Java bakers</h2>
-            <img class="logo" src="img/cake.jpg" style="width: 49%; margin-top: 40px"/>
+            <h1 style="text-transform: none; font-size: 1.8em">Intro to Scala</h1>
+            <h2 style="text-transform: none; font-size: 1.2em; color: darkgrey">From a Java perspective</h2>
+            <div>
+                <img class="logo" src="img/scala-logo.jpg" style="width: 49%; margin-top: 40px"/>
+            </div>
             <p style="margin-top: 1em">
                 <small>Presentation by Samuel Durand (<a href="https://github.com/samudurand">github.com/samudurand</a>)</small>
             </p>
         </section>
 
         <section>
-            <h2 style="margin-bottom: 1em">Why switch to Scala ?</h2>
+            <h2 style="margin-bottom: 1em">Why should you use Scala ?</h2>
             <div style="display: inline-block;">
                 <ul>
-                    <li>Type safety</li>
-                    <li>Type inference</li>
-                    <li>Powerful compiler</li>
-                    <li>Utilities</li>
-                    <li>OOP + FP</li>
-                    <li>Unique patterns</li>
-                    <li>Much more concise</li>
-                    <li>Java compatible</li>
+                    <li class="fragment">Type safety & type inference</li>
+                    <li class="fragment">OOP + Functional Programming</li>
+                    <li class="fragment">Rich utilities</li>
+                    <li class="fragment">Unique patterns</li>
+                    <li class="fragment">Much more concise</li>
+                    <li class="fragment">Java compatible</li>
+                    <li class="fragment">Asynchronous handling</li>
+                    <li class="fragment">Popular for data processing</li>
                 </ul>
             </div>
-            <div style="display: inline-block; vertical-align: top; margin-top: 8%">
-                <img class="logo" style="width: 30%;" src="img/scala-spiral-3d-2-toned-down.png"/>
-            </div>
+
         </section>
 
         <section>
@@ -102,7 +102,7 @@ val brownie = Cake("Brownie")
                 <h2 style="margin-bottom: 1em">Collections</h2>
                 
                 <p>Java</p>
-                <pre style="font-size: 0.4em;"><code data-trim class="java">
+                <pre style="font-size: 0.5em;"><code data-trim class="java">
 List&lt;Cake&gt; cakes = new LinkedList&lt;&gt;();
 
 List&lt;Cake&gt; cakes = Arrays.asList(new Cake("Brownie"), new Cake("Blondie"));
@@ -110,7 +110,7 @@ List&lt;Cake&gt; cakes = Arrays.asList(new Cake("Brownie"), new Cake("Blondie"))
 
                 <div class="fragment">
                     <p>Scala</p>
-                    <pre style="font-size: 0.4em;"><code data-trim class="scala">
+                    <pre style="font-size: 0.5em; "><code data-trim class="scala">
 val cakes = List[Cake]()
 
 val cakes = List(Cake("Brownie"), Cake("Blondie"))
@@ -123,7 +123,7 @@ val cakes_list_as_java = cakes.asJava
                 <h2 style="margin-bottom: 1em">Functions and loops</h2>
                 
                 <p>Java</p>
-                <pre style="font-size: 0.4em;"><code data-trim class="java">
+                <pre style="font-size: 0.5em;"><code data-trim class="java">
 public List&lt;Slice&gt; pickASliceFromEach(List&lt;Cake&gt; cakes) {
     List&lt;Slice&gt; slices = new ArrayList&lt;Slice&gt;();  
     for (Cake c: cakes) {
@@ -135,7 +135,7 @@ public List&lt;Slice&gt; pickASliceFromEach(List&lt;Cake&gt; cakes) {
 
                 <div class="fragment">
                     <p>Scala</p>
-                    <pre style="font-size: 0.4em;"><code data-trim class="scala">
+                    <pre style="font-size: 0.45em;"><code data-trim class="scala">
 def pickASliceFromEach(cakes: List[Cake]) = cakes.map(_.takeOneSlice())
 
 def pickASliceFromEachV2(cakes: List[Cake]) = for(cake &lt;- cakes) yield cake.takeOneSlice()
@@ -145,41 +145,9 @@ def pickASliceFromEachV2(cakes: List[Cake]) = for(cake &lt;- cakes) yield cake.t
         </section>
 
         <section>
-            <section>
-                <h2 style="margin-bottom: 1em">OOP to FP + OOP</h2>
-                <ul>
-                    <li style="list-style: none;">Yes scala is a FP language...
-                        <ul style="padding-top: 0.5em; ">
-                            <li style="font-size: 0.9em;">Functions as first class citizens</li>
-                            <li style="font-size: 0.9em;">Immutability: no change, but copy</li>
-                            <li style="font-size: 0.9em;">No side effects</li>
-                            <li style="font-size: 0.9em;">.map , .filter...</li>
-                            <li style="font-size: 0.9em;">Recursion instead of loops</li>
-                        </ul>
-                    </li>
-                </ul>
+            <h2 style="margin-bottom: 1em">Type inference</h2>
 
-            </section>
-            <section>
-                <h2 style="margin-bottom: 1em">OOP to FP + OOP</h2>
-                <ul>
-                    <li style="list-style: none;">... but it also has OOP !
-                        <ul style="padding-top: 0.5em; ">
-                            <li style="font-size: 0.9em;">Java Objects</li>
-                            <li style="font-size: 0.9em;">Classes, methods, properties</li>
-                            <li style="font-size: 0.9em;">This reference</li>
-                            <li style="font-size: 0.9em;">Inheritance</li>
-                            <li style="font-size: 0.9em;">Polymorphisme (Traits)</li>
-                        </ul>
-                    </li>    
-                </ul>
-            </section>
-        </section>
-
-        <section>
-            <h2 style="margin-bottom: 1em">Rely on type inference</h2>
-
-            <pre style="font-size: 0.4em;"><code data-trim class="scala">
+            <pre style="font-size: 0.42em;"><code data-trim class="scala">
 val cakeName = "Brownie"	// String
 
 val cakeCount = 5 * 3 - 4	// Int
@@ -195,8 +163,8 @@ def makeCake(name: String, sugarAmount: Double) = {	// return type is Cake
 
             <div class="fragment">
                 <p>More advanced inferences</p>
-                <pre style="font-size: 0.4em;"><code data-trim class="scala">
-// Infer the type of T and the return type based on the List type 
+                <pre style="font-size: 0.42em;"><code data-trim class="scala">
+// Infer the type of T and the return type based on the List type
 def getRandomSweet[T](sweets: List[T]) = sweets(rand.nextInt(sweets.length))
 // --> return type T
 
@@ -209,38 +177,11 @@ val myFutureCakes = shopCakes.map(_.reverseEngineerRecipe().map(_.bakeCake()))
         </section>
 
         <section>
-            <h2 style="margin-bottom: 1em">Prefer Immutability</h2>
-
-            <p>Java</p>
-
-            <pre style="font-size: 0.4em;"><code data-trim class="java">
-Cake creamCake = new Cake("Cream cake")
-List cakes = new ArrayList();
-cakes.add(creamCake)
-cakes.remove(creamCake)
-            </code></pre>
-
-            <div class="fragment">
-                <p>Scala</p>
-
-                <pre style="font-size: 0.4em;"><code data-trim class="scala">
-val panettone = new Cake("Panettone")
-val cakes = List(panettone)
-val cakesWithMuffin = Cake("Muffin") :: cakes
-val cakesWithoutMuffin = cakesWithMuffin.filter(_.name != "Muffin")
-                </code></pre>
-
-                <p>Make your variables immutable, unless there’s a good reason not to.</p>
-            </div>
-
-        </section>
-
-        <section>
-            <h2 style="margin-bottom: 1em">Enjoy the Utilities</h2>
+            <h2 style="margin-bottom: 1em">Wealth of Utilities</h2>
 
             <p>Strings: 100+ manipulation methods</p>
-            
-            <pre style="font-size: 0.4em;"><code data-trim class="scala">
+
+            <pre style="font-size: 0.5em;"><code data-trim class="scala">
 val cakeStr = "madeleine"
 cakeStr.reverse()               // "enieledam"
 cakeStr.toUpperCase()           // "MADELEINE"
@@ -248,8 +189,8 @@ cakeStr.replaceAll("e", "a")    // "madalaina"
             </code></pre>
 
             <p>Collections: 40+ list manipulation methods</p>
-            
-            <pre style="font-size: 0.4em;"><code data-trim class="scala">
+
+            <pre style="font-size: 0.5em;"><code data-trim class="scala">
 val aLotOfBiscuits = List.fill(10)("biscuit")
 aLotOfBiscuits.head     // "biscuit"
 aLotOfBiscuits.tail     // "biscuit"
@@ -259,9 +200,87 @@ aLotOfBiscuits.reverse
         </section>
 
         <section>
-            <h2 style="margin-bottom: 1em">Use Options instead of Nulls</h2>
+            <section>
+                <h2 style="margin-bottom: 1em">Scala supports OOP</h2>
+                <ul>
+                    <li style="list-style: none;">All the usual OOP features
+                        <ul style="padding-top: 0.5em; ">
+                            <li style="font-size: 0.9em;">POJOs</li>
+                            <li style="font-size: 0.9em;">Classes, methods, properties</li>
+                            <li style="font-size: 0.9em;">This reference</li>
+                            <li style="font-size: 0.9em;">Inheritance</li>
+                            <li style="font-size: 0.9em;">Polymorphism (Traits)</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h2 style="margin-bottom: 1em">Also fully supports FP</h2>
 
-            <pre style="font-size: 0.4em;"><code data-trim class="java">
+                <p>Functions as first class citizens</p>
+                <pre style="font-size: 0.5em;"><code data-trim class="scala">
+val multiplier = (i:Int, i2: Int) => {i*i2}
+multiplier(5, 2)  // 10
+
+def printResult(fun:(Int, Int) => Int, i: Int, i2: Int) = {
+    println(fun(i,i2))
+}
+printResult(multiplier, 5, 2)   // 10
+                </code></pre>
+            </section>
+
+            <section>
+                <h2 style="margin-bottom: 1em">Also fully supports FP</h2>
+
+                <p>By default everything is Immutable</p>
+                <pre style="font-size: 0.5em;"><code data-trim class="scala">
+val value1 = 500
+value1 = 1000    // Error
+
+val sponge = Cake("Sponge")
+sponge.name = "Carrot cake" // Error
+val carrotCake = sponge.copy(name = "Carrot Cake")
+
+val singleLetter = List(Letter("B"))
+val letters = Letter("A") +: singleLetter :+ Letter("C") // List("A", "B", "C")
+                </code></pre>
+
+                <div class="fragment">
+                    <p style="margin-top:1em">No side effects <br/>
+                        Great for async processing & safer coding</p>
+
+                    <pre style="font-size: 0.5em;"><code data-trim class="scala">
+    def notGonnaWork(cake: Cake, newName: String) = {cake.name=newName} //Error
+                    </code></pre>
+                </div>
+            </section>
+            <section>
+                <h2 style="margin-bottom: 1em">Also fully supports FP</h2>
+
+                <p>Declarative programming: say <i>what</i>, not how</p>
+                <pre style="font-size: 0.5em;"><code data-trim class="scala">
+val cakes = List(Cake("Brownie"), Cake("Muffin"), Cake("Baba"))
+
+val bCakes = cakes
+              .filter(_.name.startsWith("B"))
+              .map(_.name)                      // List(Brownie, Baba)
+
+val names = bCakes.fold("")(_+_)                // BrownieBaba
+
+val cakesByPrice = Map(3.5 -> Cake("Brownie"), 2.5 -> Cake("Muffin"))
+
+val cheapCake = cakesByPrice
+                  .find(_._1 < 3)
+                  .map { case (_, cake) => cake.name }   // Some(Muffin)
+                </code></pre>
+            </section>
+
+        </section>
+
+        <section>
+            <h2 style="margin-bottom: 1em">Options instead of Nulls</h2>
+
+            <pre style="font-size: 0.5em;"><code data-trim class="java">
 Cake pecanPie = new Cake("Pecan pie", 2)    // Cake with two slices
 Slice slice1 = pecanPie.takeASlice()
 Slice slice2 = pecanPie.takeASlice()
@@ -272,12 +291,12 @@ slice3.eat()                            // Runtime Null pointer exception
             <div class="fragment">
                 <p>Scala</p>
 
-                <pre style="font-size: 0.4em;"><code data-trim class="java">
+                <pre style="font-size: 0.5em;"><code data-trim class="java">
 val pecanPie = Cake("Pecan pie", slices=2)
 val (slice1, pecanPie2) = pecanPie.takeASlice() // Tuple[Option[Slice], Cake]
 val (_, pecanPie3) = pecanPie2.takeAslice()
 val (slice3, _) = pecanPie3.takeAslice()
-slice3.eat()                                    // Compiler error ! 
+slice3.eat()                                    // Compiler error !
 slice3.map {
     case Some(slice) => slice.eat()
     case None        => println("I am still hungry !")
@@ -289,7 +308,7 @@ slice3.map {
         <section>
                 <h2 style="margin-bottom: 1em">Traits</h2>
 
-                <pre style="font-size: 0.4em;"><code data-trim class="scala">
+                <pre style="font-size: 0.45em;"><code style=" max-height: none;" data-trim class="scala">
 trait Cake {
     val goodForDays = 3
     val name: String
@@ -317,15 +336,15 @@ case class PecanPie(name: String,
         </section>
 
         <section>
-            <h2 style="margin-bottom: 1em">Use pattern matching</h2>
+            <h2 style="margin-bottom: 1em">Pattern matching</h2>
 
-            <pre style="font-size: 0.4em;"><code data-trim class="scala">
+            <pre style="font-size: 0.44em;"><code data-trim class="scala">
 def findOutWhatItIs(mysteryValue: Any) = 
     mysteryValue match {
         case "Lemon pie" =>                         println("Hurray ! A lemon pie !!")
         case cakeName: String =>                    println(s"Found it, it's a ${cakeName}")
-        case sliceCount: Int if sliceCount > 10 =>  println("It's gonna be a huge cake !!") 				
-        case sliceCount: Int => 		    println("Only a small cake...") 				
+        case sliceCount: Int if sliceCount > 10 =>  println("It's gonna be a huge cake !!")
+        case sliceCount: Int => 		    println("Only a small cake...")
     }
 
 def findOutWhatSweetItIs(mysteryCake: Sweet) = 
@@ -337,9 +356,45 @@ def findOutWhatSweetItIs(mysteryCake: Sweet) =
             </code></pre>
 
         </section>
+        <section>
+            <h2 style="margin-bottom: 1em">Asynchronous processing</h2>
+
+            <p>Java</p>
+            <pre style="font-size: 0.4em;"><code data-trim class="scala">
+public class SquareCalculator {
+
+    private ExecutorService executor
+      = Executors.newSingleThreadExecutor();
+
+    public Future&lt;Integer&gt; calculate(Integer input) {
+        return executor.submit(() -> {
+            Thread.sleep(1000);
+            return input * input;
+        });
+    }
+}
+            </code></pre>
+            <p>Scala</p>
+            <pre style="font-size: 0.4em;"><code data-trim class="scala">
+def calculate(input: Integer) = Future {
+    sleep(1000)
+    input * input       // Or some heavy processing
+}
+
+val result = Await.result(calculate(3), 1 second)
+            </code></pre>
+
+        </section>
 
         <section>
             <h2>Any questions ?</h2>
+
+            <p>You can also contact me directly</p>
+            <ul style="font-size: 0.8em">
+                <li>Email: 	<a>samudurand@gmail.com</a></li>
+                <li>Github:	<a>https://github.com/samudurand</a></li>
+                <li>Linkedin:	<a>https://www.linkedin.com/in/samuel-durand-8300ba4a</a></li>
+            </ul>
         </section>
 
     </div>
