@@ -135,7 +135,7 @@ public List&lt;Slice&gt; pickASliceFromEach(List&lt;Cake&gt; cakes) {
 
                 <div class="fragment">
                     <p>Scala</p>
-                    <pre style="font-size: 0.45em;"><code data-trim class="scala">
+                    <pre style="font-size: 0.40em;"><code data-trim class="scala">
 def pickASliceFromEach(cakes: List[Cake]) = cakes.map(_.takeOneSlice())
 
 def pickASliceFromEachV2(cakes: List[Cake]) = for(cake &lt;- cakes) yield cake.takeOneSlice()
@@ -147,7 +147,7 @@ def pickASliceFromEachV2(cakes: List[Cake]) = for(cake &lt;- cakes) yield cake.t
         <section>
             <h2 style="margin-bottom: 1em">Type inference</h2>
 
-            <pre style="font-size: 0.42em;"><code data-trim class="scala">
+            <pre style="font-size: 0.40em;"><code data-trim class="scala">
 val cakeName = "Brownie"	// String
 
 val cakeCount = 5 * 3 - 4	// Int
@@ -233,7 +233,7 @@ printResult(multiplier, 5, 2)   // 10
                 <h2 style="margin-bottom: 1em">Also fully supports FP</h2>
 
                 <p>By default everything is Immutable</p>
-                <pre style="font-size: 0.5em;"><code data-trim class="scala">
+                <pre style="font-size: 0.45em;"><code data-trim class="scala">
 val value1 = 500
 value1 = 1000    // Error
 
@@ -249,7 +249,7 @@ val letters = Letter("A") +: singleLetter :+ Letter("C") // List("A", "B", "C")
                     <p style="margin-top:1em">No side effects <br/>
                         Great for async processing & safer coding</p>
 
-                    <pre style="font-size: 0.5em;"><code data-trim class="scala">
+                    <pre style="font-size: 0.45em;"><code data-trim class="scala">
     def notGonnaWork(cake: Cake, newName: String) = {cake.name=newName} //Error
                     </code></pre>
                 </div>
@@ -280,7 +280,7 @@ val cheapCake = cakesByPrice
         <section>
             <h2 style="margin-bottom: 1em">Options instead of Nulls</h2>
 
-            <pre style="font-size: 0.5em;"><code data-trim class="java">
+            <pre style="font-size: 0.45em;"><code data-trim class="java">
 Cake pecanPie = new Cake("Pecan pie", 2)    // Cake with two slices
 Slice slice1 = pecanPie.takeASlice()
 Slice slice2 = pecanPie.takeASlice()
@@ -291,7 +291,7 @@ slice3.eat()                            // Runtime Null pointer exception
             <div class="fragment">
                 <p>Scala</p>
 
-                <pre style="font-size: 0.5em;"><code data-trim class="java">
+                <pre style="font-size: 0.45em;"><code data-trim class="java">
 val pecanPie = Cake("Pecan pie", slices=2)
 val (slice1, pecanPie2) = pecanPie.takeASlice() // Tuple[Option[Slice], Cake]
 val (_, pecanPie3) = pecanPie2.takeAslice()
@@ -338,7 +338,7 @@ case class PecanPie(name: String,
         <section>
             <h2 style="margin-bottom: 1em">Pattern matching</h2>
 
-            <pre style="font-size: 0.44em;"><code data-trim class="scala">
+            <pre style="font-size: 0.40em;"><code data-trim class="scala">
 def findOutWhatItIs(mysteryValue: Any) = 
     mysteryValue match {
         case "Lemon pie" =>                         println("Hurray ! A lemon pie !!")
