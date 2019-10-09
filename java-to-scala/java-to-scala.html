@@ -374,15 +374,17 @@ public class SquareCalculator {
     }
 }
             </code></pre>
-            <p>Scala</p>
-            <pre style="font-size: 0.4em;"><code data-trim class="scala">
+            <div>
+                <p>Scala</p>
+                <pre class="fragment"  style="font-size: 0.4em;"><code data-trim class="scala">
 def calculate(input: Integer) = Future {
     sleep(1000)
     input * input       // Or some heavy processing
 }
 
 val result = Await.result(calculate(3), 1 second)
-            </code></pre>
+                </code></pre>
+            </div>
 
         </section>
 
